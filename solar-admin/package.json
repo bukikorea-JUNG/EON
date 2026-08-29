@@ -1,10 +1,6 @@
 {
-  "name": "solarroof-final",
-  "version": "1.0.0",
-  "private": true,
-  "description": "\uc194\ub77c\ub8e8\ud504 \uacf5\uc7a5 \uc9c0\ubd95 \uc784\ub300 - \uc804\ud654 010-3194-7270, \ubb38\uc758 bukikorea@gmail.com",
   "dependencies": {
     "nodemailer": "^6.9.8",
-    "@supabase/supabase-js": "^2.39.0"
+    "@supabase/supabase-js": "^2.50.0"
   }
 }

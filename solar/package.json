@@ -1,8 +1,8 @@
 {
-  "name": "solarroof-vercel-clean",
+  "name": "solarroof-final",
   "version": "1.0.0",
   "private": true,
-  "description": "솔라루프 공장 지붕 임대 - 30~3000평, bukikorea@gmail.com 문의 연결",
+  "description": "솔라루프 공장 지붕 임대 - 전화 010-3194-7270, 문의 bukikorea@gmail.com",
   "dependencies": {
     "nodemailer": "^6.9.13"
   }

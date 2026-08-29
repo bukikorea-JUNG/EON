@@ -1,28 +1,22 @@
-# Supabase 연동 버전
+# 솔라루프 백엔드 (알림톡 없이)
 
-## 1. Supabase 프로젝트 생성
-https://supabase.com -> New Project (무료)
+## 기능
+- / : 기존 사이트 (전화 010-3194-7270)
+- /admin : 관리자 페이지 (비번 7270)
+  - 문의 리스트, 상태 변경, 메모, 카톡/이메일 관리, 엑셀 다운로드
 
-## 2. SQL 실행
-SQL Editor -> supabase.sql 내용 붙여넣기 -> Run
+## API
+- POST /api/inquiry : 문의 접수 -> Gmail 발송 + data/inquiries.json 저장
+- GET /api/inquiries : 리스트
+- PATCH /api/inquiries : 상태/메모 업데이트
+- DELETE /api/inquiries?id=xxx : 삭제
 
-## 3. Vercel 환경변수 추가 (기존 3개 + 2개)
-기존:
-GMAIL_USER=bukikorea@gmail.com
-GMAIL_APP_PASSWORD=16자리
-KEPCO_API_KEY=OyI2...
+## 배포
+Vercel에 ZIP 업로드 또는 GitHub push
+환경변수 3개 유지:
+GMAIL_USER, GMAIL_APP_PASSWORD, KEPCO_API_KEY
 
-추가:
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOi...
-또는
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi... (권장 - RLS 우회)
-
-Supabase Dashboard -> Settings -> API에서 확인
-
-## 4. 배포
-GitHub push -> Vercel 자동 배포 -> /admin에서 Supabase 데이터 확인
-
-## 장점
-- data/inquiries.json은 Vercel 재배포시 초기화됨
-- Supabase는 영구 저장, 500MB 무료, 엑셀보다 검색 빠름
+## 카톡 관리
+알림톡 없이 무료:
+- 관리자 페이지에서 카톡 버튼 -> 카카오 비즈니스 센터로 이동 + 전화번호 복사
+- 카톡 상담 내용 메모 필드에 기록

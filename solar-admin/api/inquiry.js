@@ -1,14 +1,24 @@
 
-// /api/inquiry.js - Gmail + Supabase 저장
+// /api/inquiry.js - Gmail SMTP + 파일 저장 (백엔드 연동)
 import nodemailer from 'nodemailer';
-import { createClient } from '@supabase/supabase-js';
+import fs from 'fs';
+import path from 'path';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const DATA_FILE = path.join(process.cwd(), 'data', 'inquiries.json');
 
-function getSupabase() {
-  if (!supabaseUrl || !supabaseKey) return null;
-  return createClient(supabaseUrl, supabaseKey);
+function saveToFile(inquiry) {
+  try {
+    let data = [];
+    if (fs.existsSync(DATA_FILE)) {
+      data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+    } else {
+      fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+    }
+    data.unshift(inquiry);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.error('Save file error', e);
+  }
 }
 
 export default async function handler(req, res) {
@@ -29,11 +39,11 @@ export default async function handler(req, res) {
       pyeong: pyeong || currentPyeong || '미입력',
       roofType: roofType || '미선택',
       message: message || '없음',
+      timestamp: timestamp || now.toISOString(),
       pageUrl: pageUrl || '',
       createdAt: now.toISOString(),
       receivedAt: now.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
-      updatedAt: now.toISOString(),
-      status: '신규',
+      status: '신규', // 신규, 연락완료, 계약진행, 완료, 보류
       memo: '',
       kakaoMemo: '',
       emailMemo: '',
@@ -41,9 +51,10 @@ export default async function handler(req, res) {
       emailError: null
     };
 
-    // 1. Gmail 발송
     const GMAIL_USER = process.env.GMAIL_USER || 'bukikorea@gmail.com';
     const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+    const TO_EMAIL = 'bukikorea@gmail.com';
+
     let emailSent = false;
     let emailError = null;
 
@@ -54,38 +65,44 @@ export default async function handler(req, res) {
           service: 'gmail',
           auth: { user: GMAIL_USER, pass: cleanPass }
         });
-        await transporter.sendMail({
+
+        const info = await transporter.sendMail({
           from: `"솔라루프 문의" <${GMAIL_USER}>`,
-          to: 'bukikorea@gmail.com',
+          to: TO_EMAIL,
           subject: `[공장 지붕 임대] ${inquiry.name} - ${inquiry.address} (${inquiry.pyeong}평)`,
-          html: `<div style="font-family:sans-serif;max-width:600px;padding:20px;border:1px solid #e2e8f0;border-radius:16px">
-            <h2>🏭 신규 문의 - ${inquiry.status}</h2>
-            <p><a href="https://www.solarroof.kr/admin" style="background:#0F4C81;color:white;padding:8px 16px;border-radius:8px;text-decoration:none">관리자에서 관리</a></p>
-            <table style="width:100%;font-size:14px;border-collapse:collapse">
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">담당자</td><td style="padding:8px">${inquiry.name}</td></tr>
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">연락처</td><td style="padding:8px"><a href="tel:${inquiry.phone}">${inquiry.phone}</a></td></tr>
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">주소</td><td style="padding:8px">${inquiry.address}</td></tr>
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">평수</td><td style="padding:8px">${inquiry.pyeong}</td></tr>
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">지붕</td><td style="padding:8px">${inquiry.roofType}</td></tr>
-              <tr><td style="padding:8px;background:#f8fafc;font-weight:bold">내용</td><td style="padding:8px">${inquiry.message}</td></tr>
-            </table></div>`
+          html: `
+            <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;border:1px solid #e2e8f0;border-radius:16px">
+              <h2 style="color:#0F4C81">🏭 신규 문의 - ${inquiry.status}</h2>
+              <p style="color:#64748b;font-size:13px">${inquiry.receivedAt}</p>
+              <p><a href="https://www.solarroof.kr/admin" style="background:#0F4C81;color:white;padding:8px 16px;border-radius:8px;text-decoration:none">관리자 페이지에서 관리</a></p>
+              <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
+              <table style="width:100%;font-size:14px;border-collapse:collapse">
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc;width:110px">담당자</td><td style="padding:10px">${inquiry.name}</td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">연락처</td><td style="padding:10px"><a href="tel:${inquiry.phone}">${inquiry.phone}</a></td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">주소</td><td style="padding:10px">${inquiry.address}</td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">평수</td><td style="padding:10px">${inquiry.pyeong}평</td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">지붕형태</td><td style="padding:10px">${inquiry.roofType}</td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">문의내용</td><td style="padding:10px;white-space:pre-wrap">${inquiry.message}</td></tr>
+                <tr><td style="padding:10px;font-weight:bold;background:#f8fafc">페이지</td><td style="padding:10px;font-size:12px">${inquiry.pageUrl}</td></tr>
+              </table>
+            </div>`
         });
         emailSent = true;
         inquiry.emailSent = true;
       } catch (err) {
         emailError = err.message;
         inquiry.emailError = err.message;
+        console.error('Mail error:', err);
       }
+    } else {
+      emailError = 'GMAIL_APP_PASSWORD 없음';
+      inquiry.emailError = emailError;
     }
 
-    // 2. Supabase 저장 (영구 저장)
-    const supabase = getSupabase();
-    if (supabase) {
-      const { error } = await supabase.from('inquiries').insert([inquiry]);
-      if (error) console.error('Supabase insert error', error);
-    }
+    // 파일에 저장 (백엔드용)
+    saveToFile(inquiry);
 
-    return res.status(200).json({ success: true, emailSent, emailError, data: inquiry, supabase: !!supabase });
+    return res.status(200).json({ success: true, emailSent, emailError, data: inquiry });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: e.message });

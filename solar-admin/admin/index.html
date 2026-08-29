@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>솔라루프 관리자 - 문의 관리</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  .status-신규{ background:#fef3c7; color:#92400e; }
+  .status-연락완료{ background:#dbeafe; color:#1e40af; }
+  .status-계약진행{ background:#e0e7ff; color:#3730a3; }
+  .status-완료{ background:#dcfce7; color:#166534; }
+  .status-보류{ background:#f3f4f6; color:#4b5563; }
+</style>
+</head>
+<body class="bg-[#f8fafc] min-h-screen">
+<!-- Login -->
+<div id="login-screen" class="fixed inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+    <h1 class="text-xl font-black text-[#0F4C81] mb-1">솔라루프 관리자</h1>
+    <p class="text-[12px] text-slate-500 mb-6">문의 / 이메일 / 카톡 통합 관리</p>
+    <input id="pw-input" type="password" placeholder="비밀번호 (7270)" class="w-full h-12 rounded-xl border border-slate-200 px-4 mb-3 focus:border-[#0F4C81] outline-none">
+    <button onclick="login()" class="w-full h-12 bg-[#0F4C81] text-white rounded-xl font-bold hover:bg-[#0a3458]">로그인</button>
+    <p class="text-[11px] text-slate-400 mt-3 text-center">기본 비밀번호: 7270 (admin/index.html에서 변경 가능)</p>
+    <div id="login-error" class="text-red-500 text-[12px] mt-2 hidden">비밀번호가 틀렸습니다</div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+  <div class="max-w-[1400px] mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-[#0F4C81] rounded-lg flex items-center justify-center text-white font-black text-[14px]">S</div>
+      <span class="font-black text-[15px]">솔라루프 관리자</span>
+      <span class="text-[11px] bg-slate-100 px-2 py-1 rounded-full">전화 010-3194-7270</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="/" target="_blank" class="text-[12px] px-3 py-1.5 border rounded-lg hover:bg-slate-50"><i class="fa-solid fa-external-link"></i> 사이트 보기</a>
+      <button onclick="exportCSV()" class="text-[12px] px-3 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i class="fa-solid fa-file-csv"></i> 엑셀 다운로드</button>
+      <button onclick="logout()" class="text-[12px] px-3 py-1.5 border rounded-lg hover:bg-slate-50">로그아웃</button>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-[1400px] mx-auto px-4 py-6">
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">전체 문의</div><div id="stat-total" class="text-2xl font-black">0</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">오늘</div><div id="stat-today" class="text-2xl font-black text-[#0F4C81]">0</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">신규</div><div id="stat-new" class="text-2xl font-black text-amber-600">0</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">연락완료</div><div id="stat-contacted" class="text-2xl font-black text-blue-600">0</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">계약진행</div><div id="stat-progress" class="text-2xl font-black text-violet-600">0</div></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-xl border p-3 mb-4 flex flex-wrap gap-2 items-center">
+    <select id="filter-status" onchange="render()" class="h-9 rounded-lg border px-3 text-[13px]">
+      <option value="">전체 상태</option>
+      <option>신규</option>
+      <option>연락완료</option>
+      <option>계약진행</option>
+      <option>완료</option>
+      <option>보류</option>
+    </select>
+    <input id="filter-search" oninput="render()" placeholder="이름, 전화, 주소 검색" class="h-9 rounded-lg border px-3 text-[13px] w-[220px]">
+    <button onclick="loadData()" class="h-9 px-4 rounded-lg bg-slate-900 text-white text-[13px]"><i class="fa-solid fa-rotate"></i> 새로고침</button>
+    <span id="last-updated" class="text-[11px] text-slate-400 ml-auto"></span>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-xl border overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead class="bg-slate-50 text-[11px] text-slate-500">
+          <tr>
+            <th class="text-left p-3 font-bold">접수일시</th>
+            <th class="text-left p-3 font-bold">담당자 / 연락처</th>
+            <th class="text-left p-3 font-bold">주소 / 평수</th>
+            <th class="text-left p-3 font-bold">상태</th>
+            <th class="text-left p-3 font-bold">메모 / 카톡 / 이메일 관리</th>
+            <th class="text-left p-3 font-bold">액션</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="6" class="p-8 text-center text-slate-400">불러오는 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD = '7270'; // 여기 변경
+let inquiries = [];
+
+function login(){
+  const pw = document.getElementById('pw-input').value;
+  if(pw === PASSWORD){
+    sessionStorage.setItem('admin_auth', 'true');
+    document.getElementById('login-screen').style.display='none';
+    loadData();
+  } else {
+    document.getElementById('login-error').classList.remove('hidden');
+  }
+}
+function logout(){
+  sessionStorage.removeItem('admin_auth');
+  location.reload();
+}
+if(sessionStorage.getItem('admin_auth') === 'true'){
+  document.getElementById('login-screen').style.display='none';
+}
+
+async function loadData(){
+  try{
+    const res = await fetch('/api/inquiries');
+    const json = await res.json();
+    inquiries = json.inquiries || [];
+    document.getElementById('last-updated').innerText = '업데이트: ' + new Date().toLocaleString('ko-KR');
+    render();
+  } catch(e){
+    console.error(e);
+    document.getElementById('table-body').innerHTML = '<tr><td colspan=6 class="p-8 text-center text-red-500">불러오기 실패: '+e.message+'</td></tr>';
+  }
+}
+
+function render(){
+  const statusFilter = document.getElementById('filter-status').value;
+  const search = document.getElementById('filter-search').value.toLowerCase();
+  
+  let filtered = inquiries.filter(i => {
+    if(statusFilter && i.status !== statusFilter) return false;
+    if(search && !( (i.name||'').toLowerCase().includes(search) || (i.phone||'').includes(search) || (i.address||'').toLowerCase().includes(search) )) return false;
+    return true;
+  });
+
+  // Stats
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('stat-total').innerText = inquiries.length;
+  document.getElementById('stat-today').innerText = inquiries.filter(i => (i.createdAt||'').slice(0,10) === today).length;
+  document.getElementById('stat-new').innerText = inquiries.filter(i => i.status === '신규').length;
+  document.getElementById('stat-contacted').innerText = inquiries.filter(i => i.status === '연락완료').length;
+  document.getElementById('stat-progress').innerText = inquiries.filter(i => i.status === '계약진행').length;
+
+  const tbody = document.getElementById('table-body');
+  if(filtered.length === 0){
+    tbody.innerHTML = '<tr><td colspan=6 class="p-8 text-center text-slate-400">문의가 없습니다</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => `
+    <tr class="border-t hover:bg-slate-50">
+      <td class="p-3 align-top">
+        <div class="text-[12px] font-bold">${(item.receivedAt||'').slice(0,16)}</div>
+        <div class="text-[10px] text-slate-400">${item.pyeong}평 / ${item.roofType}</div>
+        <div class="text-[10px] ${item.emailSent ? 'text-emerald-600' : 'text-red-500'}">${item.emailSent ? '✉️ 메일발송됨' : '메일실패: '+(item.emailError||'')}</div>
+      </td>
+      <td class="p-3 align-top">
+        <div class="font-bold">${item.name}</div>
+        <a href="tel:${item.phone}" class="text-[#0F4C81] font-bold underline">${item.phone}</a>
+        <div class="text-[11px] text-slate-500 mt-1 whitespace-pre-wrap">${(item.message||'').slice(0,60)}</div>
+      </td>
+      <td class="p-3 align-top">
+        <div class="font-bold text-[12px]">${item.address}</div>
+        <a href="https://map.kakao.com/?q=${encodeURIComponent(item.address)}" target="_blank" class="text-[11px] text-blue-600 underline">카카오맵</a>
+      </td>
+      <td class="p-3 align-top">
+        <select onchange="updateStatus('${item.id}', this.value)" class="text-[11px] rounded-full px-2 py-1 border font-bold status-${item.status}">
+          <option ${item.status==='신규'?'selected':''}>신규</option>
+          <option ${item.status==='연락완료'?'selected':''}>연락완료</option>
+          <option ${item.status==='계약진행'?'selected':''}>계약진행</option>
+          <option ${item.status==='완료'?'selected':''}>완료</option>
+          <option ${item.status==='보류'?'selected':''}>보류</option>
+        </select>
+      </td>
+      <td class="p-3 align-top min-w-[260px]">
+        <input value="${(item.memo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'memo', this.value)" placeholder="내부 메모" class="w-full h-7 rounded border px-2 text-[11px] mb-1">
+        <input value="${(item.kakaoMemo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'kakaoMemo', this.value)" placeholder="카톡 상담 내용" class="w-full h-7 rounded border px-2 text-[11px] mb-1 bg-yellow-50">
+        <input value="${(item.emailMemo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'emailMemo', this.value)" placeholder="이메일 답변 내용" class="w-full h-7 rounded border px-2 text-[11px] bg-blue-50">
+      </td>
+      <td class="p-3 align-top">
+        <div class="flex flex-col gap-1">
+          <a href="tel:${item.phone}" class="text-[11px] px-2 py-1 bg-[#0F4C81] text-white rounded text-center"><i class="fa-solid fa-phone"></i> 전화</a>
+          <button onclick="openKakao('${item.phone}', '${item.name}')" class="text-[11px] px-2 py-1 bg-[#FEE500] text-black rounded"><i class="fa-solid fa-comment"></i> 카톡</button>
+          <button onclick="sendEmail('${item.id}')" class="text-[11px] px-2 py-1 bg-white border rounded">✉️ 메일</button>
+          <button onclick="deleteInquiry('${item.id}')" class="text-[11px] px-2 py-1 text-red-500">삭제</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function updateStatus(id, status){
+  await fetch('/api/inquiries', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, status }) });
+  const item = inquiries.find(i=>i.id===id);
+  if(item) item.status = status;
+  render();
+}
+async function updateMemo(id, field, value){
+  await fetch('/api/inquiries', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, [field]: value }) });
+  const item = inquiries.find(i=>i.id===id);
+  if(item) item[field]=value;
+}
+function openKakao(phone, name){
+  // 채널 관리자 페이지로 이동 + 전화번호 클립보드 복사
+  navigator.clipboard.writeText(phone);
+  alert(phone + ' 번호가 복사됐습니다. 카카오 채널에서 붙여넣기 하세요.');
+  window.open('https://center-pf.kakao.com/', '_blank');
+}
+function sendEmail(id){
+  const item = inquiries.find(i=>i.id===id);
+  if(!item) return;
+  const subject = `[솔라루프] ${item.address} 지붕 임대 답변`;
+  const body = `안녕하세요 ${item.name}님,\n${item.address} ${item.pyeong}평 문의 주셔서 감사합니다.\n\n010-3194-7270으로 연락드리겠습니다.`;
+  window.location.href = `mailto:${item.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+async function deleteInquiry(id){
+  if(!confirm('삭제하시겠습니까?')) return;
+  await fetch('/api/inquiries?id='+id, { method:'DELETE' });
+  inquiries = inquiries.filter(i=>i.id!==id);
+  render();
+}
+function exportCSV(){
+  const header = ['접수일시','이름','전화','주소','평수','지붕형태','상태','메모','카톡메모','이메일메모','문의내용'];
+  const rows = inquiries.map(i => [i.receivedAt, i.name, i.phone, i.address, i.pyeong, i.roofType, i.status, i.memo, i.kakaoMemo, i.emailMemo, (i.message||'').replace(/\n/g,' ')]);
+  let csv = header.join(',') + '\n' + rows.map(r => r.map(v => '"' + (v||'').toString().replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'solarroof_inquiries_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// Enter to login
+document.getElementById('pw-input')?.addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
+</script>
+</body>
+</html>

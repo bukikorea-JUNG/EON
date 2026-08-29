@@ -9,6 +9,29 @@ function getSupabase() {
   return createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
 }
 
+// snake -> camel 변환 (관리자 UI 호환)
+function mapRow(r) {
+  return {
+    id: r.id,
+    name: r.name,
+    phone: r.phone,
+    address: r.address,
+    pyeong: r.pyeong,
+    roofType: r.roof_type,
+    message: r.message,
+    pageUrl: r.page_url,
+    status: r.status,
+    memo: r.memo,
+    kakaoMemo: r.kakao_memo,
+    emailMemo: r.email_memo,
+    emailSent: r.email_sent,
+    emailError: r.email_error,
+    createdAt: r.created_at,
+    receivedAt: r.received_at,
+    updatedAt: r.updated_at
+  };
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, PATCH, DELETE, OPTIONS');
@@ -19,30 +42,22 @@ export default async function handler(req, res) {
   if (!supabase) return res.status(200).json({ inquiries: [], error: 'ENV missing' });
 
   if (req.method === 'GET') {
-    try {
-      const { data, error } = await supabase.from('inquiries').select('*').order('createdAt', { ascending: false }).limit(500);
-      if (error) {
-        // fallback: try lowercase
-        const { data: data2, error: err2 } = await supabase.from('inquiries').select('*').order('createdat', { ascending: false }).limit(500);
-        if (err2) return res.status(500).json({ error: error.message + ' / ' + err2.message });
-        return res.status(200).json({ inquiries: data2, total: data2.length });
-      }
-      return res.status(200).json({ inquiries: data, total: data.length });
-    } catch (e) {
-      return res.status(500).json({ error: e.message });
-    }
+    const { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false }).limit(500);
+    if (error) return res.status(500).json({ error: error.message, code: error.code });
+    const mapped = (data || []).map(mapRow);
+    return res.status(200).json({ inquiries: mapped, total: mapped.length });
   }
 
   if (req.method === 'PATCH') {
     const { id, status, memo, kakaoMemo, emailMemo } = req.body;
-    const update = { updatedAt: new Date().toISOString() };
+    const update = { updated_at: new Date().toISOString() };
     if (status) update.status = status;
     if (memo !== undefined) update.memo = memo;
-    if (kakaoMemo !== undefined) update.kakaoMemo = kakaoMemo;
-    if (emailMemo !== undefined) update.emailMemo = emailMemo;
+    if (kakaoMemo !== undefined) update.kakao_memo = kakaoMemo;
+    if (emailMemo !== undefined) update.email_memo = emailMemo;
     const { data, error } = await supabase.from('inquiries').update(update).eq('id', id).select().single();
     if (error) return res.status(500).json({ error: error.message });
-    return res.status(200).json({ success: true, inquiry: data });
+    return res.status(200).json({ success: true, inquiry: mapRow(data) });
   }
 
   if (req.method === 'DELETE') {

@@ -516,5 +516,62 @@ updatePyeong(100);
 loadInquiries();
 renderGrid();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('inquiry-form');
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    var originalText = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.innerHTML = '전송중...'; }
+    
+    var fd = new FormData(form);
+    var data = {
+      name: fd.get('name'),
+      phone: fd.get('phone'),
+      address: fd.get('address'),
+      pyeong: fd.get('pyeong') || document.getElementById('form-pyeong')?.value || '',
+      roofType: fd.get('roofType'),
+      message: fd.get('message'),
+      timestamp: new Date().toISOString(),
+      pageUrl: window.location.href,
+      currentPyeong: document.getElementById('form-pyeong')?.value || ''
+    };
+    
+    try {
+      var res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      var result = await res.json();
+      console.log('Inquiry result:', result);
+      
+      if (res.ok && result.success) {
+        alert('문의가 접수되었습니다!\n30분 이내에 010-3194-7270에서 연락드리겠습니다.\n' + (result.emailSent ? '메일 발송 완료' : '메일: ' + (result.emailError || '로그 확인 필요')));
+        form.reset();
+        // Reset pyeong to 100
+        var pyeongInput = document.getElementById('form-pyeong');
+        if (pyeongInput) pyeongInput.value = '100';
+      } else {
+        alert('전송 실패: ' + (result.error || result.emailError || '다시 시도해주세요'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('네트워크 오류: ' + err.message + '\n전화로 바로 문의해주세요: 010-3194-7270');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+    }
+  });
+  
+  // 모든 전화 버튼을 010-3194-7270으로 강제
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(a){
+    a.setAttribute('href', 'tel:010-3194-7270');
+  });
+});
+</script>
 </body>
+
 </html>

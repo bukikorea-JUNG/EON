@@ -2,14 +2,6 @@
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-function getSupabase() {
-  if (!supabaseUrl || !supabaseKey) return null;
-  return createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -17,19 +9,28 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const gmailUser = process.env.GMAIL_USER || 'bukikorea@gmail.com';
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+
+  console.log('ENV check', { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey, hasGmail: !!gmailPass, url: supabaseUrl });
+
   try {
-    const { name, phone, address, pyeong, roofType, roof_type, message, pageUrl, page_url, currentPyeong } = req.body;
-    if (!name || !phone || !address) return res.status(400).json({ error: '필수 항목 누락' });
+    const b = req.body || {};
+    const name = b.name, phone = b.phone, address = b.address;
+    if (!name || !phone || !address) return res.status(400).json({ success: false, error: '필수 항목 누락' });
 
     const now = new Date();
-    // DB는 snake_case로 저장 (PGRST204 방지)
     const row = {
       id: 'inq_' + now.getTime(),
-      name, phone, address,
-      pyeong: String(pyeong || currentPyeong || '미입력'),
-      roof_type: roofType || roof_type || '미선택',
-      message: message || '없음',
-      page_url: pageUrl || page_url || '',
+      name: name,
+      phone: phone,
+      address: address,
+      pyeong: String(b.pyeong || b.currentPyeong || '미입력'),
+      roof_type: b.roofType || b.roof_type || '미선택',
+      message: b.message || '없음',
+      page_url: b.pageUrl || b.page_url || '',
       created_at: now.toISOString(),
       received_at: now.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       updated_at: now.toISOString(),
@@ -41,18 +42,16 @@ export default async function handler(req, res) {
       email_error: null
     };
 
-    // Gmail
-    const GMAIL_USER = process.env.GMAIL_USER || 'bukikorea@gmail.com';
-    const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
     let emailSent = false;
-    if (GMAIL_APP_PASSWORD) {
+    let emailError = null;
+    if (gmailPass) {
       try {
         const transporter = nodemailer.createTransport({
           service: 'gmail',
-          auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD.replace(/[\s_]+/g, '') }
+          auth: { user: gmailUser, pass: String(gmailPass).replace(/[\s_]+/g, '') }
         });
         await transporter.sendMail({
-          from: `"솔라루프 문의" <${GMAIL_USER}>`,
+          from: `"솔라루프 문의" <${gmailUser}>`,
           to: 'bukikorea@gmail.com',
           subject: `[지붕임대] ${row.name} - ${row.address}`,
           html: `<h3>${row.name} / ${row.phone}</h3><p>${row.address} / ${row.pyeong}평 / ${row.roof_type}</p><p>${row.message}</p><p><a href="https://www.solarroof.kr/admin">관리자</a></p>`
@@ -60,22 +59,34 @@ export default async function handler(req, res) {
         emailSent = true;
         row.email_sent = true;
       } catch (e) {
+        console.error('Gmail fail', e);
+        emailError = e.message;
         row.email_error = e.message;
       }
+    } else {
+      emailError = 'GMAIL_APP_PASSWORD 없음';
     }
 
-    const supabase = getSupabase();
-    if (!supabase) return res.status(200).json({ success: true, emailSent, warning: 'Supabase ENV missing, mail only' });
-
-    const { error } = await supabase.from('inquiries').insert([row]);
-    if (error) {
-      console.error('Supabase insert error', error);
-      return res.status(500).json({ error: error.message, code: error.code, details: error.details, hint: 'Supabase SQL을 다시 실행하고 30초 후 재시도하세요' });
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Supabase ENV missing');
+      return res.status(200).json({ success: true, emailSent, emailError, supabaseSaved: false, warning: 'SUPABASE_URL/KEY 없음 - 메일만 발송됨' });
     }
 
-    return res.status(200).json({ success: true, emailSent, supabaseSaved: true });
+    try {
+      const supabase = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } });
+      const { error } = await supabase.from('inquiries').insert([row]);
+      if (error) {
+        console.error('Supabase insert error', error);
+        return res.status(200).json({ success: true, emailSent, emailError, supabaseSaved: false, supabaseError: error.message, code: error.code });
+      }
+      return res.status(200).json({ success: true, emailSent, supabaseSaved: true });
+    } catch (e) {
+      console.error('Supabase client error', e);
+      return res.status(200).json({ success: true, emailSent, emailError, supabaseSaved: false, supabaseError: e.message });
+    }
+
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ error: e.message });
+    console.error('Handler crash', e);
+    return res.status(200).json({ success: false, error: e.message, stack: e.stack });
   }
 }

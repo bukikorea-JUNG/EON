@@ -110,7 +110,17 @@ function logout(){
 }
 if(sessionStorage.getItem('admin_auth') === 'true'){
   document.getElementById('login-screen').style.display='none';
+  loadData();
+} else {
+  // 첫 진입시 자동 포커스
+  setTimeout(()=>{ const el=document.getElementById('pw-input'); if(el) el.focus(); }, 300);
 }
+// 페이지 로드시 자동 로드 시도 (로그인 되어있으면)
+window.addEventListener('DOMContentLoaded', ()=>{
+  if(sessionStorage.getItem('admin_auth') === 'true'){
+    loadData();
+  }
+});
 
 async function loadData(){
   try{

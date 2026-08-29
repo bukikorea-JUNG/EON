@@ -5,6 +5,15 @@
     {
       "source": "/api/kepco",
       "destination": "/api/kepco.js"
+    },
+    {
+      "source": "/api/inquiry",
+      "destination": "/api/inquiry.js"
     }
-  ]
+  ],
+  "env": {
+    "KEPCO_API_KEY": "OyI2AGBsFpYqCkJ569TxzVmWrs346x1xQfBIv6d4",
+    "GMAIL_USER": "bukikorea@gmail.com",
+    "GMAIL_APP_PASSWORD": "@gmail-app-password-16자리"
+  }
 }

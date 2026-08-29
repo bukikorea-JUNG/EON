@@ -516,5 +516,60 @@ updatePyeong(100);
 loadInquiries();
 renderGrid();
 </script>
+
+<script>
+// === 솔라루프 폼 전송 - FIXED ===
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('inquiry-form');
+  if (!form) { console.error('inquiry-form not found'); return; }
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd.entries());
+    // 추가 정보
+    data.pageUrl = location.href;
+    data.currentPyeong = document.getElementById('form-pyeong')?.value || window.pyeong || '100';
+    data.timestamp = new Date().toISOString();
+    data.pyeong = data.pyeong || data.currentPyeong;
+    
+    const btn = form.querySelector('button[type="submit"]');
+    const origText = btn ? btn.innerText : '';
+    if (btn) { btn.innerText = '접수 중... (메일+DB 저장)'; btn.disabled = true; }
+
+    try {
+      console.log('Submitting', data);
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      console.log('API result', result);
+      if (result.success) {
+        alert('✅ 접수 완료! 담당자가 10분 내 연락드립니다.\n메일 발송: ' + (result.emailSent ? '성공' : '실패 - ' + (result.emailError||'')));
+        form.reset();
+        // pyeong reset
+        const pe = document.getElementById('form-pyeong');
+        if (pe) pe.value = '100';
+      } else {
+        alert('❌ 접수 실패: ' + (result.error || '서버 오류'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('❌ 네트워크 오류: ' + err.message + '\n\nVercel Logs를 확인하세요.');
+    } finally {
+      if (btn) { btn.innerText = origText; btn.disabled = false; }
+    }
+  });
+  
+  // 주소 입력 시 계통 조회용 폼 주소도 연동
+  const addr = document.getElementById('form-address');
+  const mainAddr = document.getElementById('address-input');
+  if (addr && mainAddr) {
+    addr.addEventListener('input', () => { mainAddr.value = addr.value; });
+  }
+});
+</script>
+
 </body>
 </html>

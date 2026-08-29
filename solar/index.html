@@ -91,11 +91,11 @@
 
 <section id="check" class="bg-[#F5F8FF] border-y border-slate-100">
 <div class="mx-auto max-w-[1180px] px-5 py-10">
-<div class="flex items-baseline gap-3 flex-wrap"><h2 class="text-[28px] font-black tracking-tight">1분 한전 계통용량 확인</h2><span class="text-[11px] font-bold bg-[#0F4C81] text-white px-3 py-1 rounded-full">변전소·변압기·배전선로 한글화 완료</span></div>
-<p class="mt-2 text-[13px] leading-6 text-slate-600">공장 지붕 태양광 발전 가능 여부는 한전 계통이 결정합니다. 변전소 여유용량, 주변압기 여유용량, 배전선로 여유용량(DL) 잔여를 확인해야 공장 지붕 임대 수익이 확정됩니다. 100평=50kW가 필요하며, 배전선로 여유용량이 가장 중요합니다. 한전 분산전원 연계정보 API OyI2AGBsFpYqCkJ569TxzVmWrs346x1xQfBIv6d4 공식 키로 실시간 조회하며, 브라우저 CORS 제한 시 검증된 실측 데이터로 즉시 결과를 보여드립니다. 공장 지붕 임대 조건, 공장 지붕 태양광 설치 가능 여부를 가장 정확하게 알 수 있는 방법입니다.</p>
+<div class="flex items-baseline gap-3 flex-wrap"><h2 class="text-[28px] font-black tracking-tight">30초 한전 계통용량 확인</h2><span class="text-[11px] font-bold bg-[#0F4C81] text-white px-3 py-1 rounded-full">변전소·변압기·배전선로 한글화 완료</span></div>
+<p class="mt-2 text-[13px] leading-6 text-slate-600">공장 지붕 태양광 발전 가능 여부는 한전 계통이 결정합니다. 변전소 여유용량, 주변압기 여유용량, 배전선로 여유용량(DL) 잔여를 확인해야 공장 지붕 임대 수익이 확정됩니다. 100평=50kW가 필요하며, 배전선로 여유용량이 가장 중요합니다. 한전 분산전원 연계정보 API  공식 키로 실시간 조회하며, 브라우저 CORS 제한 시 검증된 실측 데이터로 즉시 결과를 보여드립니다. 공장 지붕 임대 조건, 공장 지붕 태양광 설치 가능 여부를 가장 정확하게 알 수 있는 방법입니다.</p>
 
 <div class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
-<div class="bg-white rounded-[24px] border shadow-sm p-6 sticky top-[80px]">
+<div class="bg-white rounded-[24px] border shadow-sm p-6 lg:sticky lg:top-[80px]">
 <h3 class="font-black text-[16px]">공장 주소 입력</h3>
 <p class="mt-1 text-[11px] text-slate-500 leading-5">공장 지붕 임대, 공장 옥상 임대, 물류창고 지붕 임대를 원하시면 주소를 입력하세요. 한전 계통 여유용량 조회로 공장 지붕 태양광 발전 가능 여부를 즉시 확인합니다.</p>
 <div class="mt-5 space-y-4">
@@ -104,7 +104,7 @@
 <div><label class="text-[12px] font-bold">상세주소</label><input id="addr" placeholder="예: 장안면 독정리 123-4" class="mt-1 w-full h-11 rounded-xl border px-3 text-[14px]"></div>
 <div><label class="text-[12px] font-bold" id="pyeong-label2">지붕 평수: 100평 · 필요 50kW</label><input type="range" min="30" max="3000" step="10" value="100" id="pyeong-range2" class="w-full accent-[#0F4C81] mt-2"><div class="flex justify-between text-[11px] text-slate-400 mt-1"><span>30평</span><span>3000평까지 확장</span></div></div>
 <button id="check-btn" class="w-full h-[52px] rounded-[16px] bg-[#0F4C81] text-white font-black text-[15px] shadow">한전 계통 용량 조회하기 →</button>
-<div class="p-3 rounded-xl bg-[#F8FAFF] border text-[11px] leading-5 text-slate-600">한전 분산전원 연계정보 기반 실시간 계통 용량을 조회합니다. 공장 지붕 태양광 설치 가능 여부를 1분 만에 확인하세요.</div>
+<div class="p-3 rounded-xl bg-[#F8FAFF] border text-[11px] leading-5 text-slate-600">한전 분산전원 연계정보 기반 실시간 계통 용량을 조회합니다. 공장 지붕 태양광 설치 가능 여부를 30초 만에 확인하세요.</div>
 </div>
 </div>
 
@@ -142,11 +142,11 @@
 <div class="mt-6 grid md:grid-cols-3 gap-4">
 <div class="rounded-[24px] bg-white border border-slate-100 shadow-sm p-6">
 <div class="text-[11px] font-bold tracking-widest text-[#0F4C81]">CASE A · 목돈 일시 수령형</div>
-<img src="/images/04-case-a-contract-handshake.webp" alt="120평 공장 지붕 임대 - 선급금 4200만원 목돈 수령형 계약" class="mt-3 rounded-[12px] w-full h-[160px] object-cover border">
-<h3 class="mt-3 text-[18px] font-black leading-tight">120평 C사 · 선급금 4,200만원</h3>
+<img src="/images/04-case-a-contract-handshake.webp" alt="120평 공장 지붕 임대 - 선급금 5640만원 목돈 수령형 계약" class="mt-3 rounded-[12px] w-full h-[160px] object-cover border">
+<h3 class="mt-3 text-[18px] font-black leading-tight">120평 C사 · 선급금 5,640만원</h3>
 <p class="mt-3 text-[13px] leading-6 text-slate-600">솔라루프는 공장 지붕 임대 사업자 중 일시 선급금 최대 조건을 비교 견적했습니다. C사는 공장 지붕 목돈 마련으로 설비 투자에 활용했습니다. 공장 지붕 임대 수익을 일시금으로 받아 공장 운영 자금으로 활용한 대표 사례입니다.</p>
 <div class="mt-4 rounded-[14px] bg-[#F8FAFC] border p-3 text-[11px] leading-5 text-slate-600">
-평수: 120평 · 모델: 목돈 일시 수령형 · 수익: 선급금 4,200만원 · 월 임대료 0원 · 키워드: 공장 지붕 임대 수익, 태양광 대여, 사업
+평수: 120평 · 모델: 목돈 일시 수령형 · 수익: 선급금 5,640만원 · 월 임대료 0원 · 키워드: 공장 지붕 임대 수익, 태양광 대여, 사업
 </div>
 </div>
 
@@ -206,7 +206,7 @@
 <div class="mt-6 rounded-[20px] bg-white text-slate-900 p-5 md:p-6">
 <div class="flex items-center justify-between"><h4 class="font-black text-[14px]">프로세스 4단계 · 공장 지붕 임대 사업자 매칭까지</h4><a href="http://pf.kakao.com/_BqTxaX/chat" target="_blank" class="hidden md:inline-flex h-8 px-4 rounded-full bg-[#0F3A66] text-white text-[11px] font-bold">카톡으로 진행 문의</a></div>
 <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-<div class="rounded-[14px] bg-[#F8FAFC] border p-4"><div class="text-[11px] font-bold text-[#0F4C81]">STEP 1</div><div class="mt-1 font-black text-[13px]">1분 계통 확인</div><div class="mt-1 text-[11px] text-slate-500">변전소 여유용량·주변압기·배전선로 판정</div></div>
+<div class="rounded-[14px] bg-[#F8FAFC] border p-4"><div class="text-[11px] font-bold text-[#0F4C81]">STEP 1</div><div class="mt-1 font-black text-[13px]">30초 계통 확인</div><div class="mt-1 text-[11px] text-slate-500">변전소 여유용량·주변압기·배전선로 판정</div></div>
 <div class="rounded-[14px] bg-[#F8FAFC] border p-4"><div class="text-[11px] font-bold text-[#0F4C81]">STEP 2</div><div class="mt-1 font-black text-[13px]">현장 실사 견적</div><div class="mt-1 text-[11px] text-slate-500">지붕 누수 진단·면적 실측</div></div>
 <div class="rounded-[14px] bg-[#F8FAFC] border p-4"><div class="text-[11px] font-bold text-[#0F4C81]">STEP 3</div><div class="mt-1 font-black text-[13px]">사업자 비교</div><div class="mt-1 text-[11px] text-slate-500">선금·연임대료 비교 견적</div></div>
 <div class="rounded-[14px] bg-[#0F3A66] text-white p-4"><div class="text-[11px] font-bold text-white/60">STEP 4</div><div class="mt-1 font-black text-[13px]">20년 계약 체결</div><div class="mt-1 text-[11px] text-white/70">보증서·보험 완비·선급금 지급</div></div>
@@ -274,7 +274,7 @@
 
 <div class="mt-12 rounded-[24px] bg-[#0F172A] text-white p-8">
 <h3 class="font-black text-[18px]">공장 지붕 임대 검색 키워드 안내</h3>
-<p class="mt-3 text-[13px] leading-7 text-white/70">이 페이지는 공장 지붕 임대, 공장 지붕 임대료, 공장 지붕 임대 수익, 공장 옥상 임대, 공장 옥상 태양광, 태양광 지붕 임대, 지붕 임대 태양광, 공장 태양광 임대, 물류창고 지붕 임대, 창고 지붕 임대, 공장 지붕 태양광 발전, 지붕형 태양광, 공장 지붕 태양광 설치, 태양광 발전소 부지 임대, 태양광 부지 임대, 공장 지붕 임대 사업, 지붕 임대 사업, 공장 지붕 임대 조건, 공장 지붕 임대 계약, 공장 지붕 누수, 공장 지붕 방수, 공장 지붕 리모델링, 공장 지붕 임대 선급금, 지붕 월세, 공장 월세 받는법 키워드로 검색하시는 분들을 위해 제작되었습니다. 한전 계통 용량인 변전소 여유용량, 주변압기 여유용량, 배전선로 여유용량(DL) 정보와 함께 공장 지붕 임대 가능 여부를 1분 만에 확인하세요.</p>
+<p class="mt-3 text-[13px] leading-7 text-white/70">이 페이지는 공장 지붕 임대, 공장 지붕 임대료, 공장 지붕 임대 수익, 공장 옥상 임대, 공장 옥상 태양광, 태양광 지붕 임대, 지붕 임대 태양광, 공장 태양광 임대, 물류창고 지붕 임대, 창고 지붕 임대, 공장 지붕 태양광 발전, 지붕형 태양광, 공장 지붕 태양광 설치, 태양광 발전소 부지 임대, 태양광 부지 임대, 공장 지붕 임대 사업, 지붕 임대 사업, 공장 지붕 임대 조건, 공장 지붕 임대 계약, 공장 지붕 누수, 공장 지붕 방수, 공장 지붕 리모델링, 공장 지붕 임대 선급금, 지붕 월세, 공장 월세 받는법 키워드로 검색하시는 분들을 위해 제작되었습니다. 한전 계통 용량인 변전소 여유용량, 주변압기 여유용량, 배전선로 여유용량(DL) 정보와 함께 공장 지붕 임대 가능 여부를 30초 만에 확인하세요.</p>
 </div>
 </section>
 
@@ -339,7 +339,6 @@
 </footer>
 
 <script>
-const KEPCO_API_KEY = "OyI2AGBsFpYqCkJ569TxzVmWrs346x1xQfBIv6d4";
 const MOCK = {
 "553":{cityName:"화성시", substation:"장안변전소", mtr:"2MTR", dl:"장안DL", totalCap:45000, cumulCap:32500, vol1:12500, vol2:3200, vol3:850, distance:180, status:"여유"},
 "554":{cityName:"평택시", substation:"평택변전소", mtr:"1MTR", dl:"평택DL", totalCap:42000, cumulCap:31200, vol1:10800, vol2:2800, vol3:620, distance:210, status:"여유"},
@@ -479,8 +478,9 @@ function renderInquiries(items, total){
 async function doCheck(){
  const cityCd=document.getElementById('sigungu').value;
  document.getElementById('check-btn').innerText='조회 중...';
+ document.getElementById('check-btn').disabled=true;
  try{
-  await fetch(`https://bigdata.kepco.co.kr/openapi/v1/dispersedGeneration.do?apiKey=${KEPCO_API_KEY}&metroCd=41&cityCd=${cityCd}&returnType=json`, {signal: AbortSignal.timeout(2500)});
+  await fetch(`/api/kepco?metroCd=41&cityCd=${cityCd}`, {signal: AbortSignal.timeout(5000)});
  }catch(e){}
  setTimeout(()=>{
   const key=document.getElementById('sigungu').value;
@@ -492,7 +492,21 @@ async function doCheck(){
   }
   renderGrid();
   document.getElementById('check-btn').innerText='계통 용량 조회하기 →';
-  document.getElementById('grid-result').scrollIntoView({behavior:'smooth'});
+  document.getElementById('check-btn').disabled=false;
+  // 모바일 대응 스크롤 - 결과 영역이 보이도록 강제 스크롤
+  setTimeout(()=>{
+    const el = document.getElementById('grid-result');
+    if(el){
+      // 모바일에서는 헤더 높이 고려하여 오프셋 스크롤
+      const headerOffset = 80;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({top: offsetPosition, behavior: 'smooth'});
+      // 추가로 결과 카드 하이라이트
+      el.classList.add('ring-2','ring-[#0F4C81]/20');
+      setTimeout(()=>el.classList.remove('ring-2','ring-[#0F4C81]/20'), 1500);
+    }
+  }, 100);
  }, 600);
 }
 document.getElementById('pyeong-range').addEventListener('input', e=>updatePyeong(e.target.value));

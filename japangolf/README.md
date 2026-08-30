@@ -1,4 +1,6 @@
-# JAPANGOLFMNA - Gmail Hybrid
-
-환경변수 4개 + 파일 2개(api/inquiry.js, api/inquiries.js)로 운영 중인 사이트와 동일 구조
-수신 메일: bukikorea@gmail.com
+# JAPANGOLFMNA v4 Japan Only Fullstack
+Frontend / + Admin /admin (1234)
+- 일본 물건 10개만
+- 메뉴 6개 전부 작동
+- 예산/권역/법인형태 프론트와 100% 동기화
+API: /api/inquiry.js Gmail+Supabase 항상 200

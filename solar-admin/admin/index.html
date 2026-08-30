@@ -3,248 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>솔라루프 관리자 - 문의 관리</title>
+<title>솔라루프 관리자 PRO</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  .status-신규{ background:#fef3c7; color:#92400e; }
-  .status-연락완료{ background:#dbeafe; color:#1e40af; }
-  .status-계약진행{ background:#e0e7ff; color:#3730a3; }
-  .status-완료{ background:#dcfce7; color:#166534; }
-  .status-보류{ background:#f3f4f6; color:#4b5563; }
+  .status-신규{ background:#fef3c7; color:#92400e; border:1px solid #fcd34d }
+  .status-연락완료{ background:#dbeafe; color:#1e40af; border:1px solid #93c5fd }
+  .status-상담중{ background:#ffedd5; color:#9a3412; border:1px solid #fed7aa }
+  .status-현장방문{ background:#e0e7ff; color:#4338ca; border:1px solid #c7d2fe }
+  .status-견적발송{ background:#f3e8ff; color:#6b21a8; border:1px solid #d8b4fe }
+  .status-계약진행{ background:#ddd6fe; color:#5b21b6; border:1px solid #c4b5fd }
+  .status-완료{ background:#dcfce7; color:#166534; border:1px solid #86efac }
+  .status-보류{ background:#f1f5f9; color:#475569; border:1px solid #cbd5e1 }
+  .status-취소{ background:#fee2e2; color:#991b1b; border:1px solid #fca5a5 }
+  .drawer { transform: translateX(100%); transition: transform .3s cubic-bezier(.4,0,.2,1) }
+  .drawer.open { transform: translateX(0) }
+  .tab-active { background:#0F4C81; color:white }
 </style>
 </head>
-<body class="bg-[#f8fafc] min-h-screen">
+<body class="bg-[#f5f7fb] min-h-screen text-[13px]">
 <!-- Login -->
-<div id="login-screen" class="fixed inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4">
+<div id="login-screen" class="fixed inset-0 bg-slate-900/95 z-[100] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
-    <h1 class="text-xl font-black text-[#0F4C81] mb-1">솔라루프 관리자</h1>
-    <p class="text-[12px] text-slate-500 mb-6">문의 / 이메일 / 카톡 통합 관리</p>
-    <input id="pw-input" type="password" placeholder="비밀번호 (7270)" class="w-full h-12 rounded-xl border border-slate-200 px-4 mb-3 focus:border-[#0F4C81] outline-none">
-    <button onclick="login()" class="w-full h-12 bg-[#0F4C81] text-white rounded-xl font-bold hover:bg-[#0a3458]">로그인</button>
-    <p class="text-[11px] text-slate-400 mt-3 text-center">기본 비밀번호: 7270 (admin/index.html에서 변경 가능)</p>
+    <h1 class="text-xl font-black text-[#0F4C81] mb-1">솔라루프 관리자 PRO</h1>
+    <p class="text-[12px] text-slate-500 mb-6">문의·한전·상담 통합관리</p>
+    <input id="pw-input" type="password" placeholder="비밀번호 7270" class="w-full h-12 rounded-xl border border-slate-200 px-4 mb-3 focus:border-[#0F4C81] outline-none" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()" class="w-full h-12 bg-[#0F4C81] text-white rounded-xl font-bold">로그인</button>
     <div id="login-error" class="text-red-500 text-[12px] mt-2 hidden">비밀번호가 틀렸습니다</div>
   </div>
 </div>
 
-<!-- Header -->
-<header class="bg-white border-b border-slate-200 sticky top-0 z-40">
-  <div class="max-w-[1400px] mx-auto px-4 h-14 flex items-center justify-between">
+<header class="bg-white border-b sticky top-0 z-40">
+  <div class="max-w-[1600px] mx-auto px-4 h-14 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <div class="w-8 h-8 bg-[#0F4C81] rounded-lg flex items-center justify-center text-white font-black text-[14px]">S</div>
-      <span class="font-black text-[15px]">솔라루프 관리자</span>
-      <span class="text-[11px] bg-slate-100 px-2 py-1 rounded-full">전화 010-3194-7270</span>
+      <div class="w-8 h-8 bg-[#0F4C81] rounded-lg flex items-center justify-center text-white font-black">S</div>
+      <span class="font-black text-[15px]">솔라루프 관리자 PRO</span>
+      <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-bold">문의 11항목 + 한전연계</span>
     </div>
-    <div class="flex items-center gap-2">
-      <a href="/" target="_blank" class="text-[12px] px-3 py-1.5 border rounded-lg hover:bg-slate-50"><i class="fa-solid fa-external-link"></i> 사이트 보기</a>
-      <button onclick="exportCSV()" class="text-[12px] px-3 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i class="fa-solid fa-file-csv"></i> 엑셀 다운로드</button>
-      <button onclick="logout()" class="text-[12px] px-3 py-1.5 border rounded-lg hover:bg-slate-50">로그아웃</button>
+    <div class="flex gap-2">
+      <a href="/" target="_blank" class="px-3 py-1.5 border rounded-lg text-[12px]"><i class="fa-solid fa-arrow-up-right-from-square"></i> 사이트</a>
+      <button onclick="exportCSV()" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-[12px]"><i class="fa-solid fa-file-excel"></i> 엑셀</button>
+      <button onclick="loadData()" class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-[12px]"><i class="fa-solid fa-rotate"></i> 새로고침</button>
+      <button onclick="logout()" class="px-3 py-1.5 border rounded-lg text-[12px]">로그아웃</button>
     </div>
   </div>
 </header>
 
-<div class="max-w-[1400px] mx-auto px-4 py-6">
+<div class="max-w-[1600px] mx-auto px-4 py-5">
   <!-- Stats -->
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">전체 문의</div><div id="stat-total" class="text-2xl font-black">0</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">오늘</div><div id="stat-today" class="text-2xl font-black text-[#0F4C81]">0</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">신규</div><div id="stat-new" class="text-2xl font-black text-amber-600">0</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">연락완료</div><div id="stat-contacted" class="text-2xl font-black text-blue-600">0</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[11px] text-slate-500">계약진행</div><div id="stat-progress" class="text-2xl font-black text-violet-600">0</div></div>
+  <div class="grid grid-cols-3 md:grid-cols-7 gap-3 mb-5">
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">전체</div><div id="stat-total" class="text-xl font-black">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">오늘</div><div id="stat-today" class="text-xl font-black text-[#0F4C81]">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">신규</div><div id="stat-new" class="text-xl font-black text-amber-600">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">연락완료</div><div id="stat-contacted" class="text-xl font-black text-blue-600">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">계약진행</div><div id="stat-progress" class="text-xl font-black text-violet-600">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">완료</div><div id="stat-done" class="text-xl font-black text-emerald-600">0</div></div>
+    <div class="bg-white rounded-xl p-3 border"><div class="text-[10px] text-slate-500">메일실패</div><div id="stat-mailfail" class="text-xl font-black text-red-600">0</div></div>
   </div>
 
   <!-- Filters -->
   <div class="bg-white rounded-xl border p-3 mb-4 flex flex-wrap gap-2 items-center">
-    <select id="filter-status" onchange="render()" class="h-9 rounded-lg border px-3 text-[13px]">
-      <option value="">전체 상태</option>
-      <option>신규</option>
-      <option>연락완료</option>
-      <option>계약진행</option>
-      <option>완료</option>
-      <option>보류</option>
-    </select>
-    <input id="filter-search" oninput="render()" placeholder="이름, 전화, 주소 검색" class="h-9 rounded-lg border px-3 text-[13px] w-[220px]">
-    <button onclick="loadData()" class="h-9 px-4 rounded-lg bg-slate-900 text-white text-[13px]"><i class="fa-solid fa-rotate"></i> 새로고침</button>
-    <span id="last-updated" class="text-[11px] text-slate-400 ml-auto"></span>
+    <select id="filter-status" onchange="render()" class="h-9 border rounded-lg px-3 text-[12px]"><option value="">전체상태</option><option>신규</option><option>연락완료</option><option>상담중</option><option>현장방문</option><option>견적발송</option><option>계약진행</option><option>완료</option><option>보류</option><option>취소</option></select>
+    <select id="filter-roof" onchange="render()" class="h-9 border rounded-lg px-3 text-[12px]"><option value="">전체지붕</option><option>샌드위치판</option><option>기와</option><option>슬레이트</option><option>기타</option></select>
+    <select id="filter-date" onchange="render()" class="h-9 border rounded-lg px-3 text-[12px]"><option value="">전체기간</option><option value="today">오늘</option><option value="week">7일</option><option value="month">30일</option></select>
+    <input id="filter-search" oninput="render()" placeholder="이름/전화/주소/메시지 검색" class="h-9 border rounded-lg px-3 text-[12px] w-[260px]">
+    <span id="last-updated" class="text-[10px] text-slate-400 ml-auto"></span>
   </div>
 
   <!-- Table -->
   <div class="bg-white rounded-xl border overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-[13px]">
-        <thead class="bg-slate-50 text-[11px] text-slate-500">
-          <tr>
-            <th class="text-left p-3 font-bold">접수일시</th>
-            <th class="text-left p-3 font-bold">담당자 / 연락처</th>
-            <th class="text-left p-3 font-bold">주소 / 평수</th>
-            <th class="text-left p-3 font-bold">상태</th>
-            <th class="text-left p-3 font-bold">메모 / 카톡 / 이메일 관리</th>
-            <th class="text-left p-3 font-bold">액션</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          <tr><td colspan="6" class="p-8 text-center text-slate-400">불러오는 중...</td></tr>
-        </tbody>
+      <table class="w-full text-[12px]">
+        <thead class="bg-slate-50 text-[11px] text-slate-500 border-b"><tr>
+          <th class="p-3 text-left">접수/평수/지붕</th><th class="p-3 text-left">고객/연락처</th><th class="p-3 text-left">주소/페이지</th><th class="p-3 text-left">상태/메일</th><th class="p-3 text-left">상담요약</th><th class="p-3 text-left">액션</th>
+        </tr></thead>
+        <tbody id="table-body"><tr><td colspan="6" class="p-10 text-center text-slate-400">불러오는 중...</td></tr></tbody>
       </table>
     </div>
   </div>
 </div>
 
-<script>
-const PASSWORD = '7270'; // 여기 변경
-let inquiries = [];
+<!-- Detail Drawer -->
+<div id="drawer-backdrop" onclick="closeDetail()" class="fixed inset-0 bg-black/30 z-50 hidden"></div>
+<div id="detail-drawer" class="drawer fixed top-0 right-0 w-full max-w-[560px] h-full bg-white z-50 shadow-2xl overflow-y-auto">
+  <div class="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
+    <h2 class="font-black text-[15px]">문의 상세</h2>
+    <button onclick="closeDetail()" class="w-8 h-8 rounded-lg bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div id="drawer-content" class="p-4 space-y-5"></div>
+</div>
 
-function login(){
-  const pw = document.getElementById('pw-input').value;
-  if(pw === PASSWORD){
-    sessionStorage.setItem('admin_auth', 'true');
-    document.getElementById('login-screen').style.display='none';
-    loadData();
-  } else {
-    document.getElementById('login-error').classList.remove('hidden');
-  }
-}
-function logout(){
-  sessionStorage.removeItem('admin_auth');
-  location.reload();
-}
-if(sessionStorage.getItem('admin_auth') === 'true'){
-  document.getElementById('login-screen').style.display='none';
-  loadData();
-} else {
-  // 첫 진입시 자동 포커스
-  setTimeout(()=>{ const el=document.getElementById('pw-input'); if(el) el.focus(); }, 300);
-}
-// 페이지 로드시 자동 로드 시도 (로그인 되어있으면)
-window.addEventListener('DOMContentLoaded', ()=>{
-  if(sessionStorage.getItem('admin_auth') === 'true'){
-    loadData();
-  }
-});
+<script>
+const PASSWORD='7270';
+let inquiries=[]; let selectedId=null;
+const metroMap=[{k:'서울',c:'11'},{k:'부산',c:'26'},{k:'대구',c:'27'},{k:'인천',c:'28'},{k:'광주',c:'29'},{k:'대전',c:'30'},{k:'울산',c:'31'},{k:'세종',c:'36'},{k:'경기',c:'41'},{k:'강원',c:'42'},{k:'충북',c:'43'},{k:'충남',c:'44'},{k:'전북',c:'45'},{k:'전남',c:'46'},{k:'경북',c:'47'},{k:'경남',c:'48'},{k:'제주',c:'50'}];
+function guessMetro(addr){ for(let m of metroMap){ if(addr.includes(m.k)) return m.c } return '41'; }
+function login(){ if(document.getElementById('pw-input').value===PASSWORD){ sessionStorage.setItem('admin_auth','true'); document.getElementById('login-screen').style.display='none'; loadData(); } else document.getElementById('login-error').classList.remove('hidden'); }
+function logout(){ sessionStorage.removeItem('admin_auth'); location.reload(); }
+if(sessionStorage.getItem('admin_auth')==='true'){ document.getElementById('login-screen').style.display='none'; }
+window.addEventListener('DOMContentLoaded', ()=>{ if(sessionStorage.getItem('admin_auth')==='true') loadData(); });
 
 async function loadData(){
   try{
-    const res = await fetch('/api/inquiries');
-    const json = await res.json();
-    inquiries = json.inquiries || [];
-    document.getElementById('last-updated').innerText = '업데이트: ' + new Date().toLocaleString('ko-KR');
+    const res=await fetch('/api/inquiries'); const json=await res.json(); inquiries=json.inquiries||[];
+    document.getElementById('last-updated').innerText='업데이트: '+new Date().toLocaleString('ko-KR');
     render();
-  } catch(e){
-    console.error(e);
-    document.getElementById('table-body').innerHTML = '<tr><td colspan=6 class="p-8 text-center text-red-500">불러오기 실패: '+e.message+'</td></tr>';
-  }
+  }catch(e){ document.getElementById('table-body').innerHTML=`<tr><td colspan=6 class="p-8 text-center text-red-500">오류: ${e.message}</td></tr>`; }
 }
-
 function render(){
-  const statusFilter = document.getElementById('filter-status').value;
-  const search = document.getElementById('filter-search').value.toLowerCase();
-  
-  let filtered = inquiries.filter(i => {
-    if(statusFilter && i.status !== statusFilter) return false;
-    if(search && !( (i.name||'').toLowerCase().includes(search) || (i.phone||'').includes(search) || (i.address||'').toLowerCase().includes(search) )) return false;
+  const statusF=document.getElementById('filter-status').value;
+  const roofF=document.getElementById('filter-roof').value;
+  const dateF=document.getElementById('filter-date').value;
+  const search=document.getElementById('filter-search').value.toLowerCase();
+  let filtered=inquiries.filter(i=>{
+    if(statusF && i.status!==statusF) return false;
+    if(roofF && !(i.roofType||'').includes(roofF)) return false;
+    if(search && !(`${i.name} ${i.phone} ${i.address} ${i.message} ${i.pyeong}`.toLowerCase().includes(search))) return false;
+    if(dateF){
+      const d=new Date(i.createdAt||i.receivedAt); const now=new Date();
+      if(dateF==='today' && d.toDateString()!==now.toDateString()) return false;
+      if(dateF==='week' && (now-d)/86400000>7) return false;
+      if(dateF==='month' && (now-d)/86400000>30) return false;
+    }
     return true;
   });
+  // stats
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('stat-total').innerText=inquiries.length;
+  document.getElementById('stat-today').innerText=inquiries.filter(i=>(i.createdAt||'').slice(0,10)===today).length;
+  document.getElementById('stat-new').innerText=inquiries.filter(i=>i.status==='신규').length;
+  document.getElementById('stat-contacted').innerText=inquiries.filter(i=>i.status==='연락완료').length;
+  document.getElementById('stat-progress').innerText=inquiries.filter(i=>i.status==='계약진행').length;
+  document.getElementById('stat-done').innerText=inquiries.filter(i=>i.status==='완료').length;
+  document.getElementById('stat-mailfail').innerText=inquiries.filter(i=>!i.emailSent).length;
 
-  // Stats
-  const today = new Date().toISOString().slice(0,10);
-  document.getElementById('stat-total').innerText = inquiries.length;
-  document.getElementById('stat-today').innerText = inquiries.filter(i => (i.createdAt||'').slice(0,10) === today).length;
-  document.getElementById('stat-new').innerText = inquiries.filter(i => i.status === '신규').length;
-  document.getElementById('stat-contacted').innerText = inquiries.filter(i => i.status === '연락완료').length;
-  document.getElementById('stat-progress').innerText = inquiries.filter(i => i.status === '계약진행').length;
+  const tbody=document.getElementById('table-body');
+  if(filtered.length===0){ tbody.innerHTML='<tr><td colspan=6 class="p-10 text-center text-slate-400">문의가 없습니다</td></tr>'; return; }
+  tbody.innerHTML=filtered.map(item=>`
+    <tr class="border-t hover:bg-slate-50 cursor-pointer" onclick="openDetail('${item.id}')">
+      <td class="p-3 align-top"><div class="font-bold text-[11px]">${(item.receivedAt||'').slice(0,16)}</div><div class="text-[11px]">${item.pyeong}평 / ${item.roofType}</div><div class="text-[10px] text-slate-400">${item.id.slice(0,12)}</div></td>
+      <td class="p-3 align-top"><div class="font-bold">${item.name}</div><div class="text-[#0F4C81] font-bold">${item.phone}</div></td>
+      <td class="p-3 align-top"><div class="truncate max-w-[200px]">${item.address}</div><div class="text-[10px] text-slate-400 truncate max-w-[200px]">${item.pageUrl||''}</div></td>
+      <td class="p-3 align-top"><span class="px-2 py-1 rounded-full text-[11px] font-bold status-${item.status}">${item.status}</span><div class="mt-1 text-[10px] ${item.emailSent?'text-emerald-600':'text-red-500'}">${item.emailSent?'메일OK':'메일실패'}</div></td>
+      <td class="p-3 align-top max-w-[180px] truncate text-[11px] text-slate-600">${(item.memo||'').slice(0,40)} ${(item.kakaoMemo||'').slice(0,20)}</td>
+      <td class="p-3 align-top"><button onclick="event.stopPropagation(); openDetail('${item.id}')" class="px-2 py-1 bg-slate-900 text-white rounded text-[11px]">상세</button></td>
+    </tr>`).join('');
+}
 
-  const tbody = document.getElementById('table-body');
-  if(filtered.length === 0){
-    tbody.innerHTML = '<tr><td colspan=6 class="p-8 text-center text-slate-400">문의가 없습니다</td></tr>';
-    return;
-  }
+function openDetail(id){
+  const item=inquiries.find(i=>i.id===id); if(!item) return; selectedId=id;
+  document.getElementById('drawer-backdrop').classList.remove('hidden');
+  document.getElementById('detail-drawer').classList.add('open');
+  document.getElementById('drawer-content').innerHTML=`
+    <!-- 고객정보 -->
+    <div class="bg-slate-50 rounded-xl p-4 border">
+      <h3 class="font-black mb-3 flex items-center gap-2"><i class="fa-solid fa-user"></i> 고객 문의 원본 11항목</h3>
+      <div class="grid grid-cols-2 gap-3 text-[12px]">
+        <div><div class="text-[10px] text-slate-500">이름</div><div class="font-bold">${item.name} <button onclick="copyText('${item.name}')" class="ml-1 text-[10px] text-blue-600">복사</button></div></div>
+        <div><div class="text-[10px] text-slate-500">전화</div><div class="font-bold"><a href="tel:${item.phone}" class="text-[#0F4C81] underline">${item.phone}</a> <button onclick="copyText('${item.phone}')" class="ml-1 text-[10px] text-blue-600">복사</button> <a href="sms:${item.phone}" class="ml-1 text-[10px] bg-slate-900 text-white px-1.5 py-0.5 rounded">문자</a></div></div>
+        <div class="col-span-2"><div class="text-[10px] text-slate-500">주소</div><div class="font-bold">${item.address} <button onclick="copyText('${item.address}')" class="text-[10px] text-blue-600 ml-1">복사</button> <a href="https://map.kakao.com/?q=${encodeURIComponent(item.address)}" target="_blank" class="text-[10px] bg-yellow-400 px-1.5 py-0.5 rounded ml-1">카카오지도</a> <a href="https://map.naver.com/v5/search/${encodeURIComponent(item.address)}" target="_blank" class="text-[10px] bg-green-600 text-white px-1.5 py-0.5 rounded ml-1">네이버지도</a></div></div>
+        <div><div class="text-[10px] text-slate-500">평수</div><div class="font-bold">${item.pyeong}평</div></div>
+        <div><div class="text-[10px] text-slate-500">지붕형태</div><div class="font-bold">${item.roofType}</div></div>
+        <div class="col-span-2"><div class="text-[10px] text-slate-500">문의메시지</div><div class="bg-white border rounded-lg p-2 mt-1 whitespace-pre-wrap">${item.message||'없음'}</div></div>
+        <div><div class="text-[10px] text-slate-500">접수일시</div><div>${item.receivedAt||''}<br><span class="text-[10px] text-slate-400">${item.createdAt||''}</span></div></div>
+        <div><div class="text-[10px] text-slate-500">유입페이지</div><div class="truncate"><a href="${item.pageUrl}" target="_blank" class="text-blue-600 underline text-[11px]">${item.pageUrl||'-'}</a></div></div>
+        <div><div class="text-[10px] text-slate-500">메일발송</div><div class="${item.emailSent?'text-emerald-600':'text-red-500'} font-bold">${item.emailSent?'✅ 성공':'❌ 실패: '+(item.emailError||'')}</div></div>
+        <div><div class="text-[10px] text-slate-500">ID</div><div class="text-[10px]">${item.id}</div></div>
+      </div>
+    </div>
 
-  tbody.innerHTML = filtered.map(item => `
-    <tr class="border-t hover:bg-slate-50">
-      <td class="p-3 align-top">
-        <div class="text-[12px] font-bold">${(item.receivedAt||'').slice(0,16)}</div>
-        <div class="text-[10px] text-slate-400">${item.pyeong}평 / ${item.roofType}</div>
-        <div class="text-[10px] ${item.emailSent ? 'text-emerald-600' : 'text-red-500'}">${item.emailSent ? '✉️ 메일발송됨' : '메일실패: '+(item.emailError||'')}</div>
-      </td>
-      <td class="p-3 align-top">
-        <div class="font-bold">${item.name}</div>
-        <a href="tel:${item.phone}" class="text-[#0F4C81] font-bold underline">${item.phone}</a>
-        <div class="text-[11px] text-slate-500 mt-1 whitespace-pre-wrap">${(item.message||'').slice(0,60)}</div>
-      </td>
-      <td class="p-3 align-top">
-        <div class="font-bold text-[12px]">${item.address}</div>
-        <a href="https://map.kakao.com/?q=${encodeURIComponent(item.address)}" target="_blank" class="text-[11px] text-blue-600 underline">카카오맵</a>
-      </td>
-      <td class="p-3 align-top">
-        <select onchange="updateStatus('${item.id}', this.value)" class="text-[11px] rounded-full px-2 py-1 border font-bold status-${item.status}">
-          <option ${item.status==='신규'?'selected':''}>신규</option>
-          <option ${item.status==='연락완료'?'selected':''}>연락완료</option>
-          <option ${item.status==='계약진행'?'selected':''}>계약진행</option>
-          <option ${item.status==='완료'?'selected':''}>완료</option>
-          <option ${item.status==='보류'?'selected':''}>보류</option>
-        </select>
-      </td>
-      <td class="p-3 align-top min-w-[260px]">
-        <input value="${(item.memo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'memo', this.value)" placeholder="내부 메모" class="w-full h-7 rounded border px-2 text-[11px] mb-1">
-        <input value="${(item.kakaoMemo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'kakaoMemo', this.value)" placeholder="카톡 상담 내용" class="w-full h-7 rounded border px-2 text-[11px] mb-1 bg-yellow-50">
-        <input value="${(item.emailMemo||'').replace(/"/g,'&quot;')}" onblur="updateMemo('${item.id}', 'emailMemo', this.value)" placeholder="이메일 답변 내용" class="w-full h-7 rounded border px-2 text-[11px] bg-blue-50">
-      </td>
-      <td class="p-3 align-top">
-        <div class="flex flex-col gap-1">
-          <a href="tel:${item.phone}" class="text-[11px] px-2 py-1 bg-[#0F4C81] text-white rounded text-center"><i class="fa-solid fa-phone"></i> 전화</a>
-          <button onclick="openKakao('${item.phone}', '${item.name}')" class="text-[11px] px-2 py-1 bg-[#FEE500] text-black rounded"><i class="fa-solid fa-comment"></i> 카톡</button>
-          <button onclick="sendEmail('${item.id}')" class="text-[11px] px-2 py-1 bg-white border rounded">✉️ 메일</button>
-          <button onclick="deleteInquiry('${item.id}')" class="text-[11px] px-2 py-1 text-red-500">삭제</button>
+    <!-- 한전 연계 -->
+    <div class="bg-white rounded-xl p-4 border border-amber-200">
+      <h3 class="font-black mb-2 flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-500"></i> 한전 계통 연계 정보 <span class="text-[10px] bg-amber-100 px-2 py-0.5 rounded">실시간</span></h3>
+      <div class="flex gap-2 mb-3">
+        <input id="kepco-addr" value="${item.address}" class="flex-1 h-9 border rounded-lg px-3 text-[12px]" placeholder="주소">
+        <button onclick="fetchKepco()" class="h-9 px-4 bg-amber-500 text-white rounded-lg font-bold text-[12px]"><i class="fa-solid fa-search"></i> 용량조회</button>
+      </div>
+      <div id="kepco-result" class="bg-slate-50 rounded-lg p-3 text-[11px] border min-h-[60px]">주소 기반 ${guessMetro(item.address)} 지역으로 조회해보세요. 한전 분산전원 API가 해당 지역의 누적 태양광 용량, 변압기 여유 등을 반환합니다.</div>
+    </div>
+
+    <!-- 상태 파이프라인 -->
+    <div class="bg-white rounded-xl p-4 border">
+      <h3 class="font-black mb-3"><i class="fa-solid fa-list-check"></i> 상담 상태 파이프라인</h3>
+      <div class="grid grid-cols-3 gap-1.5">
+        ${['신규','연락완료','상담중','현장방문','견적발송','계약진행','완료','보류','취소'].map(s=>`<button onclick="updateStatus('${item.id}','${s}')" class="h-9 rounded-lg border font-bold text-[11px] ${item.status===s?'bg-[#0F4C81] text-white border-[#0F4C81]':'bg-white'}">${s}</button>`).join('')}
+      </div>
+      <div class="mt-3 text-[11px] text-slate-500">현재: <span class="font-black text-slate-900">${item.status}</span> / 마지막 업데이트: ${item.updatedAt||''}</div>
+    </div>
+
+    <!-- 상담일지 + 메모 3종 -->
+    <div class="bg-white rounded-xl p-4 border">
+      <h3 class="font-black mb-3"><i class="fa-solid fa-comments"></i> 상담일지 & 피드백 (편의성)</h3>
+      <div class="flex gap-1 mb-3">
+        <button onclick="switchTab('memo')" id="tab-memo" class="tab-active px-3 py-1.5 rounded-full text-[11px] font-bold border">일반메모</button>
+        <button onclick="switchTab('kakao')" id="tab-kakao" class="px-3 py-1.5 rounded-full text-[11px] font-bold border">카톡상담</button>
+        <button onclick="switchTab('email')" id="tab-email" class="px-3 py-1.5 rounded-full text-[11px] font-bold border">이메일피드백</button>
+        <button onclick="switchTab('log')" id="tab-log" class="px-3 py-1.5 rounded-full text-[11px] font-bold border">상담로그추가</button>
+      </div>
+      <div id="panel-memo">
+        <textarea id="input-memo" class="w-full h-28 border rounded-lg p-3 text-[12px]" placeholder="상담 내용, 현장 특이사항, 고객 니즈 등">${item.memo||''}</textarea>
+        <button onclick="saveMemo('memo')" class="mt-2 w-full h-9 bg-slate-900 text-white rounded-lg font-bold">일반메모 저장</button>
+      </div>
+      <div id="panel-kakao" class="hidden">
+        <textarea id="input-kakao" class="w-full h-28 border rounded-lg p-3 text-[12px] bg-yellow-50" placeholder="카톡 대화 요약">${item.kakaoMemo||''}</textarea>
+        <button onclick="saveMemo('kakaoMemo')" class="mt-2 w-full h-9 bg-yellow-400 text-black rounded-lg font-bold">카톡메모 저장</button>
+      </div>
+      <div id="panel-email" class="hidden">
+        <textarea id="input-email" class="w-full h-28 border rounded-lg p-3 text-[12px] bg-blue-50" placeholder="이메일 피드백, 견적서 발송 내역">${item.emailMemo||''}</textarea>
+        <button onclick="saveMemo('emailMemo')" class="mt-2 w-full h-9 bg-blue-600 text-white rounded-lg font-bold">이메일메모 저장</button>
+      </div>
+      <div id="panel-log" class="hidden">
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <select id="log-type" class="h-9 border rounded-lg px-2 text-[12px]"><option>전화</option><option>카톡</option><option>현장방문</option><option>문자</option><option>이메일</option></select>
+          <input id="log-manager" placeholder="담당자" class="h-9 border rounded-lg px-2 text-[12px]" value="관리자">
+          <input id="log-content" placeholder="내용 (예: 부재중, 100평 확인)" class="col-span-3 h-9 border rounded-lg px-3 text-[12px]">
         </div>
-      </td>
-    </tr>
-  `).join('');
-}
+        <button onclick="addConsultLog()" class="w-full h-9 bg-[#0F4C81] text-white rounded-lg font-bold">+ 상담로그 추가 (메모에 타임스탬프 기록)</button>
+        <div class="mt-3 text-[11px] text-slate-400">로그는 일반메모에 [시간] [유형] 담당자: 내용 형식으로 누적됩니다.</div>
+      </div>
+    </div>
 
-async function updateStatus(id, status){
-  await fetch('/api/inquiries', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, status }) });
-  const item = inquiries.find(i=>i.id===id);
-  if(item) item.status = status;
-  render();
+    <!-- 액션 -->
+    <div class="flex gap-2 pb-10">
+      <button onclick="deleteInquiry('${item.id}')" class="flex-1 h-10 border border-red-200 text-red-600 rounded-lg font-bold"><i class="fa-solid fa-trash"></i> 삭제</button>
+      <button onclick="closeDetail()" class="flex-1 h-10 bg-slate-900 text-white rounded-lg font-bold">닫기</button>
+    </div>
+  `;
 }
-async function updateMemo(id, field, value){
-  await fetch('/api/inquiries', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, [field]: value }) });
-  const item = inquiries.find(i=>i.id===id);
-  if(item) item[field]=value;
-}
-function openKakao(phone, name){
-  // 채널 관리자 페이지로 이동 + 전화번호 클립보드 복사
-  navigator.clipboard.writeText(phone);
-  alert(phone + ' 번호가 복사됐습니다. 카카오 채널에서 붙여넣기 하세요.');
-  window.open('https://center-pf.kakao.com/', '_blank');
-}
-function sendEmail(id){
-  const item = inquiries.find(i=>i.id===id);
-  if(!item) return;
-  const subject = `[솔라루프] ${item.address} 지붕 임대 답변`;
-  const body = `안녕하세요 ${item.name}님,\n${item.address} ${item.pyeong}평 문의 주셔서 감사합니다.\n\n010-3194-7270으로 연락드리겠습니다.`;
-  window.location.href = `mailto:${item.email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-async function deleteInquiry(id){
-  if(!confirm('삭제하시겠습니까?')) return;
-  await fetch('/api/inquiries?id='+id, { method:'DELETE' });
-  inquiries = inquiries.filter(i=>i.id!==id);
-  render();
-}
-function exportCSV(){
-  const header = ['접수일시','이름','전화','주소','평수','지붕형태','상태','메모','카톡메모','이메일메모','문의내용'];
-  const rows = inquiries.map(i => [i.receivedAt, i.name, i.phone, i.address, i.pyeong, i.roofType, i.status, i.memo, i.kakaoMemo, i.emailMemo, (i.message||'').replace(/\n/g,' ')]);
-  let csv = header.join(',') + '\n' + rows.map(r => r.map(v => '"' + (v||'').toString().replace(/"/g,'""') + '"').join(',')).join('\n');
-  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'solarroof_inquiries_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-}
-
-// Enter to login
-document.getElementById('pw-input')?.addEventListener('keydown', e=>{ if(e.key==='Enter') login(); });
+function closeDetail(){ document.getElementById('drawer-backdrop').classList.add('hidden'); document.getElementById('detail-drawer').classList.remove('open'); }
+function switchTab(t){ ['memo','kakao','email','log'].forEach(k=>{ document.getElementById('panel-'+k).classList.add('hidden'); document.getElementById('tab-'+k).classList.remove('tab-active'); }); document.getElementById('panel-'+t).classList.remove('hidden'); document.getElementById('tab-'+t).classList.add('tab-active'); }
+function copyText(txt){ navigator.clipboard.writeText(txt); alert('복사됨: '+txt); }
+async function updateStatus(id,status){ const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); if(res.ok){ const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); if(idx>-1) inquiries[idx]=j.inquiry; render(); openDetail(id); } }
+async function saveMemo(field){ const id=selectedId; const map={memo:'input-memo',kakaoMemo:'input-kakao',emailMemo:'input-email'}; const val=document.getElementById(map[field]).value; const body={id}; body[field]=val; const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); if(res.ok){ alert('저장됨'); const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); inquiries[idx]=j.inquiry; render(); } }
+async function addConsultLog(){ const id=selectedId; const type=document.getElementById('log-type').value; const manager=document.getElementById('log-manager').value; const content=document.getElementById('log-content').value; if(!content) return alert('내용 입력'); const now=new Date().toLocaleString('ko-KR'); const line=`[${now}] [${type}] ${manager}: ${content}\n`; const cur=document.getElementById('input-memo').value||''; const newMemo=line+cur; const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,memo:newMemo})}); if(res.ok){ const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); inquiries[idx]=j.inquiry; document.getElementById('input-memo').value=newMemo; alert('로그 추가됨'); render(); } }
+async function fetchKepco(){ const addr=document.getElementById('kepco-addr').value; const metroCd=guessMetro(addr); const out=document.getElementById('kepco-result'); out.innerHTML='조회 중...'; try{ const res=await fetch(`/api/kepco?metroCd=${metroCd}`); const json=await res.json(); if(json.success){ out.innerHTML=`<div class="font-bold mb-2">지역코드 ${metroCd} (${addr}) 조회 성공</div><div class="max-h-[200px] overflow-auto whitespace-pre-wrap bg-white border rounded p-2">${JSON.stringify(json.data, null, 2).slice(0,2000)}</div><div class="mt-2 text-[10px] text-slate-400">* 한전 API 기준 누적용량, 연계가능 여부 판단 참고용</div>`; } else out.innerHTML='조회 실패: '+(json.error||''); }catch(e){ out.innerHTML='오류: '+e.message; } }
+async function deleteInquiry(id){ if(!confirm('정말 삭제?')) return; const res=await fetch('/api/inquiries?id='+id,{method:'DELETE'}); if(res.ok){ inquiries=inquiries.filter(x=>x.id!==id); closeDetail(); render(); } }
+function exportCSV(){ const headers=['id','name','phone','address','pyeong','roofType','message','status','memo','kakaoMemo','emailMemo','emailSent','receivedAt','pageUrl']; const rows=inquiries.map(i=>headers.map(h=>`"${(i[h]||'').toString().replace(/"/g,'""')}"`).join(',')); const csv=[headers.join(','),...rows].join('\n'); const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='solarroof_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); }
 </script>
 </body>
 </html>

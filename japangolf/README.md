@@ -1,6 +1,7 @@
-# JAPANGOLFMNA v4 Japan Only Fullstack
-Frontend / + Admin /admin (1234)
-- 일본 물건 10개만
+# JAPANGOLFMNA v4.1 Japan Only + Logout
+- Frontend / + Admin /admin (1234) 로그아웃 버튼 포함
+- 물건 일본 10개만
 - 메뉴 6개 전부 작동
-- 예산/권역/법인형태 프론트와 100% 동기화
-API: /api/inquiry.js Gmail+Supabase 항상 200
+- api/inquiry.js DB 먼저 저장으로 대시보드 누락 해결
+- api/admin/update.js linked_listing text 지원으로 업데이트 실패 해결
+Deploy: GitHub push -> Vercel auto deploy

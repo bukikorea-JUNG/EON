@@ -6,27 +6,25 @@ const supabase = createClient(
 )
 
 export default async function handler(req, res) {
-  if (req.method!== 'PATCH' && req.method!== 'POST') {
+  if (req.method !== 'PATCH' && req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
     const body = req.body
-    const { id, linked_listing, linked_listing_id,...rest } = body
+    const { id, linked_listing, linked_listing_id, ...rest } = body
 
     if (!id) return res.status(400).json({ error: 'id required' })
 
-    let updateData = {...rest, updated_at: new Date().toISOString() }
+    let updateData = { ...rest, updated_at: new Date().toISOString() }
 
-    // linked_listing 처리 - 이름이 오면 그대로 저장 + id도 찾아서 저장
     if (linked_listing) {
       updateData.linked_listing = linked_listing
-      // 이름으로 id 찾기 시도
       const { data: listing } = await supabase
-       .from('golf_listings')
-       .select('id')
-       .eq('name', linked_listing)
-       .single()
+        .from('golf_listings')
+        .select('id')
+        .eq('name', linked_listing)
+        .single()
       if (listing?.id) {
         updateData.linked_listing_id = listing.id
       }
@@ -35,26 +33,22 @@ export default async function handler(req, res) {
       updateData.linked_listing_id = linked_listing_id
     }
 
-    // 빈 값 정리
     Object.keys(updateData).forEach(k => {
       if (updateData[k] === '' || updateData[k] === undefined) {
         delete updateData[k]
       }
     })
 
-    console.log('UPDATE:', id, updateData)
+    console.log('ADMIN UPDATE:', id, updateData)
 
     const { data, error } = await supabase
-     .from('inquiries')
-     .update(updateData)
-     .eq('id', id)
-     .select()
-     .single()
+      .from('inquiries')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single()
 
-    if (error) {
-      console.error('UPDATE ERROR:', error)
-      throw error
-    }
+    if (error) throw error
 
     return res.status(200).json({ success: true, data })
   } catch (e) {
@@ -62,7 +56,7 @@ export default async function handler(req, res) {
     return res.status(500).json({
       success: false,
       error: e.message,
-      hint: 'linked_listing은 이제 text 컬럼에 저장됩니다. SQL 1)번 실행했는지 확인'
+      hint: 'Supabase에 linked_listing text 컬럼 추가했는지 확인'
     })
   }
 }

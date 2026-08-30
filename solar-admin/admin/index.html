@@ -236,7 +236,39 @@ function copyText(txt){ navigator.clipboard.writeText(txt); alert('복사됨: '+
 async function updateStatus(id,status){ const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); if(res.ok){ const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); if(idx>-1) inquiries[idx]=j.inquiry; render(); openDetail(id); } }
 async function saveMemo(field){ const id=selectedId; const map={memo:'input-memo',kakaoMemo:'input-kakao',emailMemo:'input-email'}; const val=document.getElementById(map[field]).value; const body={id}; body[field]=val; const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); if(res.ok){ alert('저장됨'); const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); inquiries[idx]=j.inquiry; render(); } }
 async function addConsultLog(){ const id=selectedId; const type=document.getElementById('log-type').value; const manager=document.getElementById('log-manager').value; const content=document.getElementById('log-content').value; if(!content) return alert('내용 입력'); const now=new Date().toLocaleString('ko-KR'); const line=`[${now}] [${type}] ${manager}: ${content}\n`; const cur=document.getElementById('input-memo').value||''; const newMemo=line+cur; const res=await fetch('/api/inquiries',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,memo:newMemo})}); if(res.ok){ const j=await res.json(); const idx=inquiries.findIndex(x=>x.id===id); inquiries[idx]=j.inquiry; document.getElementById('input-memo').value=newMemo; alert('로그 추가됨'); render(); } }
-async function fetchKepco(){ const addr=document.getElementById('kepco-addr').value; const metroCd=guessMetro(addr); const out=document.getElementById('kepco-result'); out.innerHTML='조회 중...'; try{ const res=await fetch(`/api/kepco?metroCd=${metroCd}`); const json=await res.json(); if(json.success){ out.innerHTML=`<div class="font-bold mb-2">지역코드 ${metroCd} (${addr}) 조회 성공</div><div class="max-h-[200px] overflow-auto whitespace-pre-wrap bg-white border rounded p-2">${JSON.stringify(json.data, null, 2).slice(0,2000)}</div><div class="mt-2 text-[10px] text-slate-400">* 한전 API 기준 누적용량, 연계가능 여부 판단 참고용</div>`; } else out.innerHTML='조회 실패: '+(json.error||''); }catch(e){ out.innerHTML='오류: '+e.message; } }
+async function fetchKepco(){ 
+  const addr=document.getElementById('kepco-addr').value; 
+  const metroCd=guessMetro(addr); 
+  const out=document.getElementById('kepco-result'); 
+  out.innerHTML='<div class="text-amber-600"><i class="fa-solid fa-spinner fa-spin"></i> 한전 조회 중...</div>'; 
+  try{ 
+    const res=await fetch(`/api/kepco?metroCd=${metroCd}&addr=${encodeURIComponent(addr)}`); 
+    const json=await res.json(); 
+    if(json.fallback){
+      const est=json.data.estimate;
+      out.innerHTML=`
+        <div class="font-black text-amber-600 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> 키 유효 ✅ → 지역코드 재시도로 예상 정보</div>
+        <div class="bg-white border rounded-lg p-3 space-y-2">
+          <div><span class="text-[10px] text-slate-500">주소</span><div class="font-bold">${addr}</div></div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-amber-50 p-2 rounded"><div class="text-[10px]">권장용량</div><div class="font-bold">${est.권장용량}</div></div>
+            <div class="bg-emerald-50 p-2 rounded"><div class="text-[10px]">월수익예상</div><div class="font-bold text-emerald-700">${est.월수익예상}</div></div>
+          </div>
+          <div class="text-[11px]"><span class="font-bold">변압기 여유:</span> ${est.변압기_여유}</div>
+          <div class="text-[11px] bg-slate-50 p-2 rounded"><span class="font-bold">확인방법:</span> ${est.확인방법}</div>
+          <div class="text-[10px] text-slate-500 mt-2">다음 액션:<br>${json.data.nextAction.join('<br>')}</div>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <a href="https://online.kepco.co.kr" target="_blank" class="text-[11px] bg-slate-900 text-white px-3 py-1.5 rounded-lg">한전 파워플래너 바로가기</a>
+          <a href="tel:123" class="text-[11px] border px-3 py-1.5 rounded-lg">123 전화</a>
+        </div>
+        <div class="mt-2 text-[9px] text-slate-400">raw: ${json.error?.slice(0,120)||''}</div>
+      `;
+    } else if(json.success){ 
+      out.innerHTML=`<div class="font-bold mb-2 text-emerald-600">✅ 지역코드 ${metroCd} (${addr}) 실시간 조회 성공</div><div class="max-h-[200px] overflow-auto whitespace-pre-wrap bg-white border rounded p-2 text-[11px]">${JSON.stringify(json.data, null, 2).slice(0,3000)}</div><div class="mt-2 text-[10px] text-slate-400">* 한전 API 기준 누적용량, 연계가능 여부 판단 참고용</div>`; 
+    } else out.innerHTML='조회 실패: '+(json.error||''); 
+  }catch(e){ out.innerHTML='오류: '+e.message; } 
+}
 async function deleteInquiry(id){ if(!confirm('정말 삭제?')) return; const res=await fetch('/api/inquiries?id='+id,{method:'DELETE'}); if(res.ok){ inquiries=inquiries.filter(x=>x.id!==id); closeDetail(); render(); } }
 function exportCSV(){ const headers=['id','name','phone','address','pyeong','roofType','message','status','memo','kakaoMemo','emailMemo','emailSent','receivedAt','pageUrl']; const rows=inquiries.map(i=>headers.map(h=>`"${(i[h]||'').toString().replace(/"/g,'""')}"`).join(',')); const csv=[headers.join(','),...rows].join('\n'); const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='solarroof_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); }
 </script>

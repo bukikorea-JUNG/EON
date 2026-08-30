@@ -2,6 +2,21 @@
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
 
+
+function isValidPhone(phone){
+  if (!phone) return false;
+  const cleaned = String(phone).replace(/[^0-9]/g, '');
+  if (cleaned.length < 9 || cleaned.length > 11) return false;
+  if (!cleaned.startsWith('0')) return false;
+  return /^0[0-9]{8,10}$/.test(cleaned);
+}
+function isValidEmail(email){
+  if (!email) return false;
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email)) && String(email).length <= 254;
+}
+
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -18,14 +33,17 @@ export default async function handler(req, res) {
 
   try {
     const b = req.body || {};
-    const name = b.name, phone = b.phone, address = b.address;
-    if (!name || !phone || !address) return res.status(400).json({ success: false, error: '필수 항목 누락' });
+    const name = b.name, phone = b.phone, address = b.address, email = b.email;
+    if (!name || !phone || !address || !email) return res.status(400).json({ success: false, error: '필수 항목 누락 (이름/전화/주소/이메일)' });
+    if (!isValidPhone(phone)) return res.status(400).json({ success: false, error: '전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678' });
+    if (!isValidEmail(email)) return res.status(400).json({ success: false, error: '이메일 형식이 올바르지 않습니다. 예: factory@company.com' });
 
     const now = new Date();
     const row = {
       id: 'inq_' + now.getTime(),
       name: name,
       phone: phone,
+      email: email,
       address: address,
       pyeong: String(b.pyeong || b.currentPyeong || '미입력'),
       roof_type: b.roofType || b.roof_type || '미선택',
@@ -53,8 +71,9 @@ export default async function handler(req, res) {
         await transporter.sendMail({
           from: `"솔라루프 문의" <${gmailUser}>`,
           to: 'bukikorea@gmail.com',
-          subject: `[지붕임대] ${row.name} - ${row.address}`,
-          html: `<h3>${row.name} / ${row.phone}</h3><p>${row.address} / ${row.pyeong}평 / ${row.roof_type}</p><p>${row.message}</p><p><a href="https://www.solarroof.kr/admin">관리자</a></p>`
+          subject: `[지붕임대] ${row.name} - ${row.address} - ${row.email}`,
+          html: `<h3>${row.name} / ${row.phone} / ${row.email}</h3><p>${row.address} / ${row.pyeong}평 / ${row.roof_type}</p><p>${row.message}</p><p>고객 이메일: ${row.email}</p><p><a href="https://www.solarroof.kr/admin">관리자</a></p>`,
+          replyTo: row.email
         });
         emailSent = true;
         row.email_sent = true;

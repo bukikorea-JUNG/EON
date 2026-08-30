@@ -118,7 +118,7 @@ function render(){
   let filtered=inquiries.filter(i=>{
     if(statusF && i.status!==statusF) return false;
     if(roofF && !(i.roofType||'').includes(roofF)) return false;
-    if(search && !(`${i.name} ${i.phone} ${i.address} ${i.message} ${i.pyeong}`.toLowerCase().includes(search))) return false;
+    if(search && !(`${i.name} ${i.phone} ${i.email||''} ${i.address} ${i.message} ${i.pyeong}`.toLowerCase().includes(search))) return false;
     if(dateF){
       const d=new Date(i.createdAt||i.receivedAt); const now=new Date();
       if(dateF==='today' && d.toDateString()!==now.toDateString()) return false;
@@ -167,6 +167,7 @@ function openDetail(id){
         <div class="col-span-2"><div class="text-[10px] text-slate-500">문의메시지</div><div class="bg-white border rounded-lg p-2 mt-1 whitespace-pre-wrap">${item.message||'없음'}</div></div>
         <div><div class="text-[10px] text-slate-500">접수일시</div><div>${item.receivedAt||''}<br><span class="text-[10px] text-slate-400">${item.createdAt||''}</span></div></div>
         <div><div class="text-[10px] text-slate-500">유입페이지</div><div class="truncate"><a href="${item.pageUrl}" target="_blank" class="text-blue-600 underline text-[11px]">${item.pageUrl||'-'}</a></div></div>
+        <div><div class="text-[10px] text-slate-500">고객 이메일</div><div class="font-bold text-[11px]">${item.email||'-'} <button onclick="copyText(\'${item.email||""}\')" class="ml-1 text-[10px] text-blue-600">복사</button> <a href="mailto:${item.email}" class="ml-1 text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded">메일</a></div></div>
         <div><div class="text-[10px] text-slate-500">메일발송</div><div class="${item.emailSent?'text-emerald-600':'text-red-500'} font-bold">${item.emailSent?'✅ 성공':'❌ 실패: '+(item.emailError||'')}</div></div>
         <div><div class="text-[10px] text-slate-500">ID</div><div class="text-[10px]">${item.id}</div></div>
       </div>

@@ -307,9 +307,11 @@
 <form id="inquiry-form" class="mt-6 space-y-4">
 <div class="grid grid-cols-2 gap-3">
 <div><label class="text-[11px] font-bold text-slate-700">담당자명 *</label><input required name="name" placeholder="예: 김공장" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none"></div>
-<div><label class="text-[11px] font-bold text-slate-700">연락처 *</label><input required name="phone" type="tel" placeholder="010-3194-7270" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none"></div>
+<div><label class="text-[11px] font-bold text-slate-700">연락처 * <span class="text-[10px] text-slate-400 font-normal">(010-1234-5678)</span></label><input required name="phone" id="form-phone" type="tel" placeholder="010-3194-7270" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none" oninput="validatePhoneLive(this)" onblur="validatePhoneLive(this)"><div id="phone-error" class="hidden mt-1 text-[11px] text-red-500">❌ 전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678</div></div>
 </div>
-<div><label class="text-[11px] font-bold text-slate-700">공장 주소 *</label><input required name="address" id="form-address" placeholder="예: 경기도 화성시 장안면 독정리 123-4" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none"></div>
+<div class="grid grid-cols-2 gap-3"><div><label class="text-[11px] font-bold text-slate-700">공장 주소 *</label><input required name="address" id="form-address" placeholder="예: 경기도 화성시 장안면 독정리 123-4" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none"></div>
+<div><label class="text-[11px] font-bold text-slate-700">이메일 * <span class="text-[10px] text-slate-400 font-normal">(견적서 발송용)</span></label><input required name="email" id="form-email" type="email" placeholder="factory@company.com" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px] focus:border-[#0F4C81] focus:outline-none" oninput="validateEmailLive(this)" onblur="validateEmailLive(this)"><div id="email-error" class="hidden mt-1 text-[11px] text-red-500">❌ 이메일 형식이 올바르지 않습니다. 예: name@company.com</div></div>
+</div>
 <div class="grid grid-cols-2 gap-3">
 <div><label class="text-[11px] font-bold text-slate-700">지붕 평수</label><div class="mt-1 flex items-center gap-2"><input id="form-pyeong" name="pyeong" type="number" min="30" max="3000" value="100" class="w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px]"><span class="text-[13px] font-bold">평</span></div><div class="mt-1 text-[10px] text-slate-400">30~3000평 입력</div></div>
 <div><label class="text-[11px] font-bold text-slate-700">지붕 형태</label><select name="roofType" class="mt-1 w-full h-11 rounded-xl border border-slate-200 px-3 text-[14px]"><option>샌드위치판넬</option><option>슬레이트</option><option>판넬+슬레이트 혼합</option><option>기타 / 모르겠음</option></select></div>
@@ -518,6 +520,54 @@ renderGrid();
 </script>
 
 <script>
+
+// === 전화번호 / 이메일 정규식 검증 ===
+function isValidPhone(phone){
+  const cleaned = phone.replace(/[^0-9]/g, '');
+  if (cleaned.length < 9 || cleaned.length > 11) return false;
+  if (!cleaned.startsWith('0')) return false;
+  // 한국 전화번호: 02, 031 등 지역번호 또는 010, 011 등 휴대폰
+  const phoneRegex = /^(0[2-8][0-9]{0,2}|01[0-9])-?[0-9]{3,4}-?[0-9]{4}$/;
+  const cleanedRegex = /^0[0-9]{8,10}$/;
+  return cleanedRegex.test(cleaned) && phoneRegex.test(phone.replace(/\s/g,''));
+}
+function isValidEmail(email){
+  // RFC 기본 이메일 정규식
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) return false;
+  if (email.length > 254) return false;
+  if (email.includes('..')) return false;
+  return true;
+}
+function validatePhoneLive(el){
+  const err = document.getElementById('phone-error');
+  if (!el.value) { err.classList.add('hidden'); el.classList.remove('border-red-500'); return true; }
+  if (!isValidPhone(el.value)) {
+    err.classList.remove('hidden');
+    el.classList.add('border-red-500');
+    return false;
+  } else {
+    err.classList.add('hidden');
+    el.classList.remove('border-red-500');
+    el.classList.add('border-emerald-500');
+    return true;
+  }
+}
+function validateEmailLive(el){
+  const err = document.getElementById('email-error');
+  if (!el.value) { err.classList.add('hidden'); el.classList.remove('border-red-500'); return true; }
+  if (!isValidEmail(el.value)) {
+    err.classList.remove('hidden');
+    el.classList.add('border-red-500');
+    return false;
+  } else {
+    err.classList.add('hidden');
+    el.classList.remove('border-red-500');
+    el.classList.add('border-emerald-500');
+    return true;
+  }
+}
+
 // === 솔라루프 폼 전송 - FIXED ===
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('inquiry-form');
@@ -526,6 +576,19 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const fd = new FormData(form);
     const data = Object.fromEntries(fd.entries());
+    
+    // === 정규식 검증 ===
+    if (!isValidPhone(data.phone)) {
+      alert('❌ 전화번호 형식이 올바르지 않습니다.\n\n올바른 예시:\n• 010-1234-5678\n• 01012345678\n• 02-1234-5678\n• 031-123-4567');
+      document.getElementById('form-phone')?.focus();
+      return;
+    }
+    if (!isValidEmail(data.email)) {
+      alert('❌ 이메일 형식이 올바르지 않습니다.\n\n올바른 예시:\n• factory@company.com\n• name@naver.com');
+      document.getElementById('form-email')?.focus();
+      return;
+    }
+
     // 추가 정보
     data.pageUrl = location.href;
     data.currentPyeong = document.getElementById('form-pyeong')?.value || window.pyeong || '100';

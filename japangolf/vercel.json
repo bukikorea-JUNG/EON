@@ -1,1 +1,10 @@
-{"framework":null,"outputDirectory":".","installCommand":"npm install","rewrites":[{"source":"/admin","destination":"/admin.html"}]}
+{
+  "framework": null,
+  "outputDirectory": ".",
+  "installCommand": "npm install",
+  "cleanUrls": false,
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/", "destination": "/admin.html" }
+  ]
+}

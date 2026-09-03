@@ -1,1 +1,1 @@
-Clean HTML version - no base64, only relative images/ paths. No React bundle. 010-3194-7270
+Aiflex38 full final clean - no base64 - all sections + bottom 4 columns - TKW095LK->Aiflex38 - search Aiflex38 / Aiflex 38 / AI FLEX 38 - 010-3194-7270

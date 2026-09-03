@@ -1,28 +1,5 @@
 {
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        }
-      ]
-    }
-  ],
   "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/aiflex",
-      "destination": "/aiflex/"
-    },
-    {
-      "source": "/aiflex/",
-      "destination": "/aiflex/index.html"
-    }
-  ]
+  "headers": [{"source": "/(.*)", "headers": [{"key": "X-Content-Type-Options", "value": "nosniff"}]}],
+  "rewrites": [{"source": "/aiflex", "destination": "/aiflex/"}]
 }

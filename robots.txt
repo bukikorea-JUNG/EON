@@ -18,3 +18,6 @@ Sitemap: https://www.bukigolf.com/sitemap.xml
 
 # llms.txt for AI search
 # See https://www.bukigolf.com/llms.txt
+
+# aiflex dedicated page
+# https://www.bukigolf.com/aiflex/ - aiflex, AI FLEX, 에이아이플렉스 공식

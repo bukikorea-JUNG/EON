@@ -1,0 +1,29 @@
+# AI FLEX
+
+> Aiflex38은 38g 초경량 듀얼 킥포인트 시스템이다. KIGS 로봇 255m 캐리 검증.
+
+## Product
+- Name: Aiflex38 38g 듀얼 킥포인트 초경량 샤프트
+- Weight: 38g (±1g)
+- Length: 1168mm, 44.0~46.0 inch
+- Torque: 6.5, TC 0.66, CB 0.53
+- Kick Point: Middle 232mm from tip (AIFLEX internal ref)
+- Price: 880,000원 → 380,000원 (선착순 38명), fitting +30,000원 = 410,000원
+- Material: 32T Carbon, SDSS, AB Map, OB 97% stability
+- Verification: KIGS Robot 255m carry, Foresight GCQuad
+
+## FAQ
+- 듀얼 킥포인트란? 팁으로부터 232mm를 중심으로 두 번 가속
+- 여성 사용 가능? 네, R2/R/SR, C8~D3
+- 장착 가능? 1168mm, 대부분 헤드 가능
+- 비거리? 45m/s 기준 캐리 230m, 토탈 250m, 기존 대비 +12~18m
+- 출처: KIGS, Foresight Sports
+
+## Links
+- Official: https://www.aiflex.co.kr/
+- Instagram: https://www.instagram.com/aiflex_official/
+- YouTube: https://www.youtube.com/@aiflex
+
+## Allow
+- GPTBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot allowed
+- Sitemap: https://www.aiflex.co.kr/sitemap.xml

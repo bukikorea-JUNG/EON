@@ -1,24 +1,26 @@
-// /api/ai-edit.js - Gemini + Llama dual support
+// /api/ai-edit.js - Gemini 3.0 Flash
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method === 'GET') return res.status(200).json({ error: 'POST only' });
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const geminiKey = process.env.GEMINI_API_KEY;
-  const llamaKey = process.env.META_LLAMA_API_KEY || process.env.LLAMA_API_KEY;
-
   try {
     const { prompt, system } = req.body || {};
     const userPrompt = prompt || req.body?.messages?.[0]?.content || 'Hello';
     const sysPrompt = system || 'You are a GEO content editor. Keep images, edit text only.';
 
-    // --- 1. GEMINI 우선 ---
-    if (geminiKey) {
-      const gemRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+    if (!geminiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not set' });
+
+    // 3.0 Flash 우선
+    const tryModels = ['gemini-3.0-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+
+    let lastError = null;
+    for (const model of tryModels) {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -26,40 +28,17 @@ export default async function handler(req, res) {
           generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
         })
       });
-      const gemData = await gemRes.json();
-      if (!gemRes.ok) {
-        return res.status(gemRes.status).json({ error: 'Gemini API error', details: gemData });
+      const data = await r.json();
+      if (r.ok) {
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        return res.status(200).json({ choices: [{ message: { content: text } }], model_used: model });
       }
-      const text = gemData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      // OpenAI 호환 형태로 변환해서 프론트가 그대로 쓰게
-      return res.status(200).json({
-        choices: [{ message: { content: text } }],
-        gemini_raw: gemData
-      });
+      lastError = data;
+      if (data?.error?.code !== 404) {
+        return res.status(r.status).json({ error: 'Gemini API error', details: data });
+      }
     }
-
-    // --- 2. Llama fallback ---
-    if (!llamaKey) {
-      return res.status(500).json({ error: 'GEMINI_API_KEY or META_LLAMA_API_KEY not set' });
-    }
-    const llamaRes = await fetch('https://api.llama.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${llamaKey}`
-      },
-      body: JSON.stringify({
-        model: 'Llama-4-Maverick-17B-128E-Instruct-FP8',
-        messages: [
-          { role: 'system', content: sysPrompt },
-          { role: 'user', content: userPrompt }
-        ]
-      })
-    });
-    const data = await llamaRes.json();
-    if (!llamaRes.ok) return res.status(llamaRes.status).json({ error: 'Llama API error', details: data });
-    return res.status(200).json(data);
-
+    return res.status(404).json({ error: 'Gemini API error', details: lastError });
   } catch (e) {
     return res.status(500).json({ error: 'Server error', details: String(e) });
   }

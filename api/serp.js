@@ -19,11 +19,11 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify([{
-        location_name: "Korea",
-        language_code: "ko",
-        keyword: keyword,
-        depth: 10
-      }])
+  location_code: 2410,
+  language_code: "ko",
+  keyword: keyword,
+  depth: 10
+}])
     });
 
     const data = await r.json();

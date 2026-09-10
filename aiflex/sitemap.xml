@@ -1,9 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://www.aiflex.co.kr/</loc><lastmod>2026-05-13</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-<url><loc>https://www.aiflex.co.kr/#revelation</loc><priority>0.8</priority></url>
-<url><loc>https://www.aiflex.co.kr/#spec</loc><priority>0.8</priority></url>
-<url><loc>https://www.aiflex.co.kr/#dual</loc><priority>0.8</priority></url>
-<url><loc>https://www.aiflex.co.kr/#proof</loc><priority>0.8</priority></url>
-<url><loc>https://www.aiflex.co.kr/#faq</loc><priority>0.7</priority></url>
-</urlset>
+<urlset><url><loc>https://www.aiflex.co.kr/</loc></url></urlset>

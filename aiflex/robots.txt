@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://www.aiflex.co.kr/sitemap.xml

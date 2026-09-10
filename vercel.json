@@ -1,5 +1,4 @@
 {
   "cleanUrls": true,
-  "headers": [{"source": "/(.*)", "headers": [{"key": "X-Content-Type-Options", "value": "nosniff"}]}],
-  "rewrites": [{"source": "/aiflex", "destination": "/aiflex/"}]
+  "trailingSlash": false
 }

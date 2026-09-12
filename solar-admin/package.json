@@ -1,6 +1,10 @@
+
 {
+  "name": "solarroof-kr-final",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "dependencies": {
-    "nodemailer": "^6.9.8",
-    "@supabase/supabase-js": "^2.50.0"
+    "@supabase/supabase-js": "^2.39.0"
   }
 }

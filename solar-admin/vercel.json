@@ -1,12 +1,6 @@
-
 {
   "version": 2,
-  "builds": [
-    { "src": "public/index.html", "use": "@vercel/static" },
-    { "src": "api/*.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.js" },
-    { "src": "/(.*)", "dest": "/public/index.html" }
-  ]
+  "headers": [{"source": "/(.*)", "headers": [{"key": "X-Content-Type-Options", "value": "nosniff"}, {"key": "X-Frame-Options", "value": "SAMEORIGIN"}]}],
+  "builds": [{"src": "public/index.html", "use": "@vercel/static"}, {"src": "api/*.js", "use": "@vercel/node"}],
+  "routes": [{"src": "/api/(.*)", "dest": "/api/$1.js"}, {"src": "/(.*)", "dest": "/public/index.html"}]
 }

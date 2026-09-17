@@ -1,0 +1,1 @@
+export default (req,res)=>{res.setHeader("Access-Control-Allow-Origin","*"); res.json({ok:true,time:new Date().toISOString(),cf:"https://tdb-cron.bukikorea.workers.dev/cron"})}

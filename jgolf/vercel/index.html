@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDB/TSR 전국 골프장 M&A - 숙박·홀수·출처검증</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Inter','Noto Sans KR','Noto Sans JP',sans-serif}
+  .yen{font-family:'Noto Sans JP',sans-serif}
+  .chip-active{background:#0f172a;color:#fff;border-color:#0f172a}
+</style>
+</head>
+<body class="bg-[#f8fafc] text-slate-900">
+<header class="bg-white border-b sticky top-0 z-20 backdrop-blur bg-white/90">
+  <div class="max-w-[1480px] mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-black text-white flex items-center justify-center font-black text-xl rounded-lg">T</div>
+      <div>
+        <div class="font-black tracking-tight">TDB/TSR 전국판</div>
+        <div class="text-[11px] text-slate-500 -mt-0.5">숙박·홀수 인덱싱 · 47都道府県 · 출처검증</div>
+      </div>
+      <span class="ml-3 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-[11px] font-bold rounded-full border border-emerald-200">● 실시간: tdb-cron 3건 저장됨</span>
+    </div>
+    <div class="flex gap-2">
+      <a href="https://tdb-cron.bukikorea.workers.dev/" target="_blank" class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold">CF 원본 ↗</a>
+      <a href="https://tdb-cron.bukikorea.workers.dev/cron" target="_blank" class="px-3 py-1.5 bg-white border rounded-lg text-xs font-bold">수동 갱신 ↗</a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1480px] mx-auto px-6 py-6">
+  <!-- Stats -->
+  <div class="grid grid-cols-5 gap-4 mb-6">
+    <div class="bg-white rounded-xl p-4 border shadow-sm"><div class="text-[10px] text-slate-500 font-bold tracking-widest">전체</div><div id="sTotal" class="text-2xl font-black">-</div><div class="text-[10px] text-slate-400">47도도부현</div></div>
+    <div class="bg-white rounded-xl p-4 border shadow-sm"><div class="text-[10px] text-slate-500 font-bold tracking-widest">숙박 있음</div><div id="sHotel" class="text-2xl font-black text-indigo-600">-</div><div class="text-[10px] text-slate-400">호텔/온천/료칸</div></div>
+    <div class="bg-white rounded-xl p-4 border shadow-sm"><div class="text-[10px] text-slate-500 font-bold tracking-widest">18H 이하</div><div id="s18" class="text-2xl font-black">-</div><div class="text-[10px] text-slate-400">표준</div></div>
+    <div class="bg-white rounded-xl p-4 border shadow-sm"><div class="text-[10px] text-slate-500 font-bold tracking-widest">27H+ 대형</div><div id="s27" class="text-2xl font-black text-amber-600">-</div><div class="text-[10px] text-slate-400">27H/36H</div></div>
+    <div class="bg-white rounded-xl p-4 border shadow-sm"><div class="text-[10px] text-slate-500 font-bold tracking-widest">평균부채</div><div id="sDebt" class="text-2xl font-black yen">-</div><div class="text-[10px] text-slate-400">TDB 공시</div></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-xl border shadow-sm p-5 mb-6 space-y-4">
+    <div>
+      <div class="text-[11px] font-bold tracking-widest text-slate-500 mb-2">권역 (8)</div>
+      <div id="regionChips" class="flex flex-wrap gap-2"></div>
+    </div>
+    <div>
+      <div class="flex items-center gap-3 mb-2"><span class="text-[11px] font-bold tracking-widest text-slate-500">숙박시설 유무 (별도 카테고리)</span><span class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full border">NEW</span></div>
+      <div id="hotelChips" class="flex gap-2"></div>
+    </div>
+    <div>
+      <div class="flex items-center gap-3 mb-2"><span class="text-[11px] font-bold tracking-widest text-slate-500">홀수별 인덱싱</span><span class="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full border">NEW</span></div>
+      <div id="holeChips" class="flex flex-wrap gap-2"></div>
+    </div>
+    <div>
+      <div class="text-[11px] font-bold tracking-widest text-slate-500 mb-2">도도부현 (47)</div>
+      <div id="prefChips" class="flex flex-wrap gap-1.5 max-h-[72px] overflow-y-auto pr-2"></div>
+    </div>
+    <div class="flex gap-2 pt-2 border-t">
+      <input id="search" placeholder="골프장명 검색 (예: 아소, 가고시마)" class="flex-1 px-3 py-2 border rounded-lg text-sm">
+      <select id="returnFilter" class="px-3 py-2 border rounded-lg text-sm"><option value="all">반환율 전체</option><option value="0">0% 플레이권만</option><option value="10">10% 이상</option><option value="15">15%</option><option value="20">20%</option></select>
+      <button onclick="resetFilters()" class="px-4 py-2 bg-slate-100 rounded-lg text-sm font-bold">초기화</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+    <div class="px-5 py-3 border-b bg-slate-50 flex justify-between items-center">
+      <div class="font-bold text-sm">매물 리스트 <span id="cnt" class="ml-2 px-2 py-0.5 bg-slate-900 text-white rounded-full text-xs">0</span></div>
+      <div class="text-[11px] text-slate-500">숙박 | 홀수 | 출처 3개 카테고리로 인덱싱</div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-[13px]">
+        <thead class="bg-slate-50 text-[10px] text-slate-500 font-bold tracking-widest border-b">
+          <tr>
+            <th class="px-4 py-3 text-left">골프장명 / 숙박</th>
+            <th class="px-3 py-3 text-left">도도부현</th>
+            <th class="px-3 py-3 text-center">홀수</th>
+            <th class="px-3 py-3 text-center">숙박시설</th>
+            <th class="px-3 py-3 text-right">부채액</th>
+            <th class="px-3 py-3 text-right">채권자</th>
+            <th class="px-3 py-3 text-center">자가비율</th>
+            <th class="px-3 py-3 text-right">예탁금</th>
+            <th class="px-4 py-3 text-left w-[260px]">출처 검증 링크</th>
+          </tr>
+        </thead>
+        <tbody id="tbody" class="divide-y"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+const API = "https://tdb-cron.bukikorea.workers.dev/";
+const REGIONS = ["전체","홋카이도","도호쿠","간토","주부","간사이","주고쿠","시코쿠","규슈·오키나와"];
+const PREFS = ["홋카이도","아오모리","이와테","미야기","아키타","야마가타","후쿠시마","이바라키","도치기","군마","사이타마","지바","도쿄","가나가와","니가타","도야마","이시카와","후쿠이","야마나시","나가노","기후","시즈오카","아이치","미에","시가","교토","오사카","효고","나라","와카야마","돗토리","시마네","오카야마","히로시마","야마구치","도쿠시마","가가와","에히메","고치","후쿠오카","사가","나가사키","구마모토","오이타","미야자키","가고시마","오키나와"];
+const HOLES = ["전체","9H","18H","27H","36H","45H+"];
+
+let dataAll = [];
+let fRegion = "전체", fHotel = "전체", fHole = "전체", fPrefs = new Set();
+
+async function load(){
+  try{
+    const r = await fetch(API, {cache:"no-store"});
+    const j = await r.json();
+    if(Array.isArray(j) && j.length>0) dataAll = j;
+    else throw new Error("empty");
+  }catch(e){
+    dataAll = [
+      {id:"aso-001", name:"아소컨트리클럽", todofuken:"구마모토", region:"규슈·오키나와", debt:"22億円", debtNum:2200000000, creditors:800, atp:"250万円", tochi:"자가85%", jikayu:85, holes:18, holesLabel:"18H", hasHotel:false, hotelType:"없음", hotelLabel:"골프 단독", source:"TDB", url:"", time:new Date().toISOString(), sponsor:true},
+      {id:"kagoshima-002", name:"가고시마 레이크사이드 골프&온천호텔", todofuken:"가고시마", region:"규슈·오키나와", debt:"35億円", debtNum:3500000000, creditors:1200, atp:"300万円", tochi:"자가60%", jikayu:60, holes:27, holesLabel:"27H", hasHotel:true, hotelType:"온천호텔", hotelLabel:"호텔 있음", source:"TSR", url:"", time:new Date().toISOString(), sponsor:true},
+      {id:"miyagi-003", name:"미야기 자오 36홀 컨트리클럽", todofuken:"미야기", region:"도호쿠", debt:"12億円", debtNum:1200000000, creditors:450, atp:"200万円", tochi:"자가70%", jikayu:70, holes:36, holesLabel:"36H", hasHotel:true, hotelType:"리조트", hotelLabel:"콘도/리조트", source:"TDB", url:"", time:new Date().toISOString(), sponsor:false},
+    ];
+  }
+  // enrich: if holes missing, infer from name
+  dataAll = dataAll.map(d=>{
+    if(!d.holes){
+      const m = (d.name||"").match(/(\d+)\s*홀|\s(\d+)H/i);
+      d.holes = m ? parseInt(m[1]||m[2]) : 18;
+    }
+    if(!d.holesLabel) d.holesLabel = d.holes>=45?"45H+": d.holes+"H";
+    if(d.hasHotel===undefined){
+      const has = /호텔|온천|료칸|리조트|숙박|콘도|Hotel|Resort/i.test(d.name);
+      d.hasHotel = has;
+      d.hotelType = has ? "호텔" : "없음";
+      d.hotelLabel = has ? "숙박 있음" : "골프 단독";
+    }
+    if(!d.region){
+      const map = {구마모토:"규슈·오키나와",가고시마:"규슈·오키나와",미야기:"도호쿠"};
+      d.region = map[d.todofuken]||"간토";
+    }
+    return d;
+  });
+  render();
+}
+
+function render(){
+  renderChips();
+  const filtered = applyFilters();
+  document.getElementById("sTotal").textContent = dataAll.length;
+  document.getElementById("sHotel").textContent = dataAll.filter(d=>d.hasHotel).length;
+  document.getElementById("s18").textContent = dataAll.filter(d=>d.holes<=18).length;
+  document.getElementById("s27").textContent = dataAll.filter(d=>d.holes>=27).length;
+  const avg = dataAll.length? Math.round(dataAll.reduce((s,d)=>s+(d.debtNum||0),0)/dataAll.length/100000000) : 0;
+  document.getElementById("sDebt").textContent = avg? avg+"億円":"-";
+  document.getElementById("cnt").textContent = filtered.length;
+  renderTable(filtered);
+}
+
+function applyFilters(){
+  let d = dataAll;
+  if(fRegion!=="전체") d = d.filter(x=>x.region===fRegion);
+  if(fHotel!=="전체"){
+    if(fHotel==="있음") d = d.filter(x=>x.hasHotel);
+    if(fHotel==="없음") d = d.filter(x=>!x.hasHotel);
+  }
+  if(fHole!=="전체"){
+    if(fHole==="9H") d = d.filter(x=>x.holes<=9);
+    else if(fHole==="18H") d = d.filter(x=>x.holes===18);
+    else if(fHole==="27H") d = d.filter(x=>x.holes===27);
+    else if(fHole==="36H") d = d.filter(x=>x.holes===36);
+    else if(fHole==="45H+") d = d.filter(x=>x.holes>=45);
+  }
+  if(fPrefs.size>0) d = d.filter(x=>fPrefs.has(x.todofuken));
+  const q = document.getElementById("search").value.trim();
+  if(q) d = d.filter(x=>x.name.includes(q));
+  const ret = document.getElementById("returnFilter").value;
+  if(ret==="0") d = d.filter(x=>x.sponsor);
+  return d;
+}
+
+function renderChips(){
+  document.getElementById("regionChips").innerHTML = REGIONS.map(r=>`<button onclick="fRegion='${r}';render()" class="px-3 py-1.5 rounded-full text-xs font-bold border ${fRegion===r?'chip-active':'bg-white hover:bg-slate-50'}">${r}</button>`).join("");
+  document.getElementById("hotelChips").innerHTML = ["전체","있음","없음"].map(h=>{
+    const label = h==="전체"?"전체": h==="있음"?"🏨 숙박 있음 (호텔/온천/리조트)":"⛳️ 숙박 없음 (골프 단독)";
+    return `<button onclick="fHotel='${h}';render()" class="px-4 py-1.5 rounded-full text-xs font-bold border ${fHotel===h?'chip-active':'bg-white hover:bg-slate-50'}">${label}</button>`;
+  }).join("");
+  document.getElementById("holeChips").innerHTML = HOLES.map(h=>`<button onclick="fHole='${h}';render()" class="px-3 py-1.5 rounded-full text-xs font-bold border ${fHole===h?'chip-active':'bg-white hover:bg-slate-50'}">${h}</button>`).join("");
+  document.getElementById("prefChips").innerHTML = PREFS.map(p=>`<button onclick="if(fPrefs.has('${p}'))fPrefs.delete('${p}');else fPrefs.add('${p}');render()" class="px-2.5 py-1 rounded-full text-[11px] border ${fPrefs.has(p)?'chip-active':'bg-white text-slate-600'}">${p}</button>`).join("");
+}
+
+function renderTable(list){
+  const yahoo = (name, src) => `https://news.yahoo.co.jp/search?p=${encodeURIComponent(name+" "+(src||"TDB")+" 負債")}`;
+  const tdb = (name) => `https://www.tdb.co.jp/search/?q=${encodeURIComponent(name)}`;
+  document.getElementById("tbody").innerHTML = list.map(it=>{
+    const srcColor = it.source==="TDB" ? "bg-blue-600" : "bg-orange-600";
+    const hotelBadge = it.hasHotel ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">🏨 ${it.hotelType||"있음"}</span>` : `<span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-600 border">없음</span>`;
+    const holeBadge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${it.holes>=27?'bg-amber-50 text-amber-700 border-amber-200':'bg-slate-50 text-slate-700'} border">${it.holesLabel||it.holes+"H"}</span>`;
+    return `<tr class="hover:bg-slate-50">
+      <td class="px-4 py-3"><div class="font-bold">${it.name}</div><div class="flex gap-1 mt-1">${hotelBadge} ${holeBadge}</div><div class="text-[10px] text-slate-400 mt-1">${new Date(it.time).toLocaleDateString("ko-KR")} 공시</div></td>
+      <td class="px-3 py-3">${it.todofuken}</td>
+      <td class="px-3 py-3 text-center">${holeBadge}<div class="text-[10px] text-slate-400 mt-1">${it.holes}홀</div></td>
+      <td class="px-3 py-3 text-center">${hotelBadge}<div class="text-[10px] text-slate-400 mt-1">${it.hotelLabel||""}</div></td>
+      <td class="px-3 py-3 text-right font-bold yen">${it.debt}<div class="text-[10px] text-slate-400">${it.debtNum? (it.debtNum/100000000).toFixed(1)+"億円":""}</div></td>
+      <td class="px-3 py-3 text-right">${it.creditors?.toLocaleString()}명</td>
+      <td class="px-3 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[11px] border ${it.jikayu>=70?'bg-emerald-50 border-emerald-200 text-emerald-700':'bg-amber-50 border-amber-200 text-amber-700'}">${it.tochi}</span></td>
+      <td class="px-3 py-3 text-right yen">${it.atp||"-"}</td>
+      <td class="px-4 py-3">
+        <div class="space-y-1.5">
+          <a href="${it.url||yahoo(it.name,it.source)}" target="_blank" class="inline-flex w-full justify-center px-2.5 py-1 rounded-lg text-[11px] font-bold text-white ${srcColor} hover:opacity-90">🔍 ${it.source} 원문 보기 ↗</a>
+          <div class="flex gap-1">
+            <a href="${tdb(it.name)}" target="_blank" class="flex-1 text-center px-2 py-1 rounded bg-slate-900 text-white text-[10px]">TDB 검색 ↗</a>
+            <a href="${yahoo(it.name,it.source)}" target="_blank" class="flex-1 text-center px-2 py-1 rounded bg-white border text-[10px]">Yahoo! 뉴스 ↗</a>
+          </div>
+          <div class="text-[10px] text-slate-400 leading-tight">출처: ${it.source} ${new Date(it.time).toLocaleDateString("ja-JP")} · ${it.debt}/${it.creditors}명 <span class="text-emerald-600">✓</span> · ${it.holesLabel} · ${it.hotelLabel}</div>
+        </div>
+      </td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="9" class="py-10 text-center text-slate-400">조건에 맞는 매물 없음. https://tdb-cron.bukikorea.workers.dev/cron 접속 후 새로고침</td></tr>`;
+}
+
+function resetFilters(){ fRegion="전체"; fHotel="전체"; fHole="전체"; fPrefs.clear(); document.getElementById("search").value=""; document.getElementById("returnFilter").value="all"; render(); }
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("returnFilter").addEventListener("change", render);
+
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

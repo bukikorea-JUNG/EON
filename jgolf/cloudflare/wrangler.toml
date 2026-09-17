@@ -1,0 +1,13 @@
+name = "tdb-cron"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "TDB_LOG"
+id = "fb4ad82636b14f90aeeaa891db068ba02"
+
+[triggers]
+crons = ["30 23 * * *"] # 08:30 JST/KST 매일
+
+[observability]
+enabled = true

@@ -1,15 +1,9 @@
-import { kv } from "@vercel/kv";
-
-// 대시보드가 fetch할 API: GET /api/history
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  if (req.method === "OPTIONS") return res.status(200).end();
-
-  try {
-    const history = (await kv.get("history")) || [];
-    return res.status(200).json(history);
-  } catch (e) {
-    return res.status(500).json({ error: String(e), history: [] });
-  }
+  // Cloudflare Worker에서 실제 데이터 가져오기 (선택)
+  // const cf = await fetch("https://tdb-cron.bukikorea.workers.dev/").then(r=>r.json()).catch(()=>[]);
+  const demo = [
+    { time: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }), tdb: 12, tsr: 8, note: "데모 - Cloudflare KV 연결 후 실제 데이터로 교체" }
+  ];
+  return res.status(200).json(demo);
 }

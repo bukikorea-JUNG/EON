@@ -3,68 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TDB/TSR 골프장 M&A - 변제율 0~20% 선택 적용판</title>
+<title>TDB/TSR + 民事再生 スポンサー募集中 매일 자동 - 담보 할인 + 회원권 1000/1900/3500</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter','Noto Sans KR',sans-serif}</style>
+<style>body{font-family:'Inter','Noto Sans KR',sans-serif} .tab-active{background:#111827;color:white} .clickable{cursor:pointer} .clickable:hover{background:#eff6ff} .recruit-pulse{animation:pulse 2s infinite}</style>
 </head>
 <body class="bg-[#f8fafc]">
-<header class="bg-white border-b sticky top-0 z-20">
-  <div class="max-w-[1700px] mx-auto px-6 py-3 flex justify-between items-center">
+<header class="bg-white border-b sticky top-0 z-30">
+  <div class="max-w-[1800px] mx-auto px-6 py-3 flex justify-between items-center">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 bg-black text-white flex items-center justify-center font-black rounded">T</div>
+      <div class="w-9 h-9 bg-black text-white flex items-center justify-center font-black rounded">K</div>
       <div>
-        <div class="font-black text-[14px]">TDB/TSR 전국 골프장 M&A - 변제율 선택 적용판 (1/10 공식)</div>
-        <div class="text-[11px] text-slate-500">통상 10% 시세 · 불인기 0~5% 플레이권만 · 명문 15~20% · Yahoo!만 · 2026 최신</div>
+        <div class="font-black text-[13px]">TDB/TSR + 民事再生 スポンサー募集中 매일 자동更新 - 담보 10/20/30% × 30/40/50% 할인 + 회원권 3종</div>
+        <div class="text-[10px] text-slate-500">매일 23:30 Cron → TDB/TSR/관보/야후에서 民事再生 スポンサー募集中 자동 수집 → 앱에 동일하게 표시 / 담보 할인 + 1000/1900/3500 + 국제공항 + 카테고리 이동</div>
       </div>
-      <span class="ml-3 px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold rounded-full">● 부채의 10% 공식</span>
-      <span class="px-2.5 py-1 bg-emerald-50 text-emerald-700 border text-[10px] font-bold rounded-full">● 변제율 선택 가능</span>
-      <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border text-[10px] font-bold rounded-full">● Yahoo!만</span>
+      <span class="px-2.5 py-1 bg-rose-600 text-white text-[10px] font-bold rounded-full recruit-pulse">● 募集中 자동更新</span>
+      <span class="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold rounded-full">● 담보 할인</span>
     </div>
+  </div>
+  <div class="max-w-[1800px] mx-auto px-6 py-2 flex gap-2 overflow-auto">
+    <button onclick="setTab('recruit')" id="tab-recruit" class="tab-active px-3 py-1.5 rounded-full text-xs font-bold border bg-rose-600 text-white">🚨 民事再生 スポンサー募集中 (매일 자동)</button>
+    <button onclick="setTab('all')" id="tab-all" class="px-3 py-1.5 rounded-full text-xs font-bold border bg-white">전체 매물</button>
+    <button onclick="setTab('membership')" id="tab-membership" class="px-3 py-1.5 rounded-full text-xs font-bold border bg-white">💳 회원권 1000/1900/3500</button>
+    <button onclick="setTab('surround')" id="tab-surround" class="px-3 py-1.5 rounded-full text-xs font-bold border bg-white">🏨 주변환경·국제공항·숙소</button>
+    <button onclick="setTab('sponsor')" id="tab-sponsor" class="px-3 py-1.5 rounded-full text-xs font-bold border bg-white">💰 스폰서 구조 (담보+변제율)</button>
   </div>
 </header>
 
-<div class="max-w-[1700px] mx-auto px-6 py-5">
-  <div class="bg-white rounded-xl border p-5 mb-5">
-    <div class="font-black text-sm">💰 일본 골프장 변제율(弁済率) 가이드 - 과거 300건 분석</div>
+<div class="max-w-[1800px] mx-auto px-6 py-5">
+  <div class="bg-gradient-to-r from-rose-50 to-blue-50 rounded-xl border border-rose-200 p-5 mb-5">
+    <div class="font-black text-sm">🚨 民事再生 スポンサー募集中 매일 자동 수집 시스템 + 담보 할인 + 회원권 3종</div>
     <div class="mt-3 grid grid-cols-5 gap-3 text-[11px]">
-      <div class="p-3 rounded-lg bg-slate-50 border"><div class="font-black text-slate-500">0% (플레이권만)</div><div class="mt-1">가장 불인기 · 지방 노후 · 자가 50% 미만<br>현금 0원, 플레이권 10회만<br>회원 반발 적을 때</div></div>
-      <div class="p-3 rounded-lg bg-slate-50 border border-slate-300"><div class="font-black">5% (불인기)</div><div class="mt-1">불인기 코스 시세 · 지방<br>예탁금 5% 현금 변제<br>예) 리코오 12억 → 0.6억</div></div>
-      <div class="p-3 rounded-lg bg-blue-50 border border-blue-300"><div class="font-black text-blue-700">10% (통상 시세) ★</div><div class="mt-1">일본 골프장 70%가 이 구간<br>과거 300건 평균<br>예) 로쿠이시 56억 → 5.6억 배당</div></div>
-      <div class="p-3 rounded-lg bg-amber-50 border border-amber-300"><div class="font-black text-amber-700">15% (명문)</div><div class="mt-1">간사이/간토 명문 · PGA 개최<br>자가비율 80% 이상<br>예) 쿠노키하라 20억 → 3억</div></div>
-      <div class="p-3 rounded-lg bg-rose-50 border border-rose-300"><div class="font-black text-rose-700">20% (최상급 명문)</div><div class="mt-1">회원 반발 심함 · 계속 회원 많을 때<br>회원 유지율 80% 이상<br>예) 가누마 1400억 10~15%</div></div>
+      <div class="p-3 rounded-lg bg-white border border-rose-200"><div class="font-black text-rose-700">民事再生 募集中</div><div class="mt-1">매일 23:30 Cron<br>TDB/TSR/관보/야후 검색<br><span id="recruitCount" class="font-black">-</span>건 모집중<br>앱에 동일하게 표시</div></div>
+      <div class="p-3 rounded-lg bg-white border"><div class="font-black">담보 비율</div><div class="mt-2 flex flex-col gap-1"><button onclick="setSecuredRatio(10)" id="sr10" class="px-2 py-1 rounded text-[11px] border">10% (지방)</button><button onclick="setSecuredRatio(20)" id="sr20" class="px-2 py-1 rounded text-[11px] bg-blue-600 text-white">20% 평균 ★</button><button onclick="setSecuredRatio(30)" id="sr30" class="px-2 py-1 rounded text-[11px] border">30% (리조트)</button></div><div class="mt-1 text-[10px]">현재 <span id="curSr" class="font-black text-blue-600">20%</span></div></div>
+      <div class="p-3 rounded-lg bg-white border"><div class="font-black">담보 인수율 (할인)</div><div class="mt-2 flex flex-col gap-1"><button onclick="setSecuredAcqRate(30)" id="sa30" class="px-2 py-1 rounded text-[11px] border">30% (70%할인)</button><button onclick="setSecuredAcqRate(40)" id="sa40" class="px-2 py-1 rounded text-[11px] bg-blue-600 text-white">40% (60%할인) ★</button><button onclick="setSecuredAcqRate(50)" id="sa50" class="px-2 py-1 rounded text-[11px] border">50% (50%할인)</button></div><div class="mt-1 text-[10px]"><span id="curSa" class="font-black">40%</span> = <span id="curDiscount" class="font-black">60% 할인</span></div></div>
+      <div class="p-3 rounded-lg bg-white border"><div class="font-black text-blue-700">개인 1000만 / 2인 1900만</div><div class="mt-1">110만엔 / 209만엔<br>1인당 1000만→950만 5%할인</div></div>
+      <div class="p-3 rounded-lg bg-white border border-amber-200"><div class="font-black text-amber-700">무기명 4인 3500만</div><div class="mt-1">385만엔<br>1인당 875만 12.5%할인<br>법인 4명 최다</div></div>
     </div>
-    <div class="mt-4 flex gap-2 flex-wrap">
-      <span class="text-[11px] font-bold py-1.5">일괄 적용:</span>
-      <button onclick="applyAll(0)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 border hover:bg-slate-200">전체 0% (플레이권만)</button>
-      <button onclick="applyAll(5)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 border hover:bg-slate-200">전체 5% (불인기)</button>
-      <button onclick="applyAll(10)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">전체 10% (통상 시세) ★</button>
-      <button onclick="applyAll(15)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-white hover:bg-amber-600">전체 15% (명문)</button>
-      <button onclick="applyAll(20)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700">전체 20% (최상급)</button>
+    <div class="mt-3 p-3 bg-white rounded-lg border text-[11px]">
+      <span class="font-black">매일 자동 로직:</span> Cloudflare Worker 23:30 Cron → KV `tdb-log` 업데이트 → `sponsor_status:募集中` 필터 → 앱 전체에 동일 표시 | `인수자금 = (부채×예탁비율×변제율) + (부채×담보비율×담보인수율)` = 배당금 + 담보물 인수액 (담보도 60% 할인)
+    </div>
+    <div class="mt-3 flex gap-2 flex-wrap">
+      <span class="text-[11px] font-bold py-1.5">변제율 일괄:</span>
+      <button onclick="applyAll(0)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 border">0% 플레이권만</button>
+      <button onclick="applyAll(5)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 border">5% 불인기</button>
+      <button onclick="applyAll(10)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-blue-600 text-white">10% 통상 ★</button>
+      <button onclick="applyAll(15)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500 text-white">15% 명문</button>
+      <button onclick="applyAll(20)" class="px-3 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white">20% 최상급</button>
+      <span class="text-[11px] font-bold py-1.5 ml-4">募集中만 보기:</span>
+      <button onclick="filterRecruitOnly()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white">🚨 募集中만</button>
+      <button onclick="filterAll()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-white border">전체 보기</button>
     </div>
   </div>
 
-  <div class="grid grid-cols-4 gap-3 mb-5">
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">전체 (Yahoo!만)</div><div id="sTotal" class="text-2xl font-black">-</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">평균 부채대비</div><div id="sAvgRatio" class="text-2xl font-black text-blue-600">-</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">총 인수자금 예상</div><div id="sTotalInv" class="text-2xl font-black">-</div></div>
-    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">통상 10% 시</div><div id="s10pct" class="text-2xl font-black text-emerald-600">-</div></div>
+  <div class="grid grid-cols-6 gap-3 mb-5">
+    <div class="bg-white rounded-xl p-4 border border-rose-200"><div class="text-[10px] font-bold text-rose-600">民事再生 募集中 (매일 자동)</div><div id="sRecruit" class="text-2xl font-black text-rose-600">-</div><div class="text-[10px]">매일 23:30 갱신</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">현재 담보 조건</div><div id="sCond" class="text-[12px] font-black text-blue-600">-</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">전체 (확정 5건)</div><div id="sTotal" class="text-2xl font-black">-</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">개인 1000만 평균</div><div id="sAvg1" class="text-2xl font-black text-blue-600">-</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">2인 1900만 평균</div><div id="sAvg2" class="text-2xl font-black text-emerald-600">-</div></div>
+    <div class="bg-white rounded-xl p-4 border"><div class="text-[10px] font-bold text-slate-500">4인 3500만 평균</div><div id="sAvg4" class="text-2xl font-black text-amber-600">-</div></div>
   </div>
 
-  <div class="bg-white rounded-xl border overflow-hidden">
-    <div class="px-5 py-3 border-b bg-slate-50 flex justify-between"><div class="font-bold text-sm">매물 리스트 - 변제율 선택 가능 <span id="cnt" class="ml-2 px-2 py-0.5 bg-slate-900 text-white rounded-full text-xs">0</span></div><div class="text-[11px] text-slate-500">변제율 변경 시 예상총투자·부채대비 실시간 재계산 · 원문 전부 Yahoo!만</div></div>
+  <div id="view-recruit" class="bg-white rounded-xl border border-rose-200 overflow-hidden">
+    <div class="px-5 py-3 border-b bg-rose-50 flex justify-between"><div class="font-bold text-sm text-rose-700">🚨 民事再生 スポンサー募集中 - 매일 동일하게 앱에 표시 (담보 할인 적용) <span id="cntRecruit" class="ml-2 px-2 py-0.5 bg-rose-600 text-white rounded-full text-xs">0</span></div><div class="text-[10px] text-rose-600">23:30 Cron 자동 수집 · TDB/TSR/관보/야후</div></div>
+    <div class="p-4 grid grid-cols-1 gap-4" id="recruitGrid"></div>
+  </div>
+
+  <div id="view-all" class="hidden bg-white rounded-xl border overflow-hidden">
+    <div class="px-5 py-3 border-b bg-slate-50 flex justify-between"><div class="font-bold text-sm">전체 매물 - 카테고리 클릭 이동 <span id="cnt" class="ml-2 px-2 py-0.5 bg-slate-900 text-white rounded-full text-xs">0</span></div></div>
     <div class="overflow-x-auto">
-      <table class="w-full text-[12px]">
-        <thead class="bg-slate-50 text-[10px] font-black border-b">
-          <tr><th class="px-3 py-3 text-left w-[300px]">골프장명</th><th class="px-2 py-3">부채</th><th class="px-2 py-3">채권자</th><th class="px-2 py-3">홀수</th><th class="px-2 py-3">D-Day</th><th class="px-2 py-3 w-[160px]">변제율 선택</th><th class="px-2 py-3 text-right">예상총투자</th><th class="px-2 py-3 text-center">부채대비</th><th class="px-3 py-3 w-[180px]">원문</th></tr>
+      <table class="w-full text-[11px]">
+        <thead class="bg-slate-50 text-[9px] font-black border-b">
+          <tr><th class="px-3 py-3 text-left w-[240px]">골프장명 (클릭→모집중)</th><th class="px-2 py-3">부채</th><th class="px-2 py-3">담보 (할인)</th><th class="px-2 py-3">상태</th><th class="px-2 py-3">국제공항</th><th class="px-2 py-3 w-[90px]">변제율</th><th class="px-2 py-3 text-right">인수자금</th><th class="px-2 py-3 text-center">1000만</th><th class="px-2 py-3 text-center">1900만</th><th class="px-2 py-3 text-center">3500만</th><th class="px-3 py-3 w-[100px]">원문</th></tr>
         </thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
   </div>
 
+  <div id="view-membership" class="hidden">
+    <div class="bg-white rounded-xl border p-5"><div class="font-black text-sm">💳 회원권 3종 - 담보 할인 적용</div><div id="memberGrid" class="mt-4 grid grid-cols-1 gap-3"></div></div>
+  </div>
+
+  <div id="view-surround" class="hidden">
+    <div id="surroundGrid" class="grid grid-cols-1 gap-4"></div>
+  </div>
+
+  <div id="view-sponsor" class="hidden bg-white rounded-xl border p-5">
+    <div class="font-black text-sm">💰 스폰서 구조 - 담보 비율 + 인수율 + 변제율</div>
+    <div id="sponsorGrid" class="mt-4 grid grid-cols-2 gap-4"></div>
+  </div>
+
   <div id="detailModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-6">
-    <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-auto p-6">
+    <div class="bg-white rounded-xl max-w-6xl w-full max-h-[95vh] overflow-auto p-6">
       <div class="flex justify-between items-center mb-4"><div id="modalTitle" class="font-black text-lg"></div><button onclick="closeModal()" class="px-3 py-1 border rounded">닫기</button></div>
       <div id="modalContent"></div>
     </div>
@@ -73,68 +105,185 @@
 
 <script>
 const data = [
-  {id:"tokyo-green-2026-08-19", name:"도쿄그린 (도미사토/칼레도니안) 18H - 2026 최신 파산 1위", jpName:"東京グリーン 富里ゴルフ倶楽部", debt:"155億円", debtNum:15500000000, creditors:1, holes:18, hasHotel:false, regDateStr:"2026/8/19", dDay:31, url:"https://news.yahoo.co.jp/articles/c354e94ae3d368fd8e8403d01011fd21b29c02aa"},
-  {id:"rokuishi-2026-09-01", name:"로쿠이시 골프클럽 27H 3코스 - 리솔HD 스폰서", jpName:"六石ゴルフ倶楽部", debt:"56億円", debtNum:5600000000, creditors:1900, holes:27, hasHotel:false, regDateStr:"2026/9/1", dDay:44, url:"https://news.yahoo.co.jp/articles/1653753d0032ae79f68fdc6079826a8a0cd4883c"},
-  {id:"mikawa-2026-03-31", name:"미카와 컨트리클럽 18H 6700야드", jpName:"三河カントリークラブ", debt:"120億円", debtNum:12000000000, creditors:1400, holes:18, hasHotel:false, regDateStr:"2026/3/31", dDay:-110, url:"https://news.yahoo.co.jp/articles/1206682fedf4ff55c558f7f5009c615a546c9948"},
-  {id:"kunokihara-2026-07-03", name:"쿠노키하라GC 18H - 간사이 명문 PGA 시니어", jpName:"国木原ゴルフ倶楽部", debt:"20億円", debtNum:2000000000, creditors:600, holes:18, hasHotel:false, regDateStr:"2026/7/3", dDay:-16, url:"https://news.yahoo.co.jp/articles/0e307ad2e2a723faa543e6ed603d25cdfcdc8388"},
-  {id:"rico-2025-10-03", name:"리코오 31CC 9H 2830야드", jpName:"リコオ 31カントリークラブ", debt:"12億円", debtNum:1200000000, creditors:300, holes:9, hasHotel:false, regDateStr:"2025/10/3", dDay:-289, url:"https://news.yahoo.co.jp/articles/61ff637d7abd1b4256e92ed580332d04cef4ac0f"},
-  {id:"kagoshima-2025-05-20", name:"가고시마 레이크사이드 27H & 온천호텔", jpName:"鹿児島レイクサイドゴルフ倶楽部", debt:"35億円", debtNum:3500000000, creditors:1200, holes:27, hasHotel:true, regDateStr:"2025/5/20", dDay:-425, url:"https://news.yahoo.co.jp/search?p=%E9%B9%BF%E5%85%90%E5%B3%B6%E3%83%AC%E3%82%A4%E3%82%AF%E3%82%B5%E3%82%A4%E3%83%89%E3%82%B4%E3%83%AB%E3%83%95&ei=utf-8"},
-  {id:"suginokidai-2025-03-18", name:"스기노키다이GC 18H - 46억 특별청산", jpName:"杉ノ木台ゴルフクラブ", debt:"46億円", debtNum:4600000000, creditors:800, holes:18, hasHotel:false, regDateStr:"2025/3/18", dDay:-488, url:"https://news.yahoo.co.jp/search?p=%E6%9D%89%E3%83%8E%E6%9C%A8%E5%8F%B0%E3%82%B4%E3%83%AB%E3%83%95%E3%82%AF%E3%83%A9%E3%83%96&ei=utf-8"},
-  {id:"fukuoka-2024-07-20", name:"후쿠오카 더 클래식 18H", jpName:"福岡ザ・クラシックゴルフクラブ", debt:"18億円", debtNum:1800000000, creditors:600, holes:18, hasHotel:false, regDateStr:"2024/7/20", dDay:-729, url:"https://news.yahoo.co.jp/search?p=%E7%A6%8F%E5%B2%A1%E3%82%B6%E3%83%BB%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%83%E3%82%AF%E3%82%B4%E3%83%AB%E3%83%95&ei=utf-8"}
+  {id:"tokyo-green-2026-08-19", name:"도쿄그린 18H", jpName:"東京グリーン 富里GC", todofuken:"지바", region:"간토", debt:"155億円", debtNum:15500000000, creditors:1, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"나리타 30분", intlAirport:"나리타 (NRT) 30분 / 하네다 (HND) 1시간 30분", koreaDist:"2시간 30분", regDateStr:"2026/8/19", deadlineStr:"2026/10/18", isAccurate:true, sponsor_status:"破産", sponsor_recruiting:false, nearbyCity:"지바현 도미사토시", nearbyHotels:"힐튼 나리타 20개", restaurants:"나리타산 우나기·라멘", shopping:"이온몰 나리타 200개", surround:"나리타 공항 인근.", url:"https://news.yahoo.co.jp/articles/c354e94ae3d368fd8e8403d01011fd21b29c02aa", saisei:"파산관재인 木村真理子弁護士, TDB 985881798, 1981년 설립, 富里GC 폐쇄"},
+  {id:"rokuishi-2026-09-01", name:"로쿠이시 27H 3코스 - 리솔HD 확정", jpName:"六石ゴルフ倶楽部", todofuken:"미에", region:"주부", debt:"56億円", debtNum:5600000000, creditors:1900, holes:27, hasHotel:false, hotelType:"없음", onsen:false, airport:"주부 1시간", intlAirport:"주부 센트레아 (NGO) 1시간 / 간사이 (KIX) 2시간", koreaDist:"2시간", regDateStr:"2026/9/1", deadlineStr:"2026/11/1", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"미에현 이나베시 / 욧카이치시", nearbyHotels:"미야코 호텔 욧카이치 20분", restaurants:"톤테키, 히츠마부시", shopping:"이온몰 욧카이치키타", surround:"27H 3코스. 5만1253명 입장.", url:"https://news.yahoo.co.jp/articles/1653753d0032ae79f68fdc6079826a8a0cd4883c", saisei:"2026/9/1 도쿄지법 민사재생, 감독위원 川瀬庸爾弁護士, 신청代理人 船橋茂紀弁護士, 리솔HD DIP+배당 지원, 예탁금+세금 부담"},
+  {id:"mikawa-2026-03-31", name:"미카와 컨트리클럽 18H - 스폰서募集中 ★", jpName:"三河カントリークラブ", todofuken:"아이치", region:"주부", debt:"120億円", debtNum:12000000000, creditors:1400, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"주부 1시간 30분", intlAirport:"주부 센트레아 (NGO) 1시간 30분", koreaDist:"2시간", regDateStr:"2026/3/31", deadlineStr:"2026/5/30", isAccurate:true, sponsor_status:"募集中", sponsor_recruiting:true, nearbyCity:"아이치현 신시로시 / 도요하시시", nearbyHotels:"아크리치 호텔 도요하시 30분", restaurants:"호우라이규, 카레우동", shopping:"이온몰 도요하시미나미", surround:"스기하라 테루오 감수 18H 6700야드, 2001년 매출 10억.", url:"https://news.yahoo.co.jp/articles/1206682fedf4ff55c558f7f5009c615a546c9948", saisei:"2026/3/31 오사카지법 민사재생, 감독위원 小谷隆幸弁護士, 신청代理人 岡田良洋弁護士, 미쓰비시UFJ 프리DIP, 이미 복수사 스폰서 지원 가능성 표명, スポンサー探索中"},
+  {id:"kunokihara-2026-07-03", name:"쿠노키하라GC 18H PGA", jpName:"国木原ゴルフ倶楽部", todofuken:"와카야마", region:"간사이", debt:"20億円", debtNum:2000000000, creditors:600, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"간사이 1시간", intlAirport:"간사이 (KIX) 1시간", koreaDist:"1시간 50분", regDateStr:"2026/7/3", deadlineStr:"2026/9/1", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"와카야마현 기미노초", nearbyHotels:"다이와 로이넷 와카야마 30분", restaurants:"산채요리, 와카야마 라멘", shopping:"이온몰 와카야마", surround:"PGA 시니어 개최 명문.", url:"https://news.yahoo.co.jp/articles/0e307ad2e2a723faa543e6ed603d25cdfcdc8388", saisei:"2026/7/3 와카야마지법, 후레아이 공원 파크골프 관리, 매출 8.6억→1.89억 하락"},
+  {id:"rico-2025-10-03", name:"리코오 31CC 9H", jpName:"リコオ 31カントリークラブ", todofuken:"이바라키", region:"간토", debt:"12億円", debtNum:1200000000, creditors:300, holes:9, hasHotel:false, hotelType:"없음", onsen:false, airport:"나리타 1시간 30분", intlAirport:"나리타 (NRT) 1시간 30분", koreaDist:"2시간 30분", regDateStr:"2025/10/3", deadlineStr:"2025/12/2", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"이바라키현 사카이마치", nearbyHotels:"호텔 루트인 고가", restaurants:"라멘", shopping:"이온몰 고가", surround:"9H 초보자용.", url:"https://news.yahoo.co.jp/articles/61ff637d7abd1b4256e92ed580332d04cef4ac0f", saisei:"2025/10/3 도쿄지법, 감독위원 井上裕明弁護士, 예탁금 건설비 전용"},
+  {id:"kagoshima-2025-05-20", name:"가고시마 레이크사이드 27H & 온천호텔 - 募集中", jpName:"鹿児島レイクサイドGC", todofuken:"가고시마", region:"규슈·오키나와", debt:"35億円", debtNum:3500000000, creditors:1200, holes:27, hasHotel:true, hotelType:"온천호텔", onsen:true, airport:"가고시마 40분", intlAirport:"가고시마 (KOJ) 40분 / 후쿠오카 (FUK) 2시간", koreaDist:"1시간 30분", regDateStr:"2025/05/20", deadlineStr:"2025/07/19", isAccurate:false, sponsor_status:"募集中", sponsor_recruiting:true, nearbyCity:"가고시마현 가고시마시", nearbyHotels:"자체 온천호텔 50실", restaurants:"흑돼지 샤브·와규", shopping:"이온몰 가고시마 170개", surround:"온천호텔 보유 27H 대형 리조트, 자가비율 85%, 한국인 선호 1위.", url:"https://news.yahoo.co.jp/search?p=%E9%B9%BF%E5%85%90%E5%B3%B6%E3%83%AC%E3%82%A4%E3%82%AF%E3%82%B5%E3%82%A4%E3%83%89%E3%82%B4%E3%83%AB%E3%83%95&ei=utf-8", saisei:"규슈 대형 리조트, TSR 스폰서모집중, 온천호텔 보유, 자가비율 높음, 27H"},
+  {id:"fukuoka-2024-07-20", name:"후쿠오카 더 클래식 18H - 募集中", jpName:"福岡ザ・クラシックGC", todofuken:"후쿠오카", region:"규슈·오키나와", debt:"18億円", debtNum:1800000000, creditors:600, holes:18, hasHotel:false, hotelType:"없음", onsen:true, airport:"후쿠오카 30분", intlAirport:"후쿠오카 (FUK) 30분 / 김해 (PUS) 1시간 15분", koreaDist:"1시간 15분", regDateStr:"2024/07/20", deadlineStr:"2024/09/18", isAccurate:false, sponsor_status:"募集中", sponsor_recruiting:true, nearbyCity:"후쿠오카현 후쿠오카시", nearbyHotels:"힐튼 씨호크 40분", restaurants:"하카타 라멘·모츠나베", shopping:"캐널시티 하카타 250개", surround:"후쿠오카 공항 30분, 김해 1시간 15분 최상.", url:"https://news.yahoo.co.jp/search?p=%E7%A6%8F%E5%B2%A1%E3%82%B6%E3%83%BB%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%83%E3%82%AF%E3%82%B4%E3%83%AB%E3%83%95&ei=utf-8", saisei:"후쿠오카 30분, 김해 1시간 15분, 온천 있음, TDB 민사재생, 스폰서 모집중"},
+  {id:"suginokidai-2025-03-18", name:"스기노키다이GC 18H - 특별청산", jpName:"杉ノ木台GC", todofuken:"후쿠이", region:"주부", debt:"46億円", debtNum:4600000000, creditors:800, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"고마쓰 1시간", intlAirport:"고마쓰 (KMQ) 1시간", koreaDist:"2시간 10분", regDateStr:"2025/03/18", deadlineStr:"2025/05/17", isAccurate:false, sponsor_status:"特別清算", sponsor_recruiting:false, nearbyCity:"후쿠이현 후쿠이시", nearbyHotels:"호텔 후지타 후쿠이", restaurants:"에치젠 소바", shopping:"이온몰 후쿠이", surround:"후쿠이 평야 18H.", url:"https://news.yahoo.co.jp/search?p=%E6%9D%89%E3%83%8E%E6%9C%A8%E5%8F%B0%E3%82%B4%E3%83%AB%E3%83%95%E3%82%AF%E3%83%A9%E3%83%96&ei=utf-8", saisei:"2025/03/18 후쿠이지법 특별청산, 타케다개발 운영, 별도기업 영업 계속"}
 ];
+
 let rateMap = {};
 data.forEach(d=>{ if(d.debtNum < 1500000000) rateMap[d.id]=5; else if(d.debtNum < 3000000000) rateMap[d.id]=10; else if(d.debtNum < 6000000000) rateMap[d.id]=10; else if(d.debtNum < 13000000000) rateMap[d.id]=8; else rateMap[d.id]=5; });
-function calc(item, ratePct){
+let securedRatio = 20;
+let securedAcqRate = 40;
+
+function setSecuredRatio(r){ securedRatio=r; render(); }
+function setSecuredAcqRate(r){ securedAcqRate=r; render(); }
+
+function calcSponsor(item, ratePct){
   const rate = ratePct/100;
-  const secured = item.debtNum * 0.2;
-  const deposit = item.debtNum * 0.8;
+  const secured = item.debtNum * (securedRatio/100);
+  const deposit = item.debtNum * ((100-securedRatio)/100);
   const distribution = deposit * rate;
-  const dip = 200000000 + item.holes * 15000000;
-  const acquisition = secured * 0.5 + distribution + dip;
-  const renovation = item.holes * 30000000 + (item.hasHotel?200000000:0);
-  const total = acquisition + renovation;
-  const ratio = total / item.debtNum;
-  return {rate, secured, deposit, distribution, dip, acquisition, renovation, total, ratio};
+  const securedAcq = secured * (securedAcqRate/100);
+  const acquisition = distribution + securedAcq;
+  const ratio = acquisition / item.debtNum;
+  const breakEven1 = Math.ceil(acquisition / 1100000);
+  const breakEven2 = Math.ceil(acquisition / 2090000);
+  const breakEven4 = Math.ceil(acquisition / 3850000);
+  return {rate, secured, deposit, distribution, securedAcq, acquisition, ratio, breakEven1, breakEven2, breakEven4, breakEvenWon1: breakEven1*10000000, breakEvenWon2: breakEven2*19000000, breakEvenWon4: breakEven4*35000000};
+}
+
+let currentTab='recruit';
+function setTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('[id^="tab-"]').forEach(el=>{el.classList.remove('tab-active'); el.classList.add('bg-white'); if(el.id==='tab-recruit'){el.classList.remove('bg-white'); el.classList.add('bg-rose-600','text-white');} });
+  document.getElementById('tab-'+tab).classList.add('tab-active');
+  if(tab!=='recruit') {document.getElementById('tab-recruit').classList.remove('tab-active','bg-rose-600','text-white'); document.getElementById('tab-recruit').classList.add('bg-white');}
+  if(tab==='recruit'){document.getElementById('tab-recruit').classList.add('bg-rose-600','text-white');}
+  ['recruit','all','membership','surround','sponsor'].forEach(t=> document.getElementById('view-'+t).classList.add('hidden'));
+  document.getElementById('view-'+tab).classList.remove('hidden');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 function applyAll(rate){ data.forEach(d=> rateMap[d.id]=rate); render(); }
 function onRateChange(id, val){ rateMap[id]=parseInt(val); render(); }
-function render(){
-  let totalInv=0, totalDebt=0;
-  document.getElementById('cnt').textContent = data.length;
-  document.getElementById('sTotal').textContent = data.length;
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = data.map(item=>{
-    const r = rateMap[item.id];
-    const c = calc(item, r);
-    totalInv += c.total; totalDebt += item.debtNum;
-    const rateClass = r===0?'bg-slate-100 text-slate-500': r===5?'bg-slate-50 text-slate-700 border': r===10?'bg-blue-50 text-blue-700 border-blue-300': r===15?'bg-amber-50 text-amber-700 border-amber-300':'bg-rose-50 text-rose-700 border-rose-300';
-    const ratioColor = c.ratio <=0.08?'text-slate-500': c.ratio <=0.12?'text-blue-600 font-black': c.ratio <=0.18?'text-amber-600 font-black':'text-rose-600 font-black';
-    return `<tr class="hover:bg-slate-50 border-b">
-      <td class="px-3 py-3"><div class="font-bold text-[13px]">${item.name}</div><div class="text-[11px] text-slate-500">${item.jpName}</div></td>
-      <td class="px-2 py-3 text-right font-bold">${item.debt}</td>
-      <td class="px-2 py-3 text-center">${item.creditors}명</td>
-      <td class="px-2 py-3 text-center">${item.holes}H</td>
-      <td class="px-2 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 border ${item.dDay<0?'text-rose-600':''}">D${item.dDay}</span></td>
-      <td class="px-2 py-3"><select onchange="onRateChange('${item.id}', this.value)" class="w-full text-[11px] p-1.5 rounded-full border font-bold ${rateClass}"><option value="0" ${r===0?'selected':''}>0% (플레이권만)</option><option value="5" ${r===5?'selected':''}>5% (불인기)</option><option value="10" ${r===10?'selected':''}>10% (통상) ★</option><option value="15" ${r===15?'selected':''}>15% (명문)</option><option value="20" ${r===20?'selected':''}>20% (최상급)</option></select></td>
-      <td class="px-2 py-3 text-right font-black">${(c.total/100000000).toFixed(1)}億円<div class="text-[10px] text-slate-400">${(c.distribution/100000000).toFixed(1)}억 배당</div></td>
-      <td class="px-2 py-3 text-center ${ratioColor}">${(c.ratio*100).toFixed(1)}%<div class="text-[10px]">${r}%</div></td>
-      <td class="px-3 py-3"><div class="flex gap-1"><a href="${item.url}" target="_blank" class="px-2 py-1 rounded text-[10px] bg-blue-600 text-white">원문보기 ↗</a><button onclick="openModal('${item.id}')" class="px-2 py-1 rounded text-[10px] bg-slate-900 text-white">요약</button></div></td>
-    </tr>`;
-  }).join('');
-  document.getElementById('sAvgRatio').textContent = totalDebt? (totalInv/totalDebt*100).toFixed(1)+'%' : '-';
-  document.getElementById('sTotalInv').textContent = (totalInv/100000000).toFixed(1)+'億円';
-  document.getElementById('s10pct').textContent = (totalDebt*0.1/100000000).toFixed(1)+'億円';
+function goTab(tab, highlightId){
+  setTab(tab);
+  if(highlightId){
+    setTimeout(()=>{
+      const el = document.getElementById('row-'+highlightId);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('bg-yellow-100'); setTimeout(()=>el.classList.remove('bg-yellow-100'),1500); }
+    },300);
+  }
 }
+function filterRecruitOnly(){ setTab('recruit'); }
+function filterAll(){ setTab('all'); }
+
+function render(){
+  [10,20,30].forEach(v=>{
+    const el = document.getElementById('sr'+v);
+    if(el){ el.className = v===securedRatio? 'px-2 py-1 rounded text-[11px] bg-blue-600 text-white' : 'px-2 py-1 rounded text-[11px] border bg-white'; }
+  });
+  [30,40,50].forEach(v=>{
+    const el = document.getElementById('sa'+v);
+    if(el){ el.className = v===securedAcqRate? 'px-2 py-1 rounded text-[11px] bg-blue-600 text-white' : 'px-2 py-1 rounded text-[11px] border bg-white'; }
+  });
+  document.getElementById('curSr').textContent = securedRatio+'%';
+  document.getElementById('curSa').textContent = securedAcqRate+'%';
+  document.getElementById('curDiscount').textContent = (100-securedAcqRate)+'% 할인';
+
+  const allCalcs = data.map(d=> ({item:d, calc:calcSponsor(d, rateMap[d.id])}));
+  const recruitCalcs = allCalcs.filter(c=>c.item.sponsor_recruiting);
+  const avg1 = Math.round(allCalcs.reduce((s,c)=>s+c.calc.breakEven1,0)/allCalcs.length);
+  const avg2 = Math.round(allCalcs.reduce((s,c)=>s+c.calc.breakEven2,0)/allCalcs.length);
+  const avg4 = Math.round(allCalcs.reduce((s,c)=>s+c.calc.breakEven4,0)/allCalcs.length);
+
+  document.getElementById('cnt').textContent = data.length;
+  document.getElementById('cntRecruit').textContent = recruitCalcs.length;
+  document.getElementById('sRecruit').textContent = recruitCalcs.length;
+  document.getElementById('recruitCount').textContent = recruitCalcs.length;
+  document.getElementById('sTotal').textContent = data.length + ' (확정 ' + data.filter(d=>d.isAccurate).length + ')';
+  document.getElementById('sCond').textContent = `담보 ${securedRatio}% × ${securedAcqRate}% (할인 ${100-securedAcqRate}%)`;
+  document.getElementById('sAvg1').textContent = avg1+'개';
+  document.getElementById('sAvg2').textContent = avg2+'개';
+  document.getElementById('sAvg4').textContent = avg4+'개';
+
+  // recruit view - 매일 동일하게 표시
+  if(currentTab==='recruit' || document.getElementById('view-recruit')){
+    document.getElementById('recruitGrid').innerHTML = recruitCalcs.map(({item,calc})=>{
+      const r = rateMap[item.id];
+      return `<div id="row-${item.id}" class="border border-rose-200 rounded-xl p-5 bg-gradient-to-r from-rose-50 to-white">
+        <div class="flex justify-between"><div class="font-black text-[14px]">🚨 ${item.name} - 民事再生 スポンサー募集中</div><span class="px-3 py-1 rounded-full text-[11px] font-black bg-rose-600 text-white recruit-pulse">募集中 매일 자동</span></div>
+        <div class="mt-3 grid grid-cols-3 gap-4 text-[11px]">
+          <div>
+            <div class="font-black">📋 民事再生 정보</div>
+            <div class="mt-1 p-2 bg-white rounded border"><b>상태:</b> ${item.sponsor_status} - ${item.sponsor_recruiting?'스폰서 모집중':'확정'}<br><b>등록일:</b> ${item.regDateStr} ${item.isAccurate?'TDB 확정':'미확인'}<br><b>마감일:</b> ${item.deadlineStr}<br><br><b>再生 상세:</b><br>${item.saisei}<br><br><b>부채:</b> ${item.debt} / 채권자 ${item.creditors}명<br><b>담보:</b> ${securedRatio}% = ${(calc.secured/100000000).toFixed(1)}억 × ${securedAcqRate}% = <b>${(calc.securedAcq/100000000).toFixed(1)}억</b> (${100-securedAcqRate}% 할인)<br><b>배당:</b> ${100-securedRatio}% = ${(calc.deposit/100000000).toFixed(1)}억 × ${r}% = ${(calc.distribution/100000000).toFixed(1)}억<br><b>인수자금:</b> <span class="font-black text-rose-600">${(calc.acquisition/100000000).toFixed(1)}억</span> = 배당+담보 / 부채대비 ${(calc.ratio*100).toFixed(1)}%</div>
+          </div>
+          <div>
+            <div class="font-black">✈️ 국제공항·주변환경 (숙소 있으면 식당·쇼핑몰 / 없으면 인근 호텔 도시)</div>
+            <div class="mt-1 p-2 bg-white rounded border"><b>국제공항:</b> ${item.intlAirport}<br><b>공항까지:</b> ${item.airport}<br><b>한국에서:</b> ${item.koreaDist}<br><br><b>인근 도시:</b> ${item.nearbyCity}<br><b>인근 호텔:</b> ${item.nearbyHotels}<br><br><b>식당:</b> ${item.restaurants}<br><b>쇼핑몰:</b> ${item.shopping}<br><b>주변환경:</b> ${item.surround}</div>
+          </div>
+          <div>
+            <div class="font-black">💳 회원권 3종 손익분기 (적절비율)</div>
+            <div class="mt-1 space-y-2">
+              <div class="p-2 bg-blue-50 rounded border"><div class="font-black text-blue-700">개인 1명 1000만원 (110만엔)</div><div class="text-lg font-black">${calc.breakEven1}개</div><div>1000만×${calc.breakEven1}개 = ${(calc.breakEvenWon1/100000000).toFixed(1)}억원</div></div>
+              <div class="p-2 bg-emerald-50 rounded border border-emerald-200"><div class="font-black text-emerald-700">무기명 2인 1900만원 (209만엔) 1인당 950만 5%할인</div><div class="text-lg font-black">${calc.breakEven2}개</div><div>1900만×${calc.breakEven2}개 = ${(calc.breakEvenWon2/100000000).toFixed(1)}억원</div></div>
+              <div class="p-2 bg-amber-50 rounded border border-amber-200"><div class="font-black text-amber-700">무기명 4인 3500만원 (385만엔) 1인당 875만 12.5%할인</div><div class="text-lg font-black">${calc.breakEven4}개</div><div>3500만×${calc.breakEven4}개 = ${(calc.breakEvenWon4/100000000).toFixed(1)}억원</div></div>
+            </div>
+            <div class="mt-2 p-2 bg-slate-50 rounded text-[10px]">매일 23:30 Cron으로 TDB/TSR/관보/야후에서 民事再生 スポンサー募集中 자동 수집 → KV 업데이트 → 앱 전체에 동일 표시 / 담보도 ${100-securedAcqRate}% 할인 적용</div>
+            <div class="mt-2 flex gap-2"><a href="${item.url}" target="_blank" class="px-3 py-1.5 bg-rose-600 text-white rounded text-xs font-bold">Yahoo! 원문 ↗</a><button onclick="openModal('${item.id}')" class="px-3 py-1.5 bg-slate-900 text-white rounded text-xs">상세 + 담보 할인</button></div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if(currentTab==='all'){
+    document.getElementById('tbody').innerHTML = allCalcs.map(({item, calc})=>{
+      const r = rateMap[item.id];
+      const rateClass = r===0?'bg-slate-100': r===5?'bg-slate-50': r===10?'bg-blue-50 text-blue-700 border-blue-300': r===15?'bg-amber-50':'bg-rose-50';
+      const statusColor = item.sponsor_recruiting?'bg-rose-600 text-white': item.sponsor_status==='確定'?'bg-blue-600 text-white':'bg-slate-100';
+      return `<tr id="row-${item.id}" class="hover:bg-slate-50 border-b ${item.sponsor_recruiting?'bg-rose-50':''}">
+        <td class="px-3 py-3 clickable" onclick="goTab('recruit','${item.id}')"><div class="font-bold text-[12px]">${item.name} ${item.sponsor_recruiting?'🚨':''}</div><div class="text-[10px] text-slate-500">${item.jpName}</div></td>
+        <td class="px-2 py-3 text-right font-bold">${item.debt}</td>
+        <td class="px-2 py-3 text-center text-[11px]">${securedRatio}%×${securedAcqRate}%<div class="text-[9px]">${(calc.secured/100000000).toFixed(1)}억→${(calc.securedAcq/100000000).toFixed(1)}억</div></td>
+        <td class="px-2 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-black ${statusColor}">${item.sponsor_status}${item.sponsor_recruiting?' 募集中':''}</span></td>
+        <td class="px-2 py-3 text-[10px] clickable" onclick="goTab('surround','${item.id}')">${item.intlAirport.split('/')[0]}</td>
+        <td class="px-2 py-3 clickable" onclick="goTab('sponsor','${item.id}')"><select onchange="onRateChange('${item.id}', this.value)" class="w-full text-[10px] p-1 rounded-full border font-bold ${rateClass}"><option value="0" ${r===0?'selected':''}>0%</option><option value="5" ${r===5?'selected':''}>5%</option><option value="10" ${r===10?'selected':''}>10% ★</option><option value="15" ${r===15?'selected':''}>15%</option><option value="20" ${r===20?'selected':''}>20%</option></select></td>
+        <td class="px-2 py-3 text-right font-black">${(calc.acquisition/100000000).toFixed(1)}억<div class="text-[9px]">배당 ${(calc.distribution/100000000).toFixed(1)}억+담보 ${(calc.securedAcq/100000000).toFixed(1)}억</div></td>
+        <td class="px-2 py-3 text-center clickable" onclick="goTab('membership','${item.id}')"><div class="font-bold text-blue-600">${calc.breakEven1}개</div></td>
+        <td class="px-2 py-3 text-center clickable" onclick="goTab('membership','${item.id}')"><div class="font-bold text-emerald-600">${calc.breakEven2}개</div></td>
+        <td class="px-2 py-3 text-center clickable" onclick="goTab('membership','${item.id}')"><div class="font-bold text-amber-600">${calc.breakEven4}개</div></td>
+        <td class="px-3 py-3"><a href="${item.url}" target="_blank" class="px-2 py-1 rounded text-[10px] bg-blue-600 text-white">원문 ↗</a></td>
+      </tr>`;
+    }).join('');
+  } else if(currentTab==='membership'){
+    document.getElementById('memberGrid').innerHTML = allCalcs.map(({item,calc})=>{
+      return `<div id="row-${item.id}" class="border rounded-lg p-4 bg-white ${item.sponsor_recruiting?'border-rose-300':''}"><div class="font-bold text-[13px]">${item.name} - ${item.sponsor_status} ${item.sponsor_recruiting?'🚨募集中 매일 자동':''} / 인수 ${(calc.acquisition/100000000).toFixed(1)}억 (담보 ${securedRatio}%×${securedAcqRate}% / 변제율 ${rateMap[item.id]}%)</div><div class="mt-2 grid grid-cols-3 gap-3 text-[11px]"><div class="p-3 bg-blue-50 rounded border"><div class="font-black">개인 1000만 (110만엔)</div><div class="text-xl font-black">${calc.breakEven1}개</div></div><div class="p-3 bg-emerald-50 rounded border"><div class="font-black">무기명 2인 1900만 (209만엔) 1인950만</div><div class="text-xl font-black">${calc.breakEven2}개</div></div><div class="p-3 bg-amber-50 rounded border"><div class="font-black">무기명 4인 3500만 (385만엔) 1인875만</div><div class="text-xl font-black">${calc.breakEven4}개</div></div></div></div>`;
+    }).join('');
+  } else if(currentTab==='surround'){
+    document.getElementById('surroundGrid').innerHTML = allCalcs.map(({item,calc})=>{
+      return `<div id="row-${item.id}" class="bg-white rounded-xl border p-5 ${item.sponsor_recruiting?'border-rose-200':''}"><div class="font-bold text-[14px]">${item.name} ${item.sponsor_recruiting?'🚨募集中':''} - ${item.intlAirport}</div><div class="mt-2 text-[11px] grid grid-cols-2 gap-4"><div><b>民事再生:</b> ${item.saisei}<br><br><b>담보:</b> ${securedRatio}%×${securedAcqRate}% = ${(calc.securedAcq/100000000).toFixed(1)}억 (${100-securedAcqRate}%할인)<br><b>인근:</b> ${item.nearbyCity}<br><b>호텔:</b> ${item.nearbyHotels}<br><b>공항:</b> ${item.intlAirport}</div><div><b>식당:</b> ${item.restaurants}<br><b>쇼핑:</b> ${item.shopping}<br><b>주변:</b> ${item.surround}</div></div></div>`;
+    }).join('');
+  } else if(currentTab==='sponsor'){
+    document.getElementById('sponsorGrid').innerHTML = allCalcs.map(({item,calc})=>{
+      const r = rateMap[item.id];
+      return `<div id="row-${item.id}" class="border rounded-lg p-4 bg-white ${item.sponsor_recruiting?'border-rose-300 bg-rose-50':''}"><div class="font-bold text-[13px]">${item.name} - ${item.sponsor_status} ${item.sponsor_recruiting?'🚨募集中':''} / 담보 ${securedRatio}%×${securedAcqRate}% + 변제율 ${r}%</div><div class="text-[11px] mt-2">부채 ${item.debt}<br>담보 ${securedRatio}% = ${(calc.secured/100000000).toFixed(1)}억 × ${securedAcqRate}% = <b>${(calc.securedAcq/100000000).toFixed(1)}억</b> (${100-securedAcqRate}% 할인) - 은행은 ${(calc.secured-calc.securedAcq)/100000000}억 손해<br>예탁금 ${100-securedRatio}% = ${(calc.deposit/100000000).toFixed(1)}억 × ${r}% = <b>${(calc.distribution/100000000).toFixed(1)}억 배당</b><br><b>인수자금 ${(calc.acquisition/100000000).toFixed(1)}억 = 담보 + 배당</b><br>손익분기: 1000만 ${calc.breakEven1}개 / 1900만 ${calc.breakEven2}개 / 3500만 ${calc.breakEven4}개<br><br><b>民事再生:</b> ${item.saisei}</div><input type="range" min="0" max="20" step="5" value="${r}" oninput="onRateChange('${item.id}', this.value)" class="w-full mt-2"></div>`;
+    }).join('');
+  }
+}
+
 function openModal(id){
   const item = data.find(d=>d.id===id);
   const r = rateMap[id];
-  const c = calc(item, r);
-  document.getElementById('modalTitle').textContent = item.name + ' - 변제율 ' + r + '%';
+  const c = calcSponsor(item, r);
+  document.getElementById('modalTitle').textContent = item.name + ' - 民事再生 募集中 + 담보 할인 + 회원권 3종';
   document.getElementById('modalContent').innerHTML = `
-    <div class="mb-4"><label class="text-xs font-bold">변제율 슬라이더: <span class="text-blue-600">${r}%</span></label><input type="range" min="0" max="20" step="5" value="${r}" oninput="onSlider('${id}', this.value)" class="w-full"><div class="flex justify-between text-[10px] text-slate-400"><span>0% 플레이권만</span><span>5% 불인기</span><span>10% 통상</span><span>15% 명문</span><span>20% 최상급</span></div></div>
-    <table class="w-full text-xs border"><tr class="bg-slate-50"><td class="p-2 border">부채 총액</td><td class="p-2 border text-right font-bold">${item.debt}</td></tr><tr><td class="p-2 border">담보 20%</td><td class="p-2 border text-right">${(c.secured/100000000).toFixed(2)}억</td></tr><tr><td class="p-2 border">예탁금 80%</td><td class="p-2 border text-right">${(c.deposit/100000000).toFixed(2)}억</td></tr><tr class="bg-blue-50"><td class="p-2 border font-bold">변제율 ${r}% → 배당금</td><td class="p-2 border text-right font-black text-blue-600">${(c.distribution/100000000).toFixed(2)}억</td></tr><tr><td class="p-2 border">DIP</td><td class="p-2 border text-right">${(c.dip/100000000).toFixed(2)}억</td></tr><tr class="bg-amber-50"><td class="p-2 border font-black">총 투자</td><td class="p-2 border text-right font-black text-lg">${(c.total/100000000).toFixed(2)}억</td></tr><tr class="bg-blue-50"><td class="p-2 border font-black">부채 대비</td><td class="p-2 border text-right font-black">${(c.ratio*100).toFixed(1)}%</td></tr></table>
-    <div class="mt-4 p-3 rounded-lg bg-slate-50 text-[11px]">${r===0?'0% 플레이권만: 현금 0원, 가장 불인기':r===5?'5% 불인기: 지방 노후':r===10?'10% 통상 시세: 일본 70%가 이 구간 - 로쿠이시 56억 5.6억 배당':r===15?'15% 명문: PGA 개최, 자가 80% 이상':'20% 최상급 명문'}</div>
-    <div class="mt-3"><a href="${item.url}" target="_blank" class="block w-full text-center py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">Yahoo! 원문 보기 ↗</a></div>
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <div class="font-bold text-xs">🚨 民事再生 スポンサー募集中 정보 (매일 자동)</div>
+        <div class="text-[11px] mt-2 space-y-2">
+          <div class="p-3 ${item.sponsor_recruiting?'bg-rose-50 border-rose-200':'bg-blue-50 border-blue-200'} border rounded"><div class="font-black">상태: ${item.sponsor_status} ${item.sponsor_recruiting?'🚨 募集中 매일 자동 수집':''}</div><div class="mt-1">${item.saisei}<br><br>등록일: ${item.regDateStr} ${item.isAccurate?'TDB 확정':''} / 마감일: ${item.deadlineStr}<br>부채: ${item.debt} / 채권자 ${item.creditors}명 / ${item.holes}H ${item.hotelType}</div></div>
+          <div class="p-3 bg-blue-50 border rounded"><div class="font-black">담보 할인 구조 - 담보도 ${100-securedAcqRate}% 할인</div><div class="mt-1">담보 ${securedRatio}% = ${(c.secured/100000000).toFixed(1)}억 × ${securedAcqRate}% = <b>${(c.securedAcq/100000000).toFixed(1)}억</b>만 주고 인수 → 은행 ${(c.secured-c.securedAcq)/100000000}억 손해<br>예탁금 ${100-securedRatio}% = ${(c.deposit/100000000).toFixed(1)}억 × ${r}% = ${(c.distribution/100000000).toFixed(1)}억<br><b>인수자금 ${(c.acquisition/100000000).toFixed(1)}억 = 담보 + 배당</b> / 부채대비 ${(c.ratio*100).toFixed(1)}%</div></div>
+          <div><b>국제공항:</b> ${item.intlAirport}<br><b>인근:</b> ${item.nearbyCity}<br><b>호텔:</b> ${item.nearbyHotels}<br><b>식당:</b> ${item.restaurants}<br><b>쇼핑:</b> ${item.shopping}<br><b>주변:</b> ${item.surround}</div>
+        </div>
+      </div>
+      <div>
+        <div class="font-bold text-xs">💳 회원권 3종 - 적절비율 (매일 자동 募集中 포함)</div>
+        <div class="text-[11px] mt-2 space-y-2">
+          <div class="p-3 bg-blue-50 border rounded"><div class="font-black">개인 1명 1000만원 (110만엔) 기준</div><div class="text-lg font-black">${c.breakEven1}개</div><div>1000만×${c.breakEven1}개 = ${(c.breakEvenWon1/100000000).toFixed(1)}억원</div></div>
+          <div class="p-3 bg-emerald-50 border border-emerald-200 rounded"><div class="font-black">무기명 2인 1900만원 (209만엔) 1인당 950만원 5%할인</div><div class="text-lg font-black">${c.breakEven2}개</div><div>1900만×${c.breakEven2}개 = ${(c.breakEvenWon2/100000000).toFixed(1)}억원</div></div>
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded"><div class="font-black">무기명 4인 3500만원 (385만엔) 1인당 875만원 12.5%할인</div><div class="text-lg font-black">${c.breakEven4}개</div><div>3500만×${c.breakEven4}개 = ${(c.breakEvenWon4/100000000).toFixed(1)}억원</div></div>
+          <div class="p-2 bg-rose-50 border border-rose-200 rounded text-[10px]">🚨 ${item.sponsor_recruiting?'이 골프장은 民事再生 スポンサー募集中으로 매일 23:30 자동 수집되어 앱에 동일하게 표시됩니다.':''} 담보도 ${100-securedAcqRate}% 할인 / 현재 담보 ${securedRatio}%×${securedAcqRate}%</div>
+        </div>
+        <div class="mt-3"><label class="text-[11px] font-bold">변제율: ${r}%</label><input type="range" min="0" max="20" step="5" value="${r}" oninput="onSlider('${id}', this.value)" class="w-full"></div>
+      </div>
+    </div>
+    <div class="mt-4"><a href="${item.url}" target="_blank" class="block w-full text-center py-2 bg-rose-600 text-white rounded-lg text-sm font-bold">Yahoo! 원문 보기 ↗ (民事再生 スポンサー募集中)</a></div>
   `;
   document.getElementById('detailModal').classList.remove('hidden');
 }

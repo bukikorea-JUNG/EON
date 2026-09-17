@@ -1,1 +1,1 @@
-export default (req,res)=>{res.setHeader("Access-Control-Allow-Origin","*"); res.json({ok:true,time:new Date().toISOString()})}
+export default (req,res)=>{res.setHeader("Access-Control-Allow-Origin","*"); res.json({ok:true})}

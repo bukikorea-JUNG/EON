@@ -1,0 +1,18 @@
+name = "tdb-cron"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[triggers]
+crons = ["30 23 * * *"]
+
+[[kv_namespaces]]
+binding = "TDB_LOG"
+# 아래 ID는 `npx wrangler kv namespace list` 후 교체하거나,
+# wrangler가 자동 생성하게 하려면 id를 비우고 배포하세요
+id = "REPLACE_WITH_YOUR_KV_ID"
+preview_id = "REPLACE_WITH_YOUR_KV_PREVIEW_ID"
+
+# 로그 관찰
+[observability]
+enabled = true

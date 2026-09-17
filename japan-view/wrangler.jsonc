@@ -1,0 +1,22 @@
+{
+  "name": "tdb-cron",
+  "main": "src/index.js",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "triggers": {
+    "crons": [
+      "30 23 * * *"
+    ]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "TDB_LOG",
+      "id": "REPLACE_WITH_YOUR_KV_ID"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

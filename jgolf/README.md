@@ -1,9 +1,7 @@
-# jgolf - TDB/TSR 대시보드
+# jgolf - 최종 (0% + 엔 표기 + 실시간)
 
-빌드 에러 수정본 (package.json에서 @vercel/kv 제거)
+- 0% 플레이권만 / 10% / 15% / 20% 반환율
+- 전부 엔(円) 표기: 億円, 万円
+- Cloudflare tdb-cron과 실시간 연동: /api/history -> https://tdb-cron.bukikorea.workers.dev/
 
-- index.html: 대시보드
-- api/: 크론/API (KV 없이도 동작)
-- vercel.json: 정적 라우팅
-
-Vercel에서 Root Directory = jgolf 로 설정하고 배포하면 404/ETARGET 해결
+Vercel Root Directory = jgolf 로 설정 후 배포

@@ -1,9 +1,8 @@
 export default async function handler(req, res) {
-  const seoulTime = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-  return res.status(200).json({ 
-    ok: true, 
-    time: seoulTime,
-    note: "Cloudflare tdb-cron이 실제 데이터 수집 (08:30 KST)",
-    kv: "Vercel KV는 Settings > Storage에서 추가하면 활성화됨"
+  return res.status(200).json({
+    ok: true,
+    time: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
+    note: "메인 수집은 Cloudflare tdb-cron 08:30 JST",
+    cloudflare: "https://tdb-cron.bukikorea.workers.dev/"
   });
 }

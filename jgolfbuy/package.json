@@ -1,0 +1,13 @@
+{
+  "name": "tdb-cron",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker Cron - 매일 08:30 KST TDB/TSR 체크 + KV 누적",
+  "scripts": {
+    "dev": "wrangler dev --cron '30 23 * * *'",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

@@ -1,15 +1,16 @@
 {
-  "name": "tdb-cron",
+  "name": "tdb-cron-vercel",
   "version": "1.0.0",
-  "description": "TDB/TSR 전국 체크 - 매일 08:30 KST 크론 + KV 누적 + 대시보드 API",
+  "private": true,
   "scripts": {
-    "dev": "wrangler dev --cron '30 23 * * *'",
-    "deploy": "wrangler deploy",
-    "kv:create": "wrangler kv namespace create tdb-log",
-    "kv:list": "wrangler kv key list --binding=TDB_LOG",
-    "tail": "wrangler tail"
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@vercel/kv": "^1.0.19",
+    "next": "^14.0.0"
   },
   "devDependencies": {
-    "wrangler": "^3.90.0"
+    "vercel": "^35.0.0"
   }
 }

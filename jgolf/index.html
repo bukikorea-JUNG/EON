@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>골프장 M&A - 메뉴바로 알기 쉽게 정리 - 등록일·마감일·숙소·AI·회원권</title>
+<title>골프장 M&A - 담보 비율 0%~70% + 담보 인수율 30%~70% 확장 - 등록일·마감일·숙소·AI·회원권</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -20,7 +20,7 @@ body{font-family:'Noto Sans KR',sans-serif}
       <div class="w-10 h-10 bg-black text-white flex items-center justify-center font-black rounded-lg text-lg">G</div>
       <div>
         <div class="font-black text-[15px]">골프장 M&A 매물 - 알기 쉽게 정리</div>
-        <div class="text-[11px] text-slate-500">메뉴바 클릭 → 해당 화면 / 카드 클릭 → 상세 / 등록일·마감일·숙소·AI·회원권 1000/1900/3500</div>
+        <div class="text-[11px] text-slate-500">메뉴바 클릭 → 해당 화면 / 담보 비율 0~70% + 인수율 30~70% 슬라이더 / 등록일·마감일·숙소·AI·회원권 1000/1900/3500</div>
       </div>
     </div>
     <div class="flex gap-2">
@@ -76,8 +76,37 @@ body{font-family:'Noto Sans KR',sans-serif}
   <details class="bg-white rounded-xl border p-4 mb-6">
     <summary class="font-black text-sm cursor-pointer">⚙️ 설정 - 담보 할인·변제율 (클릭해서 펼치기) - 현재: 담보 <span id="curSetting">20%×40% (60% 할인) / 변제율 10%</span></summary>
     <div class="mt-4 grid grid-cols-4 gap-4 text-[11px]">
-      <div class="p-3 bg-slate-50 rounded-lg border"><div class="font-black">담보 비율 (부채 중)</div><div class="mt-2 flex gap-1"><button onclick="setSecuredRatio(10)" id="sr10" class="px-3 py-1.5 rounded-full border bg-white">10%</button><button onclick="setSecuredRatio(20)" id="sr20" class="px-3 py-1.5 rounded-full bg-blue-600 text-white">20% ★</button><button onclick="setSecuredRatio(30)" id="sr30" class="px-3 py-1.5 rounded-full border bg-white">30%</button></div></div>
-      <div class="p-3 bg-slate-50 rounded-lg border"><div class="font-black">담보 인수율 (할인)</div><div class="mt-2 flex gap-1"><button onclick="setSecuredAcqRate(30)" id="sa30" class="px-3 py-1.5 rounded-full border bg-white">30%</button><button onclick="setSecuredAcqRate(40)" id="sa40" class="px-3 py-1.5 rounded-full bg-blue-600 text-white">40% ★</button><button onclick="setSecuredAcqRate(50)" id="sa50" class="px-3 py-1.5 rounded-full border bg-white">50%</button></div><div class="text-[10px] mt-1">현재 <span id="curSa">40%</span> = <span id="curDiscount">60% 할인</span></div></div>
+      <div class="p-3 bg-slate-50 rounded-lg border col-span-2">
+        <div class="font-black">담보 비율 (부채 중) 0%~70% 확장</div>
+        <div class="mt-2">
+          <input type="range" id="srSlider" min="0" max="70" step="5" value="20" oninput="setSecuredRatio(parseInt(this.value))" class="w-full accent-blue-600">
+          <div class="flex justify-between text-[9px] text-slate-500 mt-1"><span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>50%</span><span>70%</span></div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <button onclick="setSecuredRatio(0)" id="sr0" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">0% (담보없음)</button>
+          <button onclick="setSecuredRatio(10)" id="sr10" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">10%</button>
+          <button onclick="setSecuredRatio(20)" id="sr20" class="px-2.5 py-1 rounded-full bg-blue-600 text-white text-[10px]">20% 평균 ★</button>
+          <button onclick="setSecuredRatio(30)" id="sr30" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">30%</button>
+          <button onclick="setSecuredRatio(50)" id="sr50" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">50% 리조트</button>
+          <button onclick="setSecuredRatio(70)" id="sr70" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">70% 고담보</button>
+        </div>
+        <div class="mt-2 text-[11px]">현재: <span id="curSr" class="font-black text-blue-600 text-[13px]">20%</span> <span id="curSrDetail" class="text-slate-500">예탁금 80%</span></div>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-lg border col-span-2">
+        <div class="font-black">담보 인수율 (할인) 30%~70% 확장 - 담보도 할인</div>
+        <div class="mt-2">
+          <input type="range" id="saSlider" min="30" max="70" step="5" value="40" oninput="setSecuredAcqRate(parseInt(this.value))" class="w-full accent-blue-600">
+          <div class="flex justify-between text-[9px] text-slate-500 mt-1"><span>30% (70%할인)</span><span>40%</span><span>50%</span><span>60%</span><span>70% (30%할인)</span></div>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-1">
+          <button onclick="setSecuredAcqRate(30)" id="sa30" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">30% (70% 할인)</button>
+          <button onclick="setSecuredAcqRate(40)" id="sa40" class="px-2.5 py-1 rounded-full bg-blue-600 text-white text-[10px]">40% (60% 할인) ★</button>
+          <button onclick="setSecuredAcqRate(50)" id="sa50" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">50% (50% 할인)</button>
+          <button onclick="setSecuredAcqRate(60)" id="sa60" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">60% (40% 할인)</button>
+          <button onclick="setSecuredAcqRate(70)" id="sa70" class="px-2.5 py-1 rounded-full border bg-white text-[10px]">70% (30% 할인)</button>
+        </div>
+        <div class="mt-2 text-[11px]">현재: <span id="curSa" class="font-black text-blue-600 text-[13px]">40%</span> = <span id="curDiscount" class="font-black">60% 할인</span> / 은행 손해 <span id="curBankLoss">60%</span></div>
+      </div>
       <div class="p-3 bg-blue-50 rounded-lg border"><div class="font-black">회원권 3종</div><div class="mt-1">개인 1000만(110만엔)<br>2인 1900만(209만엔) 1인950만<br>4인 3500만(385만엔) 1인875만</div></div>
       <div class="p-3 bg-purple-50 rounded-lg border"><div class="font-black">AI 등급</div><div class="mt-1">S급: 온천호텔+27H+규슈<br>A급: 온천 or 호텔 or 27H<br>B급: 간사이·주부 18H</div></div>
     </div>
@@ -150,7 +179,7 @@ body{font-family:'Noto Sans KR',sans-serif}
 const data = [
   {id:"tokyo-green-2026-08-19", name:"도쿄그린 18H", jpName:"東京グリーン 富里GC", region:"간토", todofuken:"지바", debt:"155億円", debtNum:15500000000, creditors:1, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"나리타 30분", intlAirport:"나리타 (NRT) 30분", koreaDist:"2시간 30분", regDateStr:"2026/08/19", deadlineStr:"2026/10/18", isAccurate:true, sponsor_status:"破産", sponsor_recruiting:false, nearbyCity:"지바현 도미사토시", nearbyHotels:"힐튼 나리타 20개", restaurants:"나리타산 우나기·라멘", shopping:"이온몰 나리타 200개", surround:"나리타 공항 인근 평지.", url:"https://news.yahoo.co.jp/articles/c354e94ae3d368fd8e8403d01011fd21b29c02aa", saisei:"파산관재인 木村真理子, TDB 985881798, 富里GC 폐쇄"},
   {id:"rokuishi-2026-09-01", name:"로쿠이시 27H 3코스", jpName:"六石ゴルフ倶楽部", region:"주부", todofuken:"미에", debt:"56億円", debtNum:5600000000, creditors:1900, holes:27, hasHotel:false, hotelType:"없음", onsen:false, airport:"주부 1시간", intlAirport:"주부 센트레아 (NGO) 1시간", koreaDist:"2시간", regDateStr:"2026/09/01", deadlineStr:"2026/11/01", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"미에현 이나베시", nearbyHotels:"미야코 호텔 욧카이치 20분", restaurants:"톤테키, 히츠마부시", shopping:"이온몰 욧카이치키타", surround:"27H 3코스 5만1253명.", url:"https://news.yahoo.co.jp/articles/1653753d0032ae79f68fdc6079826a8a0cd4883c", saisei:"도쿄지법 민사재생, 리솔HD 확정, DIP+배당"},
-  {id:"mikawa-2026-03-31", name:"미카와 CC 18H - 募集中 ★", jpName:"三河カントリークラブ", region:"주부", todofuken:"아이치", debt:"120億円", debtNum:12000000000, creditors:1400, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"주부 1시간 30분", intlAirport:"주부 센트레아 (NGO) 1시간 30분", koreaDist:"2시간", regDateStr:"2026/03/31", deadlineStr:"2026/05/30", isAccurate:true, sponsor_status:"募集中", sponsor_recruiting:true, nearbyCity:"아이치현 신시로시", nearbyHotels:"아크리치 호텔 도요하시 30분", restaurants:"호우라이규", shopping:"이온몰 도요하시미나미", surround:"스기하라 테루오 감수 6700야드.", url:"https://news.yahoo.co.jp/articles/1206682fedf4ff55c558f7f5009c615a546c9948", saisei:"오사카지법 민사재생, 미쓰비시UFJ 프리DIP, 복수사 스폰서申し出, 募集中"},
+  {id:"mikawa-2026-03-31", name:"미카와 CC 18H - 모집종료/심사중", jpName:"三河カントリークラブ", region:"주부", todofuken:"아이치", debt:"120億円", debtNum:12000000000, creditors:1400, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"주부 1시간 30분", intlAirport:"주부 센트레아 (NGO) 1시간 30분", koreaDist:"2시간", regDateStr:"2026/03/31", deadlineStr:"2026/05/30", isAccurate:true, sponsor_status:"심사중", sponsor_recruiting:false, nearbyCity:"아이치현 신시로시", nearbyHotels:"아크리치 호텔 도요하시 30분", restaurants:"호우라이규", shopping:"이온몰 도요하시미나미", surround:"스기하라 테루오 감수 6700야드. 채권신고 마감 05/30 종료됨, 현재 재생계획안 심사중.", url:"https://news.yahoo.co.jp/articles/1206682fedf4ff55c558f7f5009c615a546c9948", saisei:"오사카지법 민사재생 2026/03/31, 채권신고 마감 2026/05/30 종료됨 - 현재 심사중, 미쓰비시UFJ 프리DIP, 복수사 스폰서申し出 완료"},
   {id:"kunokihara-2026-07-03", name:"쿠노키하라GC 18H", jpName:"国木原ゴルフ倶楽部", region:"간사이", debt:"20億円", debtNum:2000000000, creditors:600, holes:18, hasHotel:false, hotelType:"없음", onsen:false, airport:"간사이 1시간", intlAirport:"간사이 (KIX) 1시간", koreaDist:"1시간 50분", regDateStr:"2026/07/03", deadlineStr:"2026/09/01", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"와카야마현 기미노초", nearbyHotels:"다이와 로이넷 와카야마 30분", restaurants:"산채요리", shopping:"이온몰 와카야마", surround:"PGA 시니어 개최 명문.", url:"https://news.yahoo.co.jp/articles/0e307ad2e2a723faa543e6ed603d25cdfcdc8388", saisei:"와카야마지법 민사재생"},
   {id:"rico-2025-10-03", name:"리코오 31CC 9H", jpName:"リコオ 31カントリークラブ", region:"간토", debt:"12億円", debtNum:1200000000, creditors:300, holes:9, hasHotel:false, hotelType:"없음", onsen:false, airport:"나리타 1시간 30분", intlAirport:"나리타 (NRT) 1시간 30분", koreaDist:"2시간 30분", regDateStr:"2025/10/03", deadlineStr:"2025/12/02", isAccurate:true, sponsor_status:"確定", sponsor_recruiting:false, nearbyCity:"이바라키현 사카이마치", nearbyHotels:"호텔 루트인 고가", restaurants:"라멘", shopping:"이온몰 고가", surround:"9H 초보자용.", url:"https://news.yahoo.co.jp/articles/61ff637d7abd1b4256e92ed580332d04cef4ac0f", saisei:"도쿄지법 민사재생"},
   {id:"kagoshima-2025-05-20", name:"가고시마 레이크사이드 27H & 온천호텔", jpName:"鹿児島レイクサイドGC", region:"규슈·오키나와", debt:"35億円", debtNum:3500000000, creditors:1200, holes:27, hasHotel:true, hotelType:"온천호텔", onsen:true, airport:"가고시마 40분", intlAirport:"가고시마 (KOJ) 40분", koreaDist:"1시간 30분", regDateStr:"2025/05/20", deadlineStr:"2025/07/19", isAccurate:false, sponsor_status:"募集中", sponsor_recruiting:true, nearbyCity:"가고시마현 가고시마시", nearbyHotels:"자체 온천호텔 50실", restaurants:"흑돼지 샤브·와규", shopping:"이온몰 가고시마 170개", surround:"온천호텔 보유 27H 대형 리조트, 한국인 선호 1위.", url:"https://news.yahoo.co.jp/search?p=%E9%B9%BF%E5%85%90%E5%B3%B6%E3%83%AC%E3%82%A4%E3%82%AF%E3%82%B5%E3%82%A4%E3%83%89%E3%82%B4%E3%83%AB%E3%83%95&ei=utf-8", saisei:"TSR 스폰서모집중, 온천호텔 보유 27H"},
@@ -177,6 +206,23 @@ function calcSponsor(item, ratePct){
   const breakEven4 = Math.ceil(acquisition / 3850000);
   return {rate, secured, deposit, distribution, securedAcq, acquisition, ratio: acquisition/item.debtNum, breakEven1, breakEven2, breakEven4};
 }
+
+function isExpired(deadlineStr, isAccurate){
+  if(isAccurate===false) return true; // 미확인일자도 종료로 간주
+  if(!deadlineStr) return true;
+  try{
+    const d = new Date(deadlineStr.replace(/\//g,'-')+'T23:59:59+09:00');
+    const now = new Date();
+    return now > d;
+  }catch(e){ return true; }
+}
+function getDeadlineDisplay(item){
+  const expired = isExpired(item.deadlineStr, item.isAccurate);
+  if(!item.isAccurate) return `<b class=text-slate-400>미확인</b><div class='text-[9px] text-rose-600 font-bold'>미확인일자 - 종료로 간주</div><div class='text-[9px] text-slate-500'>TDB 미공시</div>`;
+  if(expired) return `<b class=text-slate-400>${item.deadlineStr}</b><div class='text-[9px] text-rose-600 font-bold'>채권신고 마감 종료됨</div><div class='text-[9px] text-slate-500'>현재 심사중</div>`;
+  return `<b>${item.deadlineStr}</b><div class='text-[9px]'>등록+60일 채권신고 마감</div>`;
+}
+
 function calcAI(item, calc){
   let score=0;
   if(item.holes>=27) score+=20;
@@ -247,9 +293,9 @@ function cardHTML(item, calc, ai, simple=false){
         <div class="text-[10px] text-slate-500 mt-1">TDB 등록일<br>정확한 것만 표시</div>
       </div>
       <div class="bg-slate-50 rounded-xl p-3">
-        <div class="font-bold text-[10px] text-slate-500">⏰ 마감일자</div>
-        <div class="font-black text-[13px] mt-1">${deadlineDisplay}</div>
-        <div class="text-[10px] text-slate-500 mt-1">등록일+60일<br>${item.isAccurate?'채권 신고 마감':''}</div>
+        <div class="font-bold text-[10px] text-slate-500">⏰ 채권 신고 마감일자</div>
+        <div class="font-black text-[13px] mt-1">${getDeadlineDisplay(item)}</div>
+        <div class="text-[10px] text-slate-500 mt-1">등록일+60일 채권신고<br>${isExpired(item.deadlineStr, item.isAccurate)?'<span class=text-rose-600>종료됨 - 현재 재생계획 심사중 / 미확인일자 종료 간주</span>':''}</div>
       </div>
       <div class="bg-slate-50 rounded-xl p-3">
         <div class="font-bold text-[10px] text-slate-500">🏨 숙소 정보</div>
@@ -283,7 +329,7 @@ function cardHTML(item, calc, ai, simple=false){
 
 function render(){
   const all = data.map(d=>{ const c=calcSponsor(d, rateMap[d.id]); return {item:d, calc:c, ai:calcAI(d,c)}; });
-  const recruit = all.filter(x=>x.item.sponsor_recruiting);
+  const recruit = all.filter(x=>x.item.sponsor_recruiting && x.item.isAccurate && !isExpired(x.item.deadlineStr, x.item.isAccurate));
   const hotel = all.filter(x=>x.item.hasHotel);
   const aiS = all.filter(x=>x.ai.grade==='S');
   const dateAcc = all.filter(x=>x.item.isAccurate);
@@ -293,11 +339,19 @@ function render(){
   document.getElementById('mHotel').textContent = hotel.length;
   document.getElementById('mAI').textContent = aiS.length;
   document.getElementById('mDate').textContent = dateAcc.length;
-  document.getElementById('curSetting').textContent = `${securedRatio}%×${securedAcqRate}% (${100-securedAcqRate}% 할인) / 변제율 10%`;
+  document.getElementById('curSetting').textContent = `담보 ${securedRatio}% (0~70%) × 인수율 ${securedAcqRate}% (30~70% / ${100-securedAcqRate}% 할인) / 예탁금 ${100-securedRatio}% / 변제율 10%`;
   document.getElementById('curSa').textContent = securedAcqRate+'%';
   document.getElementById('curDiscount').textContent = (100-securedAcqRate)+'% 할인';
-  [10,20,30].forEach(v=>{ const el=document.getElementById('sr'+v); if(el) el.className = v===securedRatio? 'px-3 py-1.5 rounded-full bg-blue-600 text-white':'px-3 py-1.5 rounded-full border bg-white'; });
-  [30,40,50].forEach(v=>{ const el=document.getElementById('sa'+v); if(el) el.className = v===securedAcqRate? 'px-3 py-1.5 rounded-full bg-blue-600 text-white':'px-3 py-1.5 rounded-full border bg-white'; });
+  // 담보 비율 0~70%
+  [0,10,20,30,50,70].forEach(v=>{ const el=document.getElementById('sr'+v); if(el) el.className = v===securedRatio? 'px-2.5 py-1 rounded-full bg-blue-600 text-white text-[10px]':'px-2.5 py-1 rounded-full border bg-white text-[10px]'; });
+  document.getElementById('srSlider').value = securedRatio;
+  document.getElementById('curSrDetail').textContent = `예탁금 ${100-securedRatio}%`;
+  // 담보 인수율 30~70%
+  [30,40,50,60,70].forEach(v=>{ const el=document.getElementById('sa'+v); if(el) el.className = v===securedAcqRate? 'px-2.5 py-1 rounded-full bg-blue-600 text-white text-[10px]':'px-2.5 py-1 rounded-full border bg-white text-[10px]'; });
+  document.getElementById('saSlider').value = securedAcqRate;
+  document.getElementById('curBankLoss').textContent = (100-securedAcqRate)+'%';
+  document.getElementById('curSr').textContent = securedRatio+'%';
+  
 
   document.getElementById('cntAll').textContent = all.length;
   document.getElementById('cntRecruit').textContent = recruit.length;
@@ -331,7 +385,7 @@ function openModal(id){
   document.getElementById('modalContent').innerHTML = `
     <div class="grid grid-cols-2 gap-6">
       <div class="space-y-4">
-        <div class="p-4 bg-slate-50 rounded-xl border"><div class="font-black text-sm">📅 물건등록일자·마감일자</div><div class="text-[11px] mt-2">등록일자: <b>${item.isAccurate? item.regDateStr+' TDB 확정':'<span class=text-slate-400>미확인</span>'}</b> ${item.isAccurate? 'Yahoo! 원문 TDB 기업코드':'TDB 미공시'}<br>마감일자: <b>${item.isAccurate? item.deadlineStr+' (등록+60일)':'미확인'}</b><br>부채: ${item.debt} / 채권자 ${item.creditors}명 / ${item.holes}H<br>상태: ${item.sponsor_status} ${item.sponsor_recruiting?'🚨募集中 매일 자동':''}<br><br>${item.saisei}</div></div>
+        <div class="p-4 bg-slate-50 rounded-xl border"><div class="font-black text-sm">📅 물건등록일자·채권 신고 마감일자</div><div class="text-[11px] mt-2">등록일자: <b>${item.isAccurate? item.regDateStr+' TDB 확정':'<span class=text-slate-400>미확인</span>'}</b> ${item.isAccurate? 'Yahoo! 원문 TDB 기업코드':'TDB 미공시'}<br>채권 신고 마감일자: <b>${item.isAccurate? item.deadlineStr+' (등록+60일)': '미확인'}</b> ${isExpired(item.deadlineStr, item.isAccurate)? '<span class=text-rose-600 font-bold> - 종료됨 (현재 심사중 / 미확인일자 종료 간주)</span>':''}<br>부채: ${item.debt} / 채권자 ${item.creditors}명 / ${item.holes}H<br>상태: ${item.sponsor_status} ${item.sponsor_recruiting?'🚨募集中 매일 자동':''}<br><br>${item.saisei}</div></div>
         <div class="p-4 ${item.hasHotel?'bg-amber-50 border-amber-200':'bg-slate-50'} rounded-xl border"><div class="font-black text-sm">🏨 숙소 정보 - ${item.hasHotel? '있음':'없음'} 정확 구분</div><div class="text-[11px] mt-2">${item.hasHotel? `<b>자체 보유:</b> ${item.nearbyHotels}<br>온천호텔 50실 대욕장·노천탕·연회장 보유<br>호텔+골프 패키지 가능` : `<b>숙소 없음:</b> ${item.nearbyCity}<br><b>인근 호텔:</b> ${item.nearbyHotels}<br>15~40분 거리`}<br><br><b>국제공항:</b> ${item.intlAirport}<br><b>공항까지:</b> ${item.airport}<br><b>한국에서:</b> ${item.koreaDist}<br><b>인근 도시:</b> ${item.nearbyCity}</div></div>
         <div class="p-4 bg-slate-50 rounded-xl border"><div class="font-black text-sm">🍜 식당·🛍️ 쇼핑몰·주변환경</div><div class="text-[11px] mt-2"><b>식당:</b> ${item.restaurants}<br><b>쇼핑몰:</b> ${item.shopping}<br><b>주변:</b> ${item.surround}</div></div>
       </div>

@@ -1,10 +1,3 @@
-# Aiflex Rich Gold - Vercel Deploy
-
-## 배포 방법
-1. Vercel Dashboard > Add New Project
-2. 이 zip 파일 압축 해제 후 폴더 업로드 또는 GitHub 연동
-3. Framework Preset: Other
-4. Deploy
-
-- index.html 단일 파일 기반 정적 사이트
-- vercel.json 포함 (SPA 라우팅 대응)
+# AIFLEX38 Wadiz Detail V10 Final
+- 1160px / 24px / 다크-라이트 / 38g(45.25) 42g(46인치 노커팅 기준) / 1168mm / 2026-11-10
+- 3단계 강-연-강 / 단일→듀얼→3단계 / NO CPM / Mid 통일 / 23.2 삭제 / 회사정보 최하단

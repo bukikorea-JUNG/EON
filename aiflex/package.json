@@ -1,1 +1,9 @@
-{"name":"aiflex38-company-landing-v13","version":"1.0.0","private":true}
+{
+  "name": "aiflex38",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AIFLEX38 드라이버 샤프트 출시! - AIFLEX SINCE 2026",
+  "scripts": {
+    "build": "echo 'Static site - no build required'"
+  }
+}

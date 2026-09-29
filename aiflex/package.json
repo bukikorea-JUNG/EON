@@ -1,1 +1,9 @@
-{"name":"aiflex-co-kr","version":"1.0.0","private":true}
+{
+  "name": "aiflex38-kick-13-q4",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AIFLEX38 38g 원플렉스 드라이버 샤프트 랜딩 페이지",
+  "scripts": {
+    "serve": "npx serve ."
+  }
+}

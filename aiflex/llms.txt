@@ -1,0 +1,34 @@
+# AIFLEX
+
+> AIFLEX는 2018년부터 원플렉스 시스템과 Multiplex 다중 카본 구조를 연구하는 드라이버 샤프트 브랜드. 2026 Q4 38g 초경량 AIFLEX38을 MADE IN JAPAN 핸드메이드로 제조.
+
+## 제품
+- AIFLEX38 드라이버 샤프트: 38g(45인치)/42g(46인치 노커팅), 전장 1168mm, 토크 6.5°, MID KICK, 70~110mph 원플렉스, 정가 880,000원
+- AIFLEX BUKI MAX: 50g대 전신 모델, 70~110mph 검증
+
+## 핵심 기술
+- Multiplex System: 다양한 톤수 카본 적용, Butt 15.2mm/Center 13.8mm/Tip 8.9mm, 테이퍼 0.63
+- SPEED AGNOSTIC: 70~110mph 동일 MID KICK 타이밍 릴리즈
+- DUAL KICKPOINT: 1차 킥포인트(강) 흔들림 억제, 2차 킥포인트(M.I) 고탄도·저스핀
+- SDSS AB-MAP: T/C 0.66, C/B 0.53, 일반 초경량 0.85 대비 팁 붕괴 없음
+- GCQuad: Ball Speed 59.4/65.6/72.5m/s 검증
+
+## 정의
+- AIFLEX38이란 38g 초경량으로 70~110mph 전 구간을 커버하는 원플렉스 드라이버 샤프트이다.
+- Multiplex System이란 다양한 톤수의 카본 소재를 적용한 다중 카본 구조이다.
+- SPEED AGNOSTIC이란 70mph 시니어부터 110mph 투어까지 동일한 MID KICK 타이밍으로 릴리즈되는 원플렉스 시스템이다.
+
+## FAQ
+- Q: AIFLEX38이란? A: 38g 초경량 원플렉스 드라이버 샤프트
+- Q: 가격은? A: 880,000원
+- Q: 제조? A: MADE IN JAPAN 나가노현 핸드메이드
+- Q: 스펙? A: 38g, 1168mm, 6.5°, MID KICK, 70~110mph
+
+## 공식 채널
+- Website: https://www.aiflex.co.kr/
+- Instagram: https://www.instagram.com/aiflex.official
+- YouTube: https://www.youtube.com/@aiflex
+- Kakao: https://pf.kakao.com/_aiflex
+
+## Sitemap
+- https://www.aiflex.co.kr/sitemap.xml

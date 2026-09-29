@@ -1,55 +1,35 @@
-# AIFLEX38 - Kick 13 Q4 Landing
+# AIFLEX38 - Kick 13 Q4 - GitHub 배포용 (이미지 파일명 수정版)
 
-38g 초경량 원플렉스 드라이버 샤프트 랜딩 페이지 - GitHub Pages 배포용
+## 수정 사항
+- 기존 `image-1.png` 등 불명확한 파일명 → 의미있는 파일명으로 변경
+- 실제 파일 형식은 모두 JPEG이므로 확장자 `.jpg`로 통일 (기존 png/webp 선언 오류 수정)
+- 이미지 참조 경로 `src: var` 가 올바르게 매칭되도록 재빌드
 
-## 📁 구조
+## 파일 구조
 ```
-.
-├── index.html                           # 메인 페이지 (이미지 분리 최적화 버전)
-├── Aiflex38-Kick-13-Q4-original.html    # 원본 단일 파일 버전
-├── assets/                              # 이미지 에셋 (base64에서 분리)
+├── index.html (최적화, assets 참조)
+├── original-single-file.html (원본 단일 파일, 이미지 임베드 - 파일명 문제 없는 버전)
+├── assets/
+│   ├── hero-aiflex38-gold-dark.jpg
+│   ├── shaft-lineup-01.jpg
+│   ├── shaft-detail-01.jpg
+│   ├── shaft-detail-02.jpg
+│   ├── shaft-spec-01.jpg
+│   ├── shaft-spec-02.jpg
+│   ├── test-data-chart-01.jpg
+│   ├── test-data-chart-02.jpg
+│   └── test-data-chart-03.jpg
+├── .github/workflows/pages.yml
 ├── README.md
-├── .gitignore
-└── .github/workflows/pages.yml          # GitHub Pages 자동 배포
+└── .gitignore
 ```
 
-## 🚀 GitHub Pages 배포 방법
+## 배포
+1. 이 ZIP 압축 해제 후 GitHub Repo에 push
+2. Settings → Pages → Source: GitHub Actions
+3. 배포 URL: https://USERNAME.github.io/REPO/
 
-### 방법 1: 자동 배포 (권장)
-1. GitHub에서 새 Repository 생성
-2. 이 ZIP 압축 해제 후 모든 파일을 push
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: AIFLEX38 landing"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-   git push -u origin main
-   ```
-3. GitHub Repo → Settings → Pages → Source: `GitHub Actions` 선택
-4. main 브랜치 push시 자동 배포됨
+만약 이미지가 여전히 안 보이면 `original-single-file.html`을 `index.html`로 이름 변경해서 사용하세요. (이미지 임베드라 파일명 이슈 없음)
 
-### 방법 2: 수동 Pages 설정
-1. Repo → Settings → Pages
-2. Branch: `main` / Folder: `/ (root)` 선택
-3. Save → `https://YOUR_USERNAME.github.io/YOUR_REPO/` 에서 확인
-
-## 🛠 로컬 실행
-```bash
-# Python 간단 서버
+## 로컬 테스트
 python -m http.server 8000
-# 또는
-npx serve .
-```
-
-## 📄 페이지 정보
-- **제품**: AIFLEX38 38g / 42g 드라이버 샤프트
-- **핵심 기술**: 듀얼 킥포인트 시스템, 멀티소재 카본 Multiplex System, MADE IN JAPAN 핸드메이드
-- **컨셉**: 70~110mph 전 구간 원플렉스 - 플렉스 고르는 시대는 끝났다
-
-## 📝 수정
-`index.html`은 빌드된 단일 파일입니다. 
-원본 React 소스 수정이 필요하면 원본 아티팩트를 다시 빌드하세요.
-
----
-제작: AIFLEX / 배포 패키지 생성일: 2026-09-30
